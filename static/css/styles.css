@@ -19,7 +19,7 @@
 header {
 	min-height:180px;
   margin-bottom:5px;
-  background: url(img/charter.png) no-repeat center center;
+  /*background: url(../img/charter.png) no-repeat center center;*/
 }
 
 /* only apply sticky columns on wider screens */
@@ -55,6 +55,37 @@ header {
   	  top: 20px;
   	  width:292px;
   }
+}
+
+#outer-background-container {
+    display:block;
+    /*background: #000;*/
+    background: url(../img/charter2.png) no-repeat center center;;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    position: fixed;
+    z-index:-2;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    background-position:center center;
+    background-size: cover;
+}
+
+.background-image-overlay {
+    display:block;
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:-1;
+    background:url(../img/background-image-overlay.png) repeat;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    background-position:center center;
+    background-size: cover;
 }
 
 .affix {
@@ -97,6 +128,7 @@ h3.highlight  {
 	background-color:#a30319;
   	color:#a30319;
   	border-radius:0;
+    opacity:0.6;
 }
 .navbar-nav > li > a {
   	color:#fff;
@@ -162,9 +194,9 @@ h3.highlight  {
 	padding-left:1px;
 }
 
-.bg-one {
-  background-image: url('img/charter.png');
-}
+/*.bg-one {
+  background-image: url('../img/charter.png');
+}*/
 
 .lead {
   font-size: 18px;
