@@ -1,0 +1,190 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      <meta charset="utf-8">
+      <title>Princeton Charter Club</title>
+      <meta name="generator" content="Bootply" />
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+      <link href="{% "css/bootstrap.min.css" %}" rel="stylesheet">
+      <link href="{% "css/font-awesome.min.css" %}" rel="stylesheet">
+      <!--[if lt IE 9]>
+         <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+      <![endif]-->
+      <link href="{% static "css/styles.css" %}" rel="stylesheet">
+   </head>
+   <body>
+<nav class="navbar navbar-static">
+   <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="index.html" target="ext"><span class="glyphicon glyphicon-home"></span></a>
+      <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="glyphicon glyphicon-chevron-down"></span>
+      </a>
+    </div>
+      <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">  
+          <li><a href="{%url 'calendar' %}">Calendar</a></li>
+          <li><a href="{%url 'menu' %}">Menu</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">About</a>
+            <ul class="dropdown-menu">
+              <li><a href="{%url 'history' %}">History</a></li>
+              <li><a href="{%url 'song' %}">Song</a></li>
+              <li><a href="{%url 'constitution' %}">Constitution</a></li>
+            </ul>
+          </li>
+        </ul>
+        <ul class="nav navbar-right navbar-nav">
+          <li class="dropdown">
+            <a href="{%url '#' %}" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-search"></i></a>
+            <ul class="dropdown-menu" style="padding:12px;">
+                <form class="form-inline">
+               <button type="submit" class="btn btn-default pull-right"><i class="glyphicon glyphicon-search"></i></button><input type="text" class="form-control pull-left" placeholder="Search">
+                </form>
+             </ul>
+          </li>
+          <li class="dropdown">
+            <!-- need to check on this url call -->
+            <a href="{%url '#' %}" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <i class="glyphicon glyphicon-chevron-down"></i></a>
+            <ul class="dropdown-menu">
+              <li><a href="login.html">Login</a></li>
+              <li><a href="profile.html">Profile</a></li>
+              <li class="divider"></li>
+              <li><a href="help.html">Help</a></li>
+             </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+</nav><!-- /.navbar -->
+
+
+<header class="masthead">
+  <div class="container bg-one">
+    <div class="row">
+      <div class="col-md-12">
+        <h1>Welcome to the Princeton Charter Club!
+          <p class="lead">Est. 1901</p></h1>
+      </div>
+<!--       <div class="col-md-6">
+        <div class="well pull-right">
+          <img src="//placehold.it/280x100/E7E7E7">        
+        </div>
+      </div> -->
+    </div>
+  </div>
+
+</header>
+
+<!-- Begin Body -->
+<div class="container">
+   <div class="no-gutter row">
+            <!-- left side column -->
+         <div class="col-md-2">
+               <div class="panel panel-default" id="sidebar">
+                <div class="panel-heading" style="background-color:#888;color:#fff;">Some useful places</div> 
+                <div class="panel-body">
+                <div class="accordion" id="accordion2">
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                                Prospective Members
+                            </a>
+                        </div>
+                        <div id="collapseOne" class="accordion-body collapse">
+                            <div class="accordion-inner">
+                              Mailing List 
+                            </div>
+                            <div class="accordion-inner">
+                              Sophomore Meals
+                            </div>
+                            <div class="accordion-inner">
+                              Contact Us!
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+               <ul class="nav nav-stacked">
+                <li><a href="#">Anonymous Feedback</a></li>
+              </ul>
+                <div class="accordion" id="accordion2">
+                    <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
+                                    Membership
+                                </a>
+                            </div>
+                            <div id="collapseTwo" class="accordion-body collapse">
+                                <div class="accordion-inner">
+                                    All Members
+                                </div>
+                                <div class="accordion-inner">
+                                    Officers
+                                </div>
+                                <div class="accordion-inner">
+                                    Faceboard Quiz
+                                </div>
+                            </div>
+                        </div>
+                     </div> 
+                     <ul></ul>
+                <div class="accordion" id="accordion3">
+                    <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
+                                    Winetasting
+                                </a>
+                            </div>
+                            <div id="collapseThree" class="accordion-body collapse">
+                                <div class="accordion-inner">
+                                    RSVP
+                                </div>
+                                <div class="accordion-inner">
+                                    Seatings
+                                </div>
+                            </div>
+                        </div>
+                     </div> 
+                  
+                  <hr>
+                
+                </div><!--/panel body-->
+              </div><!--/panel-->
+            </div><!--/end left column-->
+            
+{% block panelheading %}{{ panel.heading }}{% endblock %}
+
+            <!-- right content column-->
+            <div class="col-md-10" id="content">
+              <div class="panel">
+                  <div class="panel-heading" style="background-color:#111;color:#fff;">   {{ panel.heading }} 
+                  </div>   
+                <div class="panel-body">
+                  
+                 {% block content %}{% endblock %}
+               
+                </div><!--/panel-body-->
+              </div><!--/panel-->
+               <!--/end right column-->
+            </div> 
+   </div>
+</div>
+<footer>
+  <div class="container">
+   <div class="row">
+      <div class="col-md-12 text-right"><h5>© Princeton Charter Club 2015</h5></div>
+    </div>
+  </div>
+</footer>
+
+
+   <!-- script references -->
+      <script src="{% static "js/jquery-2.1.3.min.js" %}"></script>
+      <script src="{% static "js/bootstrap.min.js" %}"></script>
+      <script src="{% "js/scripts.js" %}"></script>
+   </body>
+</html>
