@@ -12,5 +12,31 @@ urlpatterns = patterns('',
     url(
         r'^index$',
         'charterclub.views.index',
-        name='index'),                             
+        name='index'),
+    url(
+        r'^calendar$',
+        'charterclub.views.calendar',
+        name='calendar'),
+    url(
+        r'^menu$',
+        'charterclub.views.menu',
+        name='menu'),
+    url(
+        r'^history$',
+        'charterclub.views.history',
+        name='history'),
+    url(
+        r'^song$',
+        'charterclub.views.song',
+        name='song'),
+    url(
+        r'^constitution$',
+        'charterclub.views.constitution',
+        name='constitution'),
+    url(
+        r'^#$',
+        'charterclub.views.underconstruction',
+        name='#')
 )
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
