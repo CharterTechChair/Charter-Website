@@ -12,7 +12,8 @@ def calendar(request):
    # return HttpResponse("This is a completely functional calendar")
 
 def menu(request):
-   return HttpResponse("This is a completely functional menu")
+   return render(request, "menu.html")
+   # return HttpResponse("This is a completely functional menu")
 
 def history(request):
    return HttpResponse("This is a completely functional history")
