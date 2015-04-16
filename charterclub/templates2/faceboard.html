@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+This is a faceboard!
+{{pics}}
+
+{% for picture in pics %}
+    <img src="{% static "img/faceboard/" %}{{picture}}" alt="{{ picture }}">
+{% endfor %}
+{% endblock %}
