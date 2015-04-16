@@ -3,10 +3,22 @@
 
 {% block content %}
 
-This is a faceboard!
-{{pics}}
+This is a faceboard! <p>
 
-{% for picture in pics %}
+Seniors <p>
+{% for picture in seniorpics %}
     <img src="{% static "img/faceboard/" %}{{picture}}" alt="{{ picture }}">
 {% endfor %}
+
+Juniors <p>
+{% for picture in juniorpics %}
+    <img src="{% static "img/faceboard/" %}{{picture}}" alt="{{ picture }}">
+{% endfor %} 
+
+Sophomores <p>
+{% for picture in sophpics %}
+    <img src="{% static "img/faceboard/" %}{{picture}}" alt="{{ picture }}">
+{% endfor %}
+    
+{{pics}}
 {% endblock %}
