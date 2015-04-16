@@ -20,6 +20,10 @@ urlpatterns = patterns('',
         'charterclub.views.calendar',
         name='calendar'),
     url(
+        r'^faceboard$',
+        'charterclub.views.faceboard',
+        name='faceboard'),
+    url(
         r'^menu$',
         'charterclub.views.menu',
         name='menu'),
