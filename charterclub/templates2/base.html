@@ -16,6 +16,15 @@
       <link href="{% static "css/styles.css" %}" rel="stylesheet">
    </head>
    <body>
+    <div id="fb-root"></div>
+      <script>(function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));</script>
+
 <nav class="navbar navbar-static">
    <div class="container">
     <div class="navbar-header">
@@ -61,6 +70,33 @@
     </div>
 
 </nav><!-- /.navbar -->
+
+
+<!-- <header class="masthead"> -->
+
+
+<!--   <div id="outer-background-container" data-default-background-img="../img/charter.png" style="background-image:url(../img/charter.png);"></div>
+   -->
+
+<!-- <div class="background-image-overlay"></div> -->
+
+<!-- <div id="outer-background-container" data-default-background-img="../img/charter2.png style="background-image:url(../img/charter2.png);"></div> -->
+
+<!--   <div class="container bg-one">
+    <div class="row"> -->
+<!--       <div class="col-md-12">
+        <h1>Welcome to the Princeton Charter Club!
+          <p class="lead">Est. 1901</p></h1>
+      </div> -->
+<!--       <div class="col-md-6">
+        <div class="well pull-right">
+          <img src="//placehold.it/280x100/E7E7E7">        
+        </div>
+      </div> -->
+<!--     </div>
+  </div>
+
+</header> --> 
 
 <!-- Begin Body -->
 <div class="container">
@@ -133,7 +169,9 @@
                      </div> 
                   
                   <hr>
-                
+
+               <div class="fb-follow" data-href="https://www.facebook.com/pages/Princeton-Charter-Club/38696166101?fref=nf" data-width="100" data-colorscheme="dark" data-layout="button" data-show-faces="true"></div>
+                      
                 </div><!--/panel body-->
               </div><!--/panel-->
             </div><!--/end left column-->
