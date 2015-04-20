@@ -28,6 +28,14 @@ urlpatterns = patterns('',
         'charterclub.views.menu',
         name='menu'),
     url(
+        r'^profile$',
+        'charterclub.views.profile',
+        name='profile'),
+    url(
+        r'^login$',
+        'charterclub.views.login',
+        name='login'),
+    url(
         r'^history$',
         'charterclub.views.history',
         name='history'),
@@ -39,6 +47,10 @@ urlpatterns = patterns('',
         r'^constitution$',
         'charterclub.views.constitution',
         name='constitution'),
+    url(
+        r'^help$',
+        'charterclub.views.help',
+        name='help'),
     url(
         r'^#$',
         'charterclub.views.underconstruction',

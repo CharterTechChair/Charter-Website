@@ -39,7 +39,7 @@
         </ul>
         <ul class="nav navbar-right navbar-nav">
           <li class="dropdown">
-            <a href="{%url '#' %}" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-search"></i></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-search"></i></a>
             <ul class="dropdown-menu" style="padding:12px;">
                 <form class="form-inline">
                <button type="submit" class="btn btn-default pull-right"><i class="glyphicon glyphicon-search"></i></button><input type="text" class="form-control pull-left" placeholder="Search">
@@ -47,8 +47,7 @@
              </ul>
           </li>
           <li class="dropdown">
-            <!-- need to check on this url call -->
-            <a href="{%url '#' %}" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <i class="glyphicon glyphicon-chevron-down"></i></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <i class="glyphicon glyphicon-chevron-down"></i></a>
             <ul class="dropdown-menu">
               <li><a href="{%url 'login' %}">Login</a></li>
               <li><a href="{%url 'profile' %}">Profile</a></li>
@@ -61,6 +60,7 @@
     </div>
 
 </nav><!-- /.navbar -->
+
 
 <!-- Begin Body -->
 <div class="container">
@@ -133,24 +133,64 @@
                      </div> 
                   
                   <hr>
+<!-- 
+                <div class="col col-span-12">
+                  <i class="icon-2x icon-facebook"></i>&nbsp;
+                  <i class="icon-2x icon-twitter"></i>&nbsp;
+                  <i class="icon-2x icon-linkedin"></i>&nbsp;
+                  <i class="icon-2x icon-pinterest"></i>
+                </div> -->
                 
                 </div><!--/panel body-->
               </div><!--/panel-->
             </div><!--/end left column-->
+            
+          <!--mid column-->
+          <div class="col-md-3">
+              <div class="panel" id="midCol">
+                <div class="panel-heading" style="background-color:#555;color:#eee;">Quick Links</div> 
+                <div class="panel-body">
+
+                    <div class="well">
+                          <!-- <img src="http://s.bootply.com/assets/example/bg_iphone.png" class="img-responsive"> -->
+                          <h3>Winetasting</h3>
+                          <p>
+                          You RSVP'd for the [ROOM]!
+                          </p>
+                    </div>
+
+                    <div class="well">
+                          <!-- <img src="http://s.bootply.com/assets/example/bg_iphone.png" class="img-responsive"> -->
+                          <h3>Formals</h3>
+                          <p>
+                          You RSVP'd for the [ROOM] at [TIME]!
+                          </p>
+                    </div>
+
+                    <div class="well">
+                          <!-- <img src="http://s.bootply.com/assets/example/bg_iphone.png" class="img-responsive"> -->
+                          <h3>House account balance</h3>
+                          <p>
+                          $85.00 as of [DATE]
+                          </p>
+                    </div>
+                  
+                  
+               </div> 
+               </div><!--/panel-->
+          </div><!--/end mid column-->
 
             <!-- right content column-->
-            <div class="col-md-10" id="content">
-              <div class="panel">
-                  <div class="panel-heading" style="background-color:#111;color:#fff;"> Princeton Charter Club
-                  </div>   
+          <div class="col-md-7" id="content">
+                <div class="panel">
+                  <div class="panel-heading" style="background-color:#111;color:#fff;">Welcome, [MEMBER NAME]!</div>   
                 <div class="panel-body">
-                  
-                 {% block content %}{% endblock %}
-               
-                </div><!--/panel-body-->
-              </div><!--/panel-->
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam posuere mi eu ipsum lobortis porttitor. Pellentesque a auctor nunc. Integer imperdiet egestas enim, vel ultricies erat congue id. Integer placerat elit mollis euismod luctus. Etiam accumsan est id vulputate accumsan. Nullam dictum faucibus elementum. Morbi sollicitudin ullamcorper ex, vitae fringilla metus bibendum id. Sed vitae venenatis quam. Maecenas consequat odio est, eget ultrices augue faucibus id.
+                </div>
+              </div>
+                </div><!--/panel-->
                <!--/end right column-->
-            </div> 
+         </div> 
    </div>
 </div>
 <footer>

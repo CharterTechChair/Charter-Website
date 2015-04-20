@@ -113,6 +113,11 @@ a,a:hover {
 .highlight {
 	color:#77CCDD;
 }
+
+img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto }
   
 h1 {
   color:#fff;
@@ -128,7 +133,7 @@ h3.highlight  {
 	background-color:#a30319;
   	color:#a30319;
   	border-radius:0;
-    opacity:0.6;
+    /*opacity:0.6;*/
 }
 .navbar-nav > li > a {
   	color:#fff;

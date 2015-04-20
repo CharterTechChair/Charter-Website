@@ -45,14 +45,23 @@ def menu(request):
    # return HttpResponse("This is a completely functional menu")
 
 def history(request):
-   return HttpResponse("This is a completely functional history")
+   return render(request, "history.html")
 
 def song(request):
-   return HttpResponse("This is a completely functional song")
+   return render(request, "song.html")
 
 def constitution(request):
-   return HttpResponse("This is a completely functional constitution")
+   return render(request, "constitution.html")
+
+def profile(request):
+  return render(request, "profile.html")
+
+def login(request):
+   return HttpResponse("This is a completely functional CAS login page")
+
+def help(request):
+   return HttpResponse("This is under construction!")
 
 def underconstruction(request):
-   return HttpResponse("This is a under construction!")
+   return HttpResponse("This is under construction!")
 
