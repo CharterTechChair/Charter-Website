@@ -59,6 +59,10 @@ urlpatterns = patterns('',
         r'^#$',
         'charterclub.views.underconstruction',
         name='#'),
+    url(
+        r'^feedback$',
+        'charterclub.views.feedback',
+        name='feedback'),  
     # for CAS
     url(
         r'^accounts/login/$',

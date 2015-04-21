@@ -27,7 +27,10 @@ TEMPLATE_DEBUG = True
 TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), "templates2").replace(
     "\\","/"),)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '.princetoncharterclub.org',
+    'charterclub.herokuapp.com',
+]
 
 
 # Application definition

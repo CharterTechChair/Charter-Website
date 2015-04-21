@@ -1,11 +1,15 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django import template
 from django.shortcuts import render
 from django.template import RequestContext
 from django.template.loader import get_template
 from django.conf import settings
-from datetime import date
+import datetime
+from forms import FeedbackForm
+# import configuration
 from os import listdir, path
+from django.core.mail import send_mail, BadHeaderError
+
 
 def index(request):
    html = "Hello World"
@@ -31,7 +35,7 @@ def faceboard(request):
          pics.append(str(year) + "/" + pic)
       return pics
             
-   year = date.today().year
+   year = datetime.date.today().year
    template = get_template("faceboard.html")
    seniorpics = picsfromyear(year)
    juniorpics = picsfromyear(year + 1)
@@ -42,6 +46,58 @@ def faceboard(request):
                              "sophpics" : sophpics})
    return HttpResponse(template.render(context))
    
+def send_email(request):
+    subject = request.POST.get('subject', '')
+    message = request.POST.get('message', '')
+    from_email = request.POST.get('from_email', '')
+    if subject and message and from_email:
+        try:
+            send_mail(subject, message, from_email, ['admin@example.com'])
+        except BadHeaderError:
+            return HttpResponse('Invalid header found.')
+        return HttpResponseRedirect('/contact/thanks/')
+    else:
+        # In reality we'd use a form class
+        # to get proper validation errors.
+        return HttpResponse('Make sure all fields are entered and valid.')
+
+def feedback(request):
+   now = datetime.datetime.now().date()
+   #Generate Meal Form
+   if request.method == 'POST':
+     form = FeedbackForm(request.POST)
+     if form.is_valid():
+         soph, error_message = createSophomore(request.user.username, form.cleaned_data['first_name'], form.cleaned_data['last_name'])
+         if error_message:
+             return render(request, 'feedback.html', {
+                 'current_date': now,
+                 'form': form,
+                 'error': "Error: " + error_message,
+                 'netid': request.user.username,
+             })
+
+         # Once we have ThisSophmore, sign him up for the meal.
+         error_message = soph.sign_up(form.cleaned_data['date'], form.cleaned_data['lunch_or_dinner'])
+
+         if not error_message:
+             return HttpResponseRedirect('mealview')
+         else:
+             return render(request, 'feedback.html', {
+                 'current_date': now,
+                 'form': form,
+                 'error': error_message,
+                 'netid': request.user.username,
+             })
+   else:
+      form = FeedbackForm()
+
+   return render(request, 'feedback.html', {
+     'current_date': now,
+     'form': form,
+     'error': '',
+     'netid': request.user.username,
+   })  
+
 def menu(request):
    return render(request, "menu.html")
    # return HttpResponse("This is a completely functional menu")

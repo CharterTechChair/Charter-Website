@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+      <!-- Form -->
+      <br>
+      <form action="/feedback" method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <input class="btn btn-default" type="submit" value="Submit" />
+      </form>
+<p></p>
+
+   </div>
+
+{% endblock %}
