@@ -49,11 +49,24 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # required for CAS
+    'django_cas.middleware.CASMiddleware',
+    'django.middleware.doc.XViewMiddleware',
+)
+
+# needed for CAS
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'django_cas.backends.CASBackend',
 )
 
 ROOT_URLCONF = 'charterclub.urls'
 
 WSGI_APPLICATION = 'charterclub.wsgi.application'
+
+# CAS settings
+CAS_SERVER_URL = 'https://fed.princeton.edu/cas/'
+CAS_LOGOUT_COMPLETELY = False
 
 
 # Database

@@ -16,7 +16,9 @@ def calendar(request):
    return render(request, "calendar.html")
    # return HttpResponse("This is a completely functional calendar")
 
-
+def calendar2(request):
+   return render(request, "calendar2.html")
+   # return HttpResponse("This is a completely functional calendar")
    
 def faceboard(request):
    def picsfromyear(year):

@@ -20,6 +20,10 @@ urlpatterns = patterns('',
         'charterclub.views.calendar',
         name='calendar'),
     url(
+        r'^calendar2$',
+        'charterclub.views.calendar2',
+        name='calendar2'),
+    url(
         r'^faceboard$',
         'charterclub.views.faceboard',
         name='faceboard'),
@@ -54,7 +58,14 @@ urlpatterns = patterns('',
     url(
         r'^#$',
         'charterclub.views.underconstruction',
-        name='#')
+        name='#'),
+    # for CAS
+    url(
+        r'^accounts/login/$',
+        'django_cas.views.login'),
+    url(
+        r'^accounts/logout/$',
+        'django_cas.views.logout'),
 )
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
