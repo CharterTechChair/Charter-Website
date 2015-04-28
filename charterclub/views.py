@@ -10,6 +10,18 @@ from forms import FeedbackForm
 from os import listdir, path
 from django.core.mail import send_mail, BadHeaderError
 
+import time
+import calendar
+# from datetime import date, datetime, timedelta
+
+# from django.core.urlresolvers import reverse
+# from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, render_to_response
+# from django.core.context_processors import csrf
+# from django.forms.models import modelformset_factory
+
+from models import *
+
 
 def index(request):
    html = "Hello World"
@@ -46,20 +58,20 @@ def faceboard(request):
                              "sophpics" : sophpics})
    return HttpResponse(template.render(context))
    
-def send_email(request):
-    subject = request.POST.get('subject', '')
-    message = request.POST.get('message', '')
-    from_email = request.POST.get('from_email', '')
-    if subject and message and from_email:
-        try:
-            send_mail(subject, message, from_email, ['admin@example.com'])
-        except BadHeaderError:
-            return HttpResponse('Invalid header found.')
-        return HttpResponseRedirect('/contact/thanks/')
-    else:
-        # In reality we'd use a form class
-        # to get proper validation errors.
-        return HttpResponse('Make sure all fields are entered and valid.')
+# def send_email(request):
+#     subject = request.POST.get('subject', '')
+#     message = request.POST.get('message', '')
+#     from_email = request.POST.get('from_email', '')
+#     if subject and message and from_email:
+#         try:
+#             send_mail(subject, message, from_email, ['admin@example.com'])
+#         except BadHeaderError:
+#             return HttpResponse('Invalid header found.')
+#         return HttpResponseRedirect('/contact/thanks/')
+#     else:
+#         # In reality we'd use a form class
+#         # to get proper validation errors.
+#         return HttpResponse('Make sure all fields are entered and valid.')
 
 def feedback(request):
    now = datetime.datetime.now().date()
@@ -67,27 +79,15 @@ def feedback(request):
    if request.method == 'POST':
      form = FeedbackForm(request.POST)
      if form.is_valid():
-         soph, error_message = createSophomore(request.user.username, form.cleaned_data['first_name'], form.cleaned_data['last_name'])
-         if error_message:
-             return render(request, 'feedback.html', {
-                 'current_date': now,
-                 'form': form,
-                 'error': "Error: " + error_message,
-                 'netid': request.user.username,
-             })
+        subject = 'Anonymous feedback'
+        sender = 'roryf@princeton.edu'
+        message = form.cleaned_data['anonymous_feedback']
 
-         # Once we have ThisSophmore, sign him up for the meal.
-         error_message = soph.sign_up(form.cleaned_data['date'], form.cleaned_data['lunch_or_dinner'])
+        recipients = ['roryf@princeton.edu']
 
-         if not error_message:
-             return HttpResponseRedirect('mealview')
-         else:
-             return render(request, 'feedback.html', {
-                 'current_date': now,
-                 'form': form,
-                 'error': error_message,
-                 'netid': request.user.username,
-             })
+        from django.core.mail import send_mail
+        send_mail(subject, message, sender, recipients)
+        # return HttpResponseRedirect('/thanks/') # Redirect after POST
    else:
       form = FeedbackForm()
 
@@ -122,4 +122,36 @@ def help(request):
 
 def underconstruction(request):
    return HttpResponse("This is under construction!")
+
+# # TEST CODE FOR CALENDAR!!!
+# mnames = "January February March April May June July August September October November December"
+# mnames = mnames.split()
+
+
+# # @login_required
+# def cal(request, year=None):
+#     """Main listing, years and months; three years per page."""
+#     # prev / next years
+#     if year: year = int(year)
+#     else:    year = time.localtime()[0]
+
+#     nowy, nowm = time.localtime()[:2]
+#     lst = []
+
+#     # create a list of months for each year, indicating ones that contain entries and current
+#     for y in [year, year+1, year+2]:
+#         mlst = []
+#         for n, month in enumerate(mnames):
+#             entry = current = False   # are there entry(s) for this month; current month?
+#             entries = Entry.objects.filter(date__year=y, date__month=n+1)
+#             if entries:
+#                 entry = True
+#             if y == nowy and n+1 == nowm:
+#                 current = True
+#             mlst.append(dict(n=n+1, name=month, entry=entry, current=current))
+#         lst.append((y, mlst))
+
+#     return render_to_response("cal.html", dict(years=lst, user=request.user, year=year,
+#                                                    reminders=reminders(request)))
+
 
