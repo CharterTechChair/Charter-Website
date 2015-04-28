@@ -72,8 +72,14 @@ CAS_SERVER_URL = 'https://fed.princeton.edu/cas/'
 CAS_LOGOUT_COMPLETELY = False
 CAS_REDIRECT_URL = 'templates2/hello.html'
 
-
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
+# email backend
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'roryf@princeton.edu'
+EMAIL_HOST_PASSWORD = 'bjxslmlxjynwyfef'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
