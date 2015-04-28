@@ -35,10 +35,10 @@ urlpatterns = patterns('',
         r'^profile$',
         'charterclub.views.profile',
         name='profile'),
-    url(
-        r'^login$',
-        'charterclub.views.login',
-        name='login'),
+    # url(
+    #     r'^login$',
+    #     'charterclub.views.login',
+    #     name='login'),
     url(
         r'^history$',
         'charterclub.views.history',
