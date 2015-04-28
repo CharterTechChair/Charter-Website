@@ -78,7 +78,7 @@ def feedback(request):
 
         from django.core.mail import send_mail
         send_mail(subject, message, sender, recipients, fail_silently=False)
-        # return HttpResponseRedirect('/thanks/') # Redirect after POST
+        return HttpResponseRedirect('thanks') # Redirect after POST
    else:
       form = FeedbackForm()
 
@@ -102,13 +102,21 @@ def song(request):
 def constitution(request):
    return render(request, "constitution.html")
 
+def thanks(request):
+  now = datetime.datetime.now().date()
+  return render(request, "thanks.html", {
+     'current_date': now,
+     'error': '',
+     'netid': request.user.username,
+  })
+
 def profile(request):
   now = datetime.datetime.now().date()
   return render(request, "profile.html", {
      'current_date': now,
      'error': '',
      'netid': request.user.username,
-   })
+  })
 
 # def login(request):
 #    return HttpResponse("This is a completely functional CAS login page")

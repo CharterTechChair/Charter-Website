@@ -57,6 +57,10 @@ urlpatterns = patterns('',
         'charterclub.views.help',
         name='help'),
     url(
+        r'^thanks$',
+        'charterclub.views.thanks',
+        name='thanks'),
+    url(
         r'^#$',
         'charterclub.views.underconstruction',
         name='#'),
