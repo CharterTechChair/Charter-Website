@@ -65,11 +65,11 @@ urlpatterns = patterns('',
         name='feedback'),  
     # for CAS
     url(
-        r'^accounts/login/$',
+        r'^login$',
         'django_cas.views.login',
         name = 'login'),
     url(
-        r'^accounts/logout/$',
+        r'^logout$',
         'django_cas.views.logout',
         name = 'logout'),
 )
