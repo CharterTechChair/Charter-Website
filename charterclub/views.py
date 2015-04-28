@@ -61,25 +61,42 @@ def send_email(request):
         # to get proper validation errors.
         return HttpResponse('Make sure all fields are entered and valid.')
 
-def feedback(request):
-   now = datetime.datetime.now().date()
-   #Generate Meal Form
-   if request.method == 'POST':
-     form = FeedbackForm(request.POST)
-     if form.is_valid():
-        subject = form.cleaned_data['subject']
-        message = form.cleaned_data['message']
-        sender = form.cleaned_data['sender']
-        cc_myself = form.cleaned_data['cc_myself']
+# def feedback(request):
+#    now = datetime.datetime.now().date()
+#    #Generate Meal Form
+#    if request.method == 'POST':
+#      form = FeedbackForm(request.POST)
+#      if form.is_valid():
+#          soph, error_message = createSophomore(request.user.username, form.cleaned_data['first_name'], form.cleaned_data['last_name'])
+#          if error_message:
+#              return render(request, 'feedback.html', {
+#                  'current_date': now,
+#                  'form': form,
+#                  'error': "Error: " + error_message,
+#                  'netid': request.user.username,
+#              })
 
-        recipients = ['info@example.com']
-        if cc_myself:
-            recipients.append(sender)
+#          # Once we have ThisSophmore, sign him up for the meal.
+#          error_message = soph.sign_up(form.cleaned_data['date'], form.cleaned_data['lunch_or_dinner'])
 
-        from django.core.mail import send_mail
-        send_mail(subject, message, sender, recipients)
-        return HttpResponseRedirect('/thanks/') # Redirect after POST
-   })  
+#          if not error_message:
+#              return HttpResponseRedirect('mealview')
+#          else:
+#              return render(request, 'feedback.html', {
+#                  'current_date': now,
+#                  'form': form,
+#                  'error': error_message,
+#                  'netid': request.user.username,
+#              })
+#    else:
+#       form = FeedbackForm()
+
+#    return render(request, 'feedback.html', {
+#      'current_date': now,
+#      'form': form,
+#      'error': '',
+#      'netid': request.user.username,
+#    })  
 
 def menu(request):
    return render(request, "menu.html")
@@ -96,6 +113,9 @@ def constitution(request):
 
 def profile(request):
   return render(request, "profile.html")
+
+# def login(request):
+#    return HttpResponse("This is a completely functional CAS login page")
 
 def help(request):
    return HttpResponse("This is under construction!")
