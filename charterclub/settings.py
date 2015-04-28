@@ -72,6 +72,8 @@ CAS_LOGOUT_COMPLETELY = False
 CAS_REDIRECT_URL = 'templates2/hello.html'
 
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
+
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
