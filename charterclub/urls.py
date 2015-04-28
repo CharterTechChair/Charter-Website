@@ -2,8 +2,6 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
-# from django.conf.urls.defaults import *
-from models import *
 
 #Here is a mapping between the pattern in the URL to the function that
 #   generates the page.
@@ -65,10 +63,6 @@ urlpatterns = patterns('',
         r'^feedback$',
         'charterclub.views.feedback',
         name='feedback'),  
-    url(
-        r'^send_email$',
-        'charterclub.views.send_email',
-        name='send_email'),  
     # for CAS
     url(
         r'^accounts/login/$',
@@ -76,10 +70,6 @@ urlpatterns = patterns('',
     url(
         r'^accounts/logout/$',
         'django_cas.views.logout'),
-    # url(r'^cal',
-    #     'charterclub.views.cal',
-    #     name = 'cal'),
-    # (r"^(\d+)/$", "cal"),
 )
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

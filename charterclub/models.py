@@ -1,37 +1,28 @@
 from django.db import models
-from django.contrib.auth.models import User
-from django.contrib import admin
 
+class Person(models.Model):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    picture_path = models.CharField(
+        'Relative path from /static/img/faceboard/',
+        max_length=200, blank=True)
+    
+class Staff(Person):
+    position = models.CharField('Staff\'s position/title', max_length=100)
+    
+class Student(Person):
+    netid = models.CharField('Person\'s Princeton Net ID', max_length=100)
+    year = models.IntegerField('Person\'s Graduation Year')
 
-class Entry(models.Model):
-    title = models.CharField(max_length=40)
-    snippet = models.CharField(max_length=150, blank=True)
-    body = models.TextField(max_length=10000, blank=True)
-    created = models.DateTimeField(auto_now_add=True)
-    date = models.DateField(blank=True)
-    creator = models.ForeignKey(User, blank=True, null=True)
-    remind = models.BooleanField(default=False)
+class Prospective(Student):
+    events_attended = models.IntegerField(
+        'Number of events this prospective has attended')
+    # meals = make another model for meals signups? use date fields?
+    
+class Member(Student):
+    allow_rsvp = models.BooleanField(
+        'Whether or not this member may attend events')
+    house_account = models.DecimalField(max_digits=10, decimal_places=2)
 
-    def __unicode__(self):
-        if self.title:
-            return unicode(self.creator) + u" - " + self.title
-        else:
-            return unicode(self.creator) + u" - " + self.snippet[:40]
-
-    def short(self):
-        if self.snippet:
-            return u"<i>%s</i> - %s" % (self.title, self.snippet)
-        else:
-            return self.title
-    short.allow_tags = True
-
-    class Meta:
-        verbose_name_plural = "entries"
-
-
-### Admin
-
-class EntryAdmin(admin.ModelAdmin):
-    list_display = ["creator", "date", "title", "snippet"]
-    search_fields = ["title", "snippet"]
-    list_filter = ["creator"]
+class Officer(Member):
+    position = models.CharField('Officer\'s position/title', max_length=100)

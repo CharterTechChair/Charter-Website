@@ -81,6 +81,10 @@ DATABASES = {
     }
 }
 
+# recommend heroku settings for databases
+import dj_database_url
+DATABASES['default'] =  dj_database_url.config()
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
@@ -104,5 +108,4 @@ STATIC_ROOT = 'staticfiles'
 
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
 
