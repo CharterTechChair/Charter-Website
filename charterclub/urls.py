@@ -66,10 +66,12 @@ urlpatterns = patterns('',
     # for CAS
     url(
         r'^accounts/login/$',
-        'django_cas.views.login'),
+        'django_cas.views.login',
+        name = 'login'),
     url(
         r'^accounts/logout/$',
-        'django_cas.views.logout'),
+        'django_cas.views.logout',
+        name = 'logout'),
 )
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
