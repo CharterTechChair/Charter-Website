@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
+admin.autodiscover()
 #Here is a mapping between the pattern in the URL to the function that
 #   generates the page.
 urlpatterns = patterns('',
@@ -72,6 +73,10 @@ urlpatterns = patterns('',
         r'^accounts/logout/$',
         'django_cas.views.logout',
         name = 'logout'),
+
+    url(
+        r'^admin$', 
+        include(admin.site.urls)),
 )
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
