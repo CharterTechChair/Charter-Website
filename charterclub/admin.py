@@ -2,6 +2,6 @@ from django.contrib import admin
 from charterclub.models import Person
 
 class PersonAdmin(admin.ModelAdmin):
-    pass
+    fields = ['first_name', 'last_name']
 
 admin.site.register(Person, PersonAdmin)
