@@ -61,42 +61,42 @@ def send_email(request):
         # to get proper validation errors.
         return HttpResponse('Make sure all fields are entered and valid.')
 
-# def feedback(request):
-#    now = datetime.datetime.now().date()
-#    #Generate Meal Form
-#    if request.method == 'POST':
-#      form = FeedbackForm(request.POST)
-#      if form.is_valid():
-#          soph, error_message = createSophomore(request.user.username, form.cleaned_data['first_name'], form.cleaned_data['last_name'])
-#          if error_message:
-#              return render(request, 'feedback.html', {
-#                  'current_date': now,
-#                  'form': form,
-#                  'error': "Error: " + error_message,
-#                  'netid': request.user.username,
-#              })
+def feedback(request):
+   now = datetime.datetime.now().date()
+   #Generate Meal Form
+   if request.method == 'POST':
+     form = FeedbackForm(request.POST)
+     if form.is_valid():
+         soph, error_message = createSophomore(request.user.username, form.cleaned_data['first_name'], form.cleaned_data['last_name'])
+         if error_message:
+             return render(request, 'feedback.html', {
+                 'current_date': now,
+                 'form': form,
+                 'error': "Error: " + error_message,
+                 'netid': request.user.username,
+             })
 
-#          # Once we have ThisSophmore, sign him up for the meal.
-#          error_message = soph.sign_up(form.cleaned_data['date'], form.cleaned_data['lunch_or_dinner'])
+         # Once we have ThisSophmore, sign him up for the meal.
+         error_message = soph.sign_up(form.cleaned_data['date'], form.cleaned_data['lunch_or_dinner'])
 
-#          if not error_message:
-#              return HttpResponseRedirect('mealview')
-#          else:
-#              return render(request, 'feedback.html', {
-#                  'current_date': now,
-#                  'form': form,
-#                  'error': error_message,
-#                  'netid': request.user.username,
-#              })
-#    else:
-#       form = FeedbackForm()
+         if not error_message:
+             return HttpResponseRedirect('mealview')
+         else:
+             return render(request, 'feedback.html', {
+                 'current_date': now,
+                 'form': form,
+                 'error': error_message,
+                 'netid': request.user.username,
+             })
+   else:
+      form = FeedbackForm()
 
-#    return render(request, 'feedback.html', {
-#      'current_date': now,
-#      'form': form,
-#      'error': '',
-#      'netid': request.user.username,
-#    })  
+   return render(request, 'feedback.html', {
+     'current_date': now,
+     'form': form,
+     'error': '',
+     'netid': request.user.username,
+   })  
 
 def menu(request):
    return render(request, "menu.html")
