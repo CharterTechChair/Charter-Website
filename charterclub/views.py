@@ -67,27 +67,18 @@ def feedback(request):
    if request.method == 'POST':
      form = FeedbackForm(request.POST)
      if form.is_valid():
-         soph, error_message = createSophomore(request.user.username, form.cleaned_data['first_name'], form.cleaned_data['last_name'])
-         if error_message:
-             return render(request, 'feedback.html', {
-                 'current_date': now,
-                 'form': form,
-                 'error': "Error: " + error_message,
-                 'netid': request.user.username,
-             })
+        subject = 'Anonymous Feedback'
+        message = form.cleaned_data['anonymous_feedback']
+        sender = 'roryf@princeton.edu'
+        # cc_myself = form.cleaned_data['cc_myself']
 
-         # Once we have ThisSophmore, sign him up for the meal.
-         error_message = soph.sign_up(form.cleaned_data['date'], form.cleaned_data['lunch_or_dinner'])
+        recipients = ['roryf@princeton.edu']
+        # if cc_myself:
+        #     recipients.append(sender)
 
-         if not error_message:
-             return HttpResponseRedirect('mealview')
-         else:
-             return render(request, 'feedback.html', {
-                 'current_date': now,
-                 'form': form,
-                 'error': error_message,
-                 'netid': request.user.username,
-             })
+        from django.core.mail import send_mail
+        send_mail(subject, message, sender, recipients)
+        # return HttpResponseRedirect('/thanks/') # Redirect after POST
    else:
       form = FeedbackForm()
 
@@ -112,9 +103,9 @@ def constitution(request):
    return render(request, "constitution.html")
 
 def profile(request):
+  now = datetime.datetime.now().date()
   return render(request, "profile.html", {
      'current_date': now,
-     'form': form,
      'error': '',
      'netid': request.user.username,
    })
