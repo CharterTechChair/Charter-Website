@@ -112,7 +112,12 @@ def constitution(request):
    return render(request, "constitution.html")
 
 def profile(request):
-  return render(request, "profile.html")
+  return render(request, "profile.html", {
+     'current_date': now,
+     'form': form,
+     'error': '',
+     'netid': request.user.username,
+   })
 
 # def login(request):
 #    return HttpResponse("This is a completely functional CAS login page")
