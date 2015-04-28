@@ -69,6 +69,7 @@ WSGI_APPLICATION = 'charterclub.wsgi.application'
 # CAS settings
 CAS_SERVER_URL = 'https://fed.princeton.edu/cas/'
 CAS_LOGOUT_COMPLETELY = False
+CAS_REDIRECT_URL = 'templates2/hello.html'
 
 
 # Database
