@@ -79,7 +79,7 @@ urlpatterns = patterns('',
         name = 'logout'),
 
     url(
-        r'^admin', 
+        r'^admin/', 
         include(admin.site.urls)),
 )
 
