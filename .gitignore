@@ -1,4 +1,5 @@
 venv
 *.pyc
+charterclub/*.pyc
 staticfiles
 
