@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.contrib import admin
 
 class Person(models.Model):
     first_name = models.CharField(max_length=100)
@@ -26,3 +28,11 @@ class Member(Student):
 
 class Officer(Member):
     position = models.CharField('Officer\'s position/title', max_length=100)
+
+class Event(models.Model):
+    title = models.CharField(max_length=40)
+    snippet = models.CharField(max_length=150, blank=True)
+    date_and_time = models.DateTimeField(blank=True)
+
+class Series(Event):
+    series_id = models.IntegerField('Series ID')

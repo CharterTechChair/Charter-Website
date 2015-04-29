@@ -9,3 +9,4 @@ wsgiref==0.1.2
 requests==2.3.0
 -e ./django-cas/
 python-ldap==2.4.19
+django-crispy-forms==1.4.0

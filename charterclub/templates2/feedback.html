@@ -1,16 +1,14 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 
    <p> Tell us what you like, what you don't like, and anything in between! Don't be afraid to sign your name if you'd like us to respond to your request directly. </p>
    <br>
 
-   <form action="/sophomores/mealsignup" method="post">
-          {% csrf_token %}
-          {{ form.as_p }}
-          <input class="btn btn-default" type="submit" value="Submit" />
-      </form>
+   {% crispy form %}
+
 <p></p>
 
 {% endblock %}

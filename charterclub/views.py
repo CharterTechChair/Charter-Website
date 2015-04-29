@@ -10,6 +10,12 @@ from forms import FeedbackForm
 from os import listdir, path
 from django.core.mail import send_mail, BadHeaderError
 
+import time
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, render_to_response
+
+from models import *
+
 
 def index(request):
    html = "Hello World"
@@ -126,4 +132,3 @@ def help(request):
 
 def underconstruction(request):
    return HttpResponse("This is under construction!")
-
