@@ -86,7 +86,7 @@ header {
     background-attachment:fixed;
     background-position:center center;
     background-size: cover;
-    opacity:0.8;
+    opacity:0.5;
 }
 
 .affix {
@@ -238,7 +238,7 @@ h3.highlight  {
 
 footer {
 	height:50px;
-  	background-color:#dfdfdf;
+  	background-color:rgba(0,0,0,0.5);
   	color:#888;
   	margin-top:20px;
 }
