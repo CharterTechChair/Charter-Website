@@ -36,3 +36,8 @@ class Event(models.Model):
 
 class Series(Event):
     series_id = models.IntegerField('Series ID')
+
+class winetastingRoom(models.Model):
+    room = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
+    guest_name = models.CharField(max_length=100)
