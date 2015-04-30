@@ -102,7 +102,7 @@ def winetasting(request):
     #Generate Winetasting Form
     if request.method == 'POST':
         form = WinetastingForm(request.POST)
-        # if form.is_valid():
+        if form.is_valid():
             # room = winetastingRoom(
             #   room = form.cleaned_data['room'],
             #   name = form.cleaned_data['first_name'] + ' ' + form.cleaned_data['last_name'] ,
@@ -110,11 +110,11 @@ def winetasting(request):
             # room.save()
 
             # print winetastingRoom.objects.all()
-            # return render(request, 'winetasting.html', {
-            #   'current_date': now,
-            #   'form': form,
-            #   'netid': request.user.username,
-            # })
+            return render(request, 'winetasting.html', {
+              'current_date': now,
+              'form': form,
+              'netid': request.user.username,
+            })
     else:
         form = WinetastingForm()
 

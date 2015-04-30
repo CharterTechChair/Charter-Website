@@ -14,7 +14,8 @@ class FeedbackForm(forms.Form):
       required=False)
    helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
 
-ROOMS = [   ("Main Dining Room", "Main Dining Room"),
+
+ROOMS = [("Main Dining Room", "Main Dining Room"),
             ("Great Room", "Great Room"),
             ("Upstairs Dining Room", "Upstairs Dining Room"),
             ("Ferguson-Jacobs Room", "Ferguson-Jacobs Room")]
