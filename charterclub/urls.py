@@ -63,7 +63,11 @@ urlpatterns = patterns('',
     url(
         r'^feedback$',
         'charterclub.views.feedback',
-        name='feedback'),  
+        name='feedback'), 
+    url(
+        r'^winetasting$',
+        'charterclub.views.winetasting',
+        name='winetasting'),  
     # for CAS
     url(
         r'^accounts/login/$',

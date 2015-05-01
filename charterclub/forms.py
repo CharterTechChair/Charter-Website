@@ -13,3 +13,11 @@ class FeedbackForm(forms.Form):
       label="Anonymous Feedback",
       required=False)
    helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
+
+class WinetastingForm(forms.Form):
+   helper2 = FormHelper()
+   first_name = forms.CharField(max_length = 100)
+   last_name = forms.CharField(max_length = 100)
+   has_guest = forms.BooleanField(required = False)
+   guest_first_name = forms.CharField(max_length = 100, required = False)
+   guest_last_name = forms.CharField(max_length = 100, required = False)
