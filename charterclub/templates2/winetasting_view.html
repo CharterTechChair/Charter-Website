@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+   <div class="col-xs-12">
+
+      <h2> See where your friends are sitting</h2>
+      <br>
+
+      {% for room in room_list %}
+          <h3> {{room.name }} ({{room.total}}/{{room.max_capacity}})</h3>
+        
+          <div class="col-xs-12">
+              <div class="col-xs-5 col-centered"> <h4> Member </h4> </div>
+              <div class="col-xs-5 col-centered">  <h4> Guest</h4> </div>
+          </div>
+          {% for member,guest in room.people %}
+          <div class="col-xs-12">
+              <div class="col-xs-5 col-centered"> {{ member }} </div>
+              <div class="col-xs-5 col-centered"> {{ guest}} </div>
+          </div>
+          {% endfor %}
+      {% endfor %}
+   </div>
+
+<p></p>
+
+{% endblock %}
