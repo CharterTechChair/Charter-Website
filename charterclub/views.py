@@ -5,7 +5,7 @@ from django.template import RequestContext
 from django.template.loader import get_template
 from django.conf import settings
 import datetime
-from forms import FeedbackForm, WinetastingForm
+from forms import FeedbackForm
 # import configuration
 from os import listdir, path
 from django.core.mail import send_mail, BadHeaderError
@@ -94,36 +94,6 @@ def feedback(request):
      'error': '',
      'netid': request.user.username,
    })  
-
-
-def winetasting(request):
-    now = datetime.datetime.now().date()
-
-    #Generate Winetasting Form
-    if request.method == 'POST':
-        form = WinetastingForm(request.POST)
-        if form.is_valid():
-            # room = winetastingRoom(
-            #   room = form.cleaned_data['room'],
-            #   name = form.cleaned_data['first_name'] + ' ' + form.cleaned_data['last_name'] ,
-            #   guest_name = form.cleaned_data['guest_first_name'] + ' ' + form.cleaned_data['guest_last_name'])
-            # room.save()
-
-            # print winetastingRoom.objects.all()
-            return render(request, 'winetasting.html', {
-              'current_date': now,
-              'form': form,
-              'netid': request.user.username,
-            })
-    else:
-        form = WinetastingForm()
-
-    return render(request, 'winetasting.html', {
-        'current_date': now,
-        'form': form,
-        'error': '',
-        'netid': request.user.username,
-    })
 
 def menu(request):
    return render(request, "menu.html")
