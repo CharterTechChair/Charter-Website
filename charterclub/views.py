@@ -9,6 +9,7 @@ from forms import *
 # import configuration
 from os import listdir, path
 from django.core.mail import send_mail, BadHeaderError
+from django.utils import timezone
 
 import time
 from django.contrib.auth.decorators import login_required
@@ -99,8 +100,35 @@ def winetasting(request):
    now = datetime.datetime.now().date()
    #Generate Meal Form
    if request.method == 'POST':
-     form = WinetastingForm(request.POST)
-     # if form.is_valid():
+    form = WinetastingForm(request.POST)
+    if form.is_valid():
+      first = form.cleaned_data['first_name']
+      last = form.cleaned_data['last_name']
+      has_guest = form.cleaned_data['has_guest']
+      gfirst = form.cleaned_data['guest_first_name']
+      glast = form.cleaned_data['guest_last_name']
+      room_choice = form.cleaned_data['room']
+
+      m = Member(netid=request.user.username, year=2015, first_name=first, last_name=last, house_account=0.0)
+      m.save()
+      if has_guest:
+        g = Guest(first_name=gfirst, last_name=glast, member_association=m)
+        g.save()
+
+      event = Event(title='Winetasting', snippet='Get Ready for Wine-Tazing' , date_and_time=timezone.now())
+      event.save()
+
+      room = Room(name=room_choice, max_capacity=15)
+      room.save()
+
+      room.members.add(m)
+      room.guests.add(g)
+      room.save()
+
+      event.rooms.add(room)
+      event.save()
+
+      return HttpResponseRedirect('thanks')
 
    else:
       form = WinetastingForm()

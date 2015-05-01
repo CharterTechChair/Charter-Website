@@ -14,11 +14,15 @@ class FeedbackForm(forms.Form):
       required=False)
    helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
 
+ROOMS = [("UDR", "UDR"), ("Great Room", "Great Room"), ("MDR", "MDR"), ("FJ", "FJ")]
 class WinetastingForm(forms.Form):
-   helper2 = FormHelper()
+   helper = FormHelper()
+
    first_name = forms.CharField(max_length = 100)
    last_name = forms.CharField(max_length = 100)
    has_guest = forms.BooleanField(required = False)
    guest_first_name = forms.CharField(max_length = 100, required = False)
    guest_last_name = forms.CharField(max_length = 100, required = False)
-   helper2.add_input(Submit('submit', 'submit', css_class='btn-primary'))
+   room   = forms.ChoiceField(widget = forms.Select, choices = ROOMS)
+   
+   helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
