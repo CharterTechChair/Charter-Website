@@ -21,3 +21,4 @@ class WinetastingForm(forms.Form):
    has_guest = forms.BooleanField(required = False)
    guest_first_name = forms.CharField(max_length = 100, required = False)
    guest_last_name = forms.CharField(max_length = 100, required = False)
+   helper2.add_input(Submit('submit', 'submit', css_class='btn-primary'))

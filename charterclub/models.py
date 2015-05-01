@@ -21,6 +21,9 @@ class Prospective(Student):
         'Number of events this prospective has attended')
     # meals = make another model for meals signups? use date fields?
     
+class Guest(Student):
+    member_association = models.ForeignKey('Member')
+
 class Member(Student):
     allow_rsvp = models.BooleanField(
         'Whether or not this member may attend events', default=True)
@@ -34,5 +37,8 @@ class Event(models.Model):
     snippet = models.CharField(max_length=150, blank=True)
     date_and_time = models.DateTimeField(blank=True)
 
-class Series(Event):
-    series_id = models.IntegerField('Series ID')
+class Room(Event)
+    name = models.CharField(max_length=40)
+    max_capacity = models.IntegerField(
+        'Max capacity for that room for a specific event')
+    people = models.CharField(max_length=10000)
