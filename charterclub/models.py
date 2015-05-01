@@ -28,8 +28,10 @@ class Prospective(Student):
         'Number of events this prospective has attended')
     # meals = make another model for meals signups? use date fields?
     
-class Guest(Student):
+class Guest(Person):
     member_association = models.ForeignKey('Member')
+
+
 
 class Member(Student):
     allow_rsvp = models.BooleanField(
@@ -52,12 +54,44 @@ class Room(models.Model):
     def __unicode__(self):
         return self.name
 
+    def to_JSON(self):
+        data = {}
+        data['name'] = self.name
+        data['max_capacity'] = self.max_capacity
+
+        data['people'] = []
+        data['total'] = 0
+
+        for m in self.members.all():
+            lookup = self.guests.filter(member_association=m)
+
+            if lookup: 
+                data['people'].append((m, lookup[0]))
+                data['total'] += 2
+            else:
+                data['people'].append((m, ))
+                data['total'] += 1
+        return data
+
     class Meta:
         ordering = ("name",)
+
 class Event(models.Model):
     title = models.CharField(max_length=40)
     snippet = models.CharField(max_length=150, blank=True)
     date_and_time = models.DateTimeField(blank=True)
 
     rooms = models.ManyToManyField(Room)
+
+    def to_JSON(self):
+        data = {}
+        data['title'] = self.title
+        data['snippet'] = self.snippet
+        data['date_and_time'] = self.date_and_time
+        data['rooms'] = []
+
+        for r in self.rooms.all():
+            data['rooms'].append(r.to_JSON())
+
+        return data
 

@@ -113,6 +113,19 @@ def winetasting(request):
    })  
 
 
+def winetasting_view(request):
+   now = datetime.datetime.now().date()
+
+   wt_obj = Event.objects.filter(title='Winetasting')[0]
+
+   return render(request, 'winetasting_view.html', {
+     'current_date': now,
+     'error': '',
+     'netid': 'quanzhou',
+     'room_list' : wt_obj.to_JSON()['rooms'],
+   })  
+
+
 def menu(request):
    return render(request, "menu.html")
    # return HttpResponse("This is a completely functional menu")

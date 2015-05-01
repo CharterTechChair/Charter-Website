@@ -68,6 +68,10 @@ urlpatterns = patterns('',
         r'^winetasting$',
         'charterclub.views.winetasting',
         name='winetasting'),  
+
+    url(r'^winetasting_view$', 
+        'charterclub.views.winetasting_view', 
+        name='winetasting_view'),
     # for CAS
     url(
         r'^accounts/login/$',
