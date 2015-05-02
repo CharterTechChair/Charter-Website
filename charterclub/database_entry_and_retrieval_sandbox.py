@@ -46,4 +46,4 @@ for r in search.rooms.all():
 
 
 # --- Some lookup things---
-quan = Member.objects.filter(netid='quanzhou')[0]
+person = Member.objects.filter(netid='quanzhou')
