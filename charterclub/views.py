@@ -102,23 +102,28 @@ def winetasting(request):
    if request.method == 'POST':
     form = WinetastingForm(request.POST)
     if form.is_valid():
-      first = form.cleaned_data['first_name']
-      last = form.cleaned_data['last_name']
-      has_guest = form.cleaned_data['has_guest']
-      gfirst = form.cleaned_data['guest_first_name']
-      glast = form.cleaned_data['guest_last_name']
-      room_choice = form.cleaned_data['room']
-
-      m = Member(netid=request.user.username, year=2015, first_name=first, last_name=last, house_account=0.0)
+      data =  form.cleaned_data
+      
+      # Generate the Member object
+      m = Member(netid=request.user.username,  
+                 year=2015,                    
+                 first_name=data['first_name'],
+                 last_name=data['last_name'],  
+                 house_account=0.0)
       m.save()
-      if has_guest:
-        g = Guest(first_name=gfirst, last_name=glast, member_association=m)
-        g.save()
 
+      # Generate the Guest object, if there exists one
+      if data['has_guest']:
+          g = Guest(first_name=data['guest_first_name'], 
+                    last_name =data['guest_last_name'],
+                    member_association=m)
+          g.save()
+
+      # Save the members
       event = Event(title='Winetasting', snippet='Get Ready for Wine-Tazing' , date_and_time=timezone.now())
       event.save()
 
-      room = Room(name=room_choice, max_capacity=15)
+      room = Room(name=data['room_choice'], max_capacity=15)
       room.save()
 
       room.members.add(m)
