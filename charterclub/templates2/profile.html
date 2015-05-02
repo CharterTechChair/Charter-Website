@@ -62,12 +62,18 @@
 </nav><!-- /.navbar -->
 
 
+<div id="outer-background-container" data-default-background-img="{{STATIC_URL}}img/oldcharter.jpg" style="background-image:url({{STATIC_URL}}img/oldcharter.jpg);"></div>
+  
+
+<div class="background-image-overlay"></div>
+
+
 <!-- Begin Body -->
 <div class="container">
    <div class="no-gutter row">
             <!-- left side column -->
          <div class="col-md-2">
-               <div class="panel panel-default" id="sidebar">
+               <div class="panel panel-default panel-transparent" id="sidebar">
                 <div class="panel-heading" style="background-color:#888;color:#fff;">Some useful places</div> 
                 <div class="panel-body">
                 <div class="accordion" id="accordion2">
@@ -147,11 +153,11 @@
             
           <!--mid column-->
           <div class="col-md-3">
-              <div class="panel" id="midCol">
+              <div class="panel panel-transparent" id="midCol">
                 <div class="panel-heading" style="background-color:#555;color:#eee;">Quick Links</div> 
                 <div class="panel-body">
 
-                    <div class="well">
+                    <div class="panel panel-transparent">
                           <!-- <img src="http://s.bootply.com/assets/example/bg_iphone.png" class="img-responsive"> -->
                           <h3>Winetasting</h3>
                           <p>
@@ -159,19 +165,11 @@
                           </p>
                     </div>
 
-                    <div class="well">
+                    <div class="panel panel-transparent">
                           <!-- <img src="http://s.bootply.com/assets/example/bg_iphone.png" class="img-responsive"> -->
-                          <h3>Formals</h3>
+                          <h4>House account balance</h4>
                           <p>
-                          You RSVP'd for the [ROOM] at [TIME]!
-                          </p>
-                    </div>
-
-                    <div class="well">
-                          <!-- <img src="http://s.bootply.com/assets/example/bg_iphone.png" class="img-responsive"> -->
-                          <h3>House account balance</h3>
-                          <p>
-                          $85.00 as of [DATE]
+                          ${{ member.house_account }}
                           </p>
                     </div>
                   
@@ -182,8 +180,8 @@
 
             <!-- right content column-->
           <div class="col-md-7" id="content">
-                <div class="panel">
-                  <div class="panel-heading" style="background-color:#111;color:#fff;">Welcome, {{ netid }}!</div>   
+                <div class="panel panel-transparent">
+                  <div class="panel-heading" style="background-color:#111;color:#fff;">Welcome, {{ member.first_name }}!</div>   
                 <div class="panel-body">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam posuere mi eu ipsum lobortis porttitor. Pellentesque a auctor nunc. Integer imperdiet egestas enim, vel ultricies erat congue id. Integer placerat elit mollis euismod luctus. Etiam accumsan est id vulputate accumsan. Nullam dictum faucibus elementum. Morbi sollicitudin ullamcorper ex, vitae fringilla metus bibendum id. Sed vitae venenatis quam. Maecenas consequat odio est, eget ultrices augue faucibus id.
                 </div>

@@ -177,9 +177,19 @@ def thanks(request):
 
 def profile(request):
   now = datetime.datetime.now().date()
+
+  # m = Member.objects.filter(netid=request.user.username)
+  m = Member.objects.filter(netid='roryf')[0]
+  # house_account = m.house_account
+  # officer = m.position
+  # year = m.year
+
+  print m.first_name
+
   return render(request, "profile.html", {
      'current_date': now,
      'error': '',
+     'member': m,
      'netid': request.user.username,
   })
 
