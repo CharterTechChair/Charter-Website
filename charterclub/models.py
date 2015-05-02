@@ -58,21 +58,33 @@ class Room(models.Model):
         data = {}
         data['name'] = self.name
         data['max_capacity'] = self.max_capacity
+        data['people'] = self.get_people()
+        data['total'] = self.get_num_of_people()
 
-        data['people'] = []
-        data['total'] = 0
+        return data
 
+    def get_people(self):
+        ans = []
         for m in self.members.all():
             lookup = self.guests.filter(member_association=m)
 
             if lookup: 
-                data['people'].append((m, lookup[0]))
-                data['total'] += 2
+                ans.append((m, lookup[0]))
             else:
-                data['people'].append((m, ))
-                data['total'] += 1
-        return data
+                ans.append((m, ))
+        return ans
 
+    def get_num_of_people(self):
+        ans = 0
+        for m in self.members.all():
+            lookup = self.guests.filter(member_association=m)
+
+            if lookup: 
+                ans += 2
+            else:
+                ans += 1
+        return ans
+    
     class Meta:
         ordering = ("name",)
 
