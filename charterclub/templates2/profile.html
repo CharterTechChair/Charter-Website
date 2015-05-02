@@ -156,17 +156,18 @@
               <div class="panel panel-transparent" id="midCol">
                 <div class="panel-heading" style="background-color:#555;color:#eee;">Quick Links</div> 
                 <div class="panel-body">
-
+                
+                  {% for event,room in events %}
                     <div class="panel panel-transparent">
-                          <!-- <img src="http://s.bootply.com/assets/example/bg_iphone.png" class="img-responsive"> -->
-                          <h3>Winetasting</h3>
-                          <p>
-                          You RSVP'd for the [ROOM]!
-                          </p>
+                            <h3> {{ event }} </h3>
+                            <p>
+                            You RSVP'd for the {{ room }}!
+                            </p>
                     </div>
 
+                  {% endfor %}
+                    
                     <div class="panel panel-transparent">
-                          <!-- <img src="http://s.bootply.com/assets/example/bg_iphone.png" class="img-responsive"> -->
                           <h4>House account balance</h4>
                           <p>
                           ${{ member.house_account }}

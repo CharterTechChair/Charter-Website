@@ -38,7 +38,21 @@ class Member(Student):
         'Whether or not this member may attend events', default=True)
     house_account = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
 
-    
+    def get_events(self):
+        ans = []
+        print self
+
+        for e in Event.objects.all():
+            print e
+            for r in e.rooms.all():
+                for member in r.get_people():
+                    if member[0] == self:
+                        ans.append((e, r))
+                    if len(member) > 1:
+                        if member[1] == self:
+                            ans.append((e, r))
+        return ans
+
 
 class Officer(Member):
     position = models.CharField('Officer\'s position/title', max_length=100)
