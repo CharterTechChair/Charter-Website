@@ -98,11 +98,12 @@ def feedback(request):
 
 def winetasting(request):
    now = datetime.datetime.now().date()
-   #Generate Meal Form
+   #Check if Form is valid. If so, then do submission
    if request.method == 'POST':
-    form = WinetastingForm(request.POST)
+    form = EventEntryForm(request.POST)
     if form.is_valid():
       data =  form.cleaned_data
+      
       
       # Generate the Member object
       m = Member(netid=request.user.username,  
@@ -136,7 +137,7 @@ def winetasting(request):
       return HttpResponseRedirect('thanks')
 
    else:
-      form = WinetastingForm()
+      form = EventEntryForm()
 
    return render(request, 'feedback.html', {
      'current_date': now,

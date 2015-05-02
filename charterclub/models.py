@@ -46,6 +46,7 @@ class Officer(Member):
 # -- Models for Events ---
 class Room(models.Model):
     name = models.CharField(max_length=40)
+
     max_capacity = models.IntegerField(
         'Max capacity for that room for a specific event')
     members = models.ManyToManyField(Member)
@@ -106,4 +107,7 @@ class Event(models.Model):
             data['rooms'].append(r.to_JSON())
 
         return data
+
+    def __unicode__(self):
+        return "%s, %s" % (self.title, self.date_and_time.isoformat()[:10])
 
