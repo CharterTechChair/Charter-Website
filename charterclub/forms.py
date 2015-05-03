@@ -25,10 +25,8 @@ class FeedbackForm(forms.Form):
 
 class EventEntryForm(forms.Form):
     # Events that are available
-    startdate = date.today() - timedelta(days=1)
-    enddate = startdate + timedelta(weeks=52)
-    elist = Event.objects.filter(date_and_time__range=[startdate, enddate])
-    event = forms.ModelChoiceField(queryset=elist)
+    # event = forms.ModelChoiceField(queryset=Event.get_future_events())
+    event = Event.objects.filter(title='Winetasting')[0]
     
     
     # Questios
@@ -37,7 +35,7 @@ class EventEntryForm(forms.Form):
     has_guest = forms.BooleanField(required = False)
     guest_first_name = forms.CharField(max_length = 100, required = False)
     guest_last_name = forms.CharField(max_length = 100, required = False)
-    room_choice   = forms.ChoiceField(widget = forms.Select, choices = ROOMS)
+    room_choice     = forms.ModelChoiceField(widget = forms.Select, queryset = event.rooms.all())
     
     # Submit buttons
     helper = FormHelper()   
@@ -54,10 +52,3 @@ class EventEntryForm(forms.Form):
         if (room.get_num_of_people() + add_people > room.max_capacity):
             raise forms.ValidationError("Sorry! This room is beyond capacity")
         return room_choice_s
-
-
-
-
-
-
-

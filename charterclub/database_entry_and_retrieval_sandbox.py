@@ -1,5 +1,6 @@
 from charterclub.models import *
 from django.utils import timezone
+from datetime import timedelta
 
 m1 = Member(netid='quanzhou', year=2015, first_name='Quan', last_name='Zhou', house_account=0.0)
 m2 = Member(netid='roryf'   , year=2016, first_name='Rory', last_name='Fitzpatrick', house_account=0.0)
@@ -47,3 +48,37 @@ for r in search.rooms.all():
 
 # --- Some lookup things---
 person = Member.objects.filter(netid='quanzhou')
+
+
+####################
+from charterclub.models import *
+from datetime import timedelta
+
+e = Event(title='Winetasting',
+         snippet='Get Ready for Wine-Tazing' ,
+         date_and_time=timezone.now(),
+         end_time=timezone.now() + timedelta(days=1),
+         sophomore_signup_start=timezone.now(),
+         junior_signup_start   =timezone.now(),
+         senior_signup_start   =timezone.now(),
+         )
+e.save()
+
+room = Room(name='UDR', max_capacity=15)
+e.rooms.add(room)
+room.save()
+e.save()
+
+
+
+#####
+from charterclub.models import *
+e = Event.objects.all()[0]
+m = Member.objects.all()[0]
+m2 = Member.objects.all()[1]
+g = Guest.objects.all()[0]
+r = Room.objects.all()[0]
+
+
+e.add_to_event(m,g,r)
+

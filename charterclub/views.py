@@ -97,54 +97,52 @@ def feedback(request):
    })  
 
 def winetasting(request):
-   now = datetime.datetime.now().date()
-   #Check if Form is valid. If so, then do submission
-   if request.method == 'POST':
-    form = EventEntryForm(request.POST)
-    if form.is_valid():
-      data =  form.cleaned_data
-      
-      
-      # Generate the Member object
-      m = Member(netid=request.user.username,  
-                 year=2015,                    
-                 first_name=data['first_name'],
-                 last_name=data['last_name'],  
-                 house_account=0.0)
-      m.save()
+    now = datetime.datetime.now().date()
+    event = Event.objects.filter(title='Winetasting')[0]
 
-      # Generate the Guest object, if there exists one
-      if data['has_guest']:
-          g = Guest(first_name=data['guest_first_name'], 
-                    last_name =data['guest_last_name'],
-                    member_association=m)
-          g.save()
+    # request['netid'] = 'quanzhou'
+    # member = Member.objects.filter(netid=request.netid)
 
-      # Save the members
-      event = Event(title='Winetasting', snippet='Get Ready for Wine-Tazing' , date_and_time=timezone.now())
-      event.save()
 
-      room = Room(name=data['room_choice'], max_capacity=15)
-      room.save()
+    #Check if Form is valid. If so, then do submission
+    if request.method == 'POST':
+        form = EventEntryForm(request.POST)
 
-      room.members.add(m)
-      room.guests.add(g)
-      room.save()
+        if form.is_valid():
+            data =  form.cleaned_data   # Also validates the number of people in a room
+            lookup_m =  Member.objects.filter(first_name=data['first_name'],
+                                             last_name =data['last_name'])
+            if not lookup_m:
+                raise Exception('Error: Member with netid "%s" not found in member database' % request['netid']) 
+            member = lookup_m[0]
+            # If there's a guest, either find the guest or make one
+            if data['has_guest']:
+               lookup_g =  Guest.objects.filter(first_name=data['guest_first_name'],
+                                                last_name =data['guest_last_name'])
+               # Try to find the guest - else, look them up
+               if lookup_g:
+                  guest = lookup_g[0]
+               else:
+                   guest = Guest(first_name=data['guest_first_name'], 
+                             last_name =data['guest_last_name'],
+                             member_association=member)
+                   guest.save()
+            else:
+                guest = None
 
-      event.rooms.add(room)
-      event.save()
+            # Now try to add a person 
+            event.add_to_event(member, guest, form.cleaned_data['room_choice'])
 
-      return HttpResponseRedirect('thanks')
+        return HttpResponseRedirect('thanks')
+    else:
+        form = EventEntryForm()
 
-   else:
-      form = EventEntryForm()
-
-   return render(request, 'feedback.html', {
-     'current_date': now,
-     'form': form,
-     'error': '',
-     'netid': request.user.username,
-   })  
+    return render(request, 'feedback.html', {
+        'current_date': now,
+        'form': form,
+        'error': '',
+        'netid': request.user.username,
+    })  
 
 
 def winetasting_view(request):
