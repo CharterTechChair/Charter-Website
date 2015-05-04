@@ -65,13 +65,21 @@ urlpatterns = patterns('',
         'charterclub.views.feedback',
         name='feedback'), 
     url(
-        r'^winetasting$',
-        'charterclub.views.winetasting',
-        name='winetasting'),  
-
-    url(r'^winetasting_view$', 
-        'charterclub.views.winetasting_view', 
-        name='winetasting_view'),
+        r'^events$',
+        'charterclub.views.events',
+        name='events'),  
+    url(
+        r'^events_view$', 
+        'charterclub.views.events_view', 
+        name='events_view'),
+    url(
+        r'^events_create$', 
+        'charterclub.views.events_create', 
+        name='events_create'),
+    url(
+        r'^events_list$', 
+        'charterclub.views.events_list', 
+        name='events_list'),
     # for CAS
     url(
         r'^accounts/login/$',

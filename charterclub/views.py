@@ -70,7 +70,7 @@ def send_email(request):
 
 def feedback(request):
    now = datetime.datetime.now().date()
-   #Generate Meal Form
+   #Generate Feedback Form
    if request.method == 'POST':
      form = FeedbackForm(request.POST)
      if form.is_valid():
@@ -96,7 +96,7 @@ def feedback(request):
      'netid': request.user.username,
    })  
 
-def winetasting(request):
+def events(request):
     now = datetime.datetime.now().date()
     event = Event.objects.filter(title='Winetasting')[0]
 
@@ -137,7 +137,7 @@ def winetasting(request):
     else:
         form = EventEntryForm()
 
-    return render(request, 'feedback.html', {
+    return render(request, 'events.html', {
         'current_date': now,
         'form': form,
         'error': '',
@@ -145,18 +145,50 @@ def winetasting(request):
     })  
 
 
-def winetasting_view(request):
+def events_view(request):
    now = datetime.datetime.now().date()
 
    wt_obj = Event.objects.filter(title='Winetasting')[0]
 
-   return render(request, 'winetasting_view.html', {
+   return render(request, 'events_view.html', {
      'current_date': now,
      'error': '',
      'netid': 'quanzhou',
      'room_list' : wt_obj.to_JSON()['rooms'],
    })  
 
+def events_create(request):
+   # NEED TO ACTUALLY CREATE THE EVENT
+
+   now = datetime.datetime.now().date()
+   #Generate Event Form
+   if request.method == 'POST':
+     form = EventCreateForm(request.POST)
+     if form.is_valid():
+        
+        return HttpResponseRedirect('thanks') # Redirect after POST
+   else:
+      form = EventCreateForm()
+
+   return render(request, 'events_create.html', {
+     'current_date': now,
+     'form': form,
+     'error': '',
+     'netid': 'roryf',
+     # 'netid': request.user.username,
+   })  
+
+def events_list(request):
+   now = datetime.datetime.now().date()
+
+   ev = Event.objects.all()
+
+   return render(request, 'events_list.html', {
+     'current_date': now,
+     'error': '',
+     'netid': 'quanzhou',
+     'events_list': ev ,
+   })  
 
 def menu(request):
    return render(request, "menu.html")

@@ -11,7 +11,12 @@ from charterclub.models import Event
 from datetime import date, timedelta
 
 
-ROOMS = [("UDR", "UDR"), ("Great Room", "Great Room"), ("MDR", "MDR"), ("FJ", "FJ")]
+ROOMS = [ ("UDR", "UDR"), 
+        ("Great Room", "Great Room"), 
+        ("MDR", "MDR"),
+        ("FJ", "FJ"),
+        ("Stewart", "Stewart"),
+        ("Library", "Library") ]
 
 class FeedbackForm(forms.Form):
    helper = FormHelper()
@@ -21,7 +26,21 @@ class FeedbackForm(forms.Form):
       required=False)
    helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
 
+class EventCreateForm(forms.Form):
+    title = forms.CharField(max_length = 40)
+    snippet = forms.CharField(max_length = 150, required = False)
+    date_and_time = forms.DateTimeField()
+    end_time = forms.DateTimeField(required = False)
 
+    sophomore_signup_start = forms.DateTimeField()
+    junior_signup_start    = forms.DateTimeField()
+    senior_signup_start    = forms.DateTimeField()
+
+    rooms = forms.MultipleChoiceField(widget = forms.CheckboxSelectMultiple, choices = ROOMS)
+
+    # Submit buttons
+    helper = FormHelper()   
+    helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
 
 class EventEntryForm(forms.Form):
     # Events that are available
