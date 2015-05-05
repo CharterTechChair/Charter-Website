@@ -161,8 +161,6 @@ class Room(models.Model):
             if guest:
                 self.guests.remove(guest)
 
-
-
     def get_guest_of_member(self, member):
         lookup = self.guests.filter(member_association=member)
         if not lookup:
