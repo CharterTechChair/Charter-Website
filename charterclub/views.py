@@ -98,7 +98,7 @@ def feedback(request):
 
 def events(request):
     now = datetime.datetime.now().date()
-    event = Event.objects.filter(title='Winetasting')[0]
+    event = Event.objects.filter(title='Formals')[0]
 
     # request['netid'] = 'quanzhou'
     # member = Member.objects.filter(netid=request.netid)
@@ -148,7 +148,7 @@ def events(request):
 def events_view(request):
    now = datetime.datetime.now().date()
 
-   wt_obj = Event.objects.filter(title='Winetasting')[0]
+   wt_obj = Event.objects.filter(title='Formals')[0]
 
    return render(request, 'events_view.html', {
      'current_date': now,
@@ -165,8 +165,28 @@ def events_create(request):
    if request.method == 'POST':
      form = EventCreateForm(request.POST)
      if form.is_valid():
-        
-        return HttpResponseRedirect('thanks') # Redirect after POST
+        data = form.cleaned_data
+        title = data['title']
+        snippet = data['snippet']
+        date_and_time = data['date_and_time']
+        soph = data['sophomore_signup_start']
+        jr = data['junior_signup_start']
+        sr = data['senior_signup_start']
+        rooms = data['rooms']
+
+        event = Event(title=title, snippet=snippet , date_and_time=date_and_time,
+          sophomore_signup_start=soph, junior_signup_start=jr, senior_signup_start=sr,
+          end_time=now)
+        event.save()
+
+        for r in rooms:
+          room = Room(name=r, max_capacity=15)
+          room.save()
+          event.rooms.add(room)
+          event.save()
+
+
+        return HttpResponseRedirect('thanks_create') # Redirect after POST
    else:
       form = EventCreateForm()
 
@@ -206,6 +226,22 @@ def constitution(request):
 def thanks(request):
   now = datetime.datetime.now().date()
   return render(request, "thanks.html", {
+     'current_date': now,
+     'error': '',
+     'netid': request.user.username,
+  })
+
+def thanks_create(request):
+  now = datetime.datetime.now().date()
+  return render(request, "thanks_create.html", {
+     'current_date': now,
+     'error': '',
+     'netid': request.user.username,
+  })
+
+def hello(request):
+  now = datetime.datetime.now().date()
+  return render(request, "hello.html", {
      'current_date': now,
      'error': '',
      'netid': request.user.username,

@@ -2,7 +2,7 @@ from django import forms
 from django.forms.extras.widgets import SelectDateWidget
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, Field
+from crispy_forms.layout import Submit, Layout, Fieldset
 from crispy_forms.bootstrap import (
     PrependedText, PrependedAppendedText, FormActions)
 
@@ -29,23 +29,26 @@ class FeedbackForm(forms.Form):
 class EventCreateForm(forms.Form):
     title = forms.CharField(max_length = 40)
     snippet = forms.CharField(max_length = 150, required = False)
-    date_and_time = forms.DateTimeField()
-    end_time = forms.DateTimeField(required = False)
-
-    sophomore_signup_start = forms.DateTimeField()
-    junior_signup_start    = forms.DateTimeField()
-    senior_signup_start    = forms.DateTimeField()
+    date_and_time = forms.DateTimeField(
+                        help_text="Enter date and time in the form '2006-10-25 14:30'")
+    # end_time = forms.DateTimeField(required = False)
+    sophomore_signup_start = forms.DateTimeField(
+                        help_text="Enter date and time in the form '2006-10-25 14:30'")
+    junior_signup_start    = forms.DateTimeField(
+                        help_text="Enter date and time in the form '2006-10-25 14:30'")
+    senior_signup_start    = forms.DateTimeField(
+                        help_text="Enter date and time in the form '2006-10-25 14:30'")
 
     rooms = forms.MultipleChoiceField(widget = forms.CheckboxSelectMultiple, choices = ROOMS)
 
     # Submit buttons
     helper = FormHelper()   
-    helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
+    helper.add_input(Submit('add', 'submit', css_class='btn-primary'))
 
 class EventEntryForm(forms.Form):
     # Events that are available
     # event = forms.ModelChoiceField(queryset=Event.get_future_events())
-    event = Event.objects.filter(title='Winetasting')[0]
+    event = Event.objects.filter(title='Formals')[0]
     
     
     # Questios
