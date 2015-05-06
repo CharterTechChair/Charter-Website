@@ -3,6 +3,17 @@
 
 {% block content %}
 
-<iframe src="{{STATIC_URL}}img/menu.png" style="border: 0" width="800" height="800" frameborder="0" scrolling="no"></iframe>
+   <div class="panel panel-transparent">
+      {% for menuitem in menu_list %}
+         <div class="col-xs-6 col-centered"> 
+            <hr>
+            <h4> {{ menuitem.day }} {{menuitem.meal}}</h4>
+            <hr>
+            {{ menuitem.food|safe }} 
+            <br>
+         </div>
+      {% endfor %}
+  </div>
 
 {% endblock %}
+

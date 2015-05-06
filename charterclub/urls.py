@@ -33,6 +33,10 @@ urlpatterns = patterns('',
         'charterclub.views.menu',
         name='menu'),
     url(
+        r'^menu_input$',
+        'charterclub.views.menu_input',
+        name='menu_input'),
+    url(
         r'^profile$',
         'charterclub.views.profile',
         name='profile'),

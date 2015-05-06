@@ -85,4 +85,23 @@ class AddSocialEventForm(forms.Form):
 
     # Submit buttons
     helper = FormHelper()   
-    helper.add_input(Submit('add', 'submit', css_class='btn-primary'))
+    helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
+
+DAYS = [("Monday", "Monday"),
+        ("Tuesday", "Tuesday"),
+        ("Wednesday", "Wednesday"),
+        ("Thursday", "Thursday"),
+        ("Friday", "Friday"),
+        ("Saturday", "Saturday"),
+        ("Sunday", "Sunday")]
+MEALS = [("Lunch", "Lunch"), ("Dinner", "Dinner")]
+class MenuForm(forms.Form):
+    day = forms.ChoiceField(widget=forms.Select, choices=DAYS)
+    meal = forms.ChoiceField(widget=forms.Select, choices=MEALS)
+    date = forms.DateField(widget=forms.DateInput,
+                        help_text="Enter date in the form '10/25/2006'")
+    food = forms.CharField(max_length=None)
+
+    # Submit buttons
+    helper = FormHelper()   
+    helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))

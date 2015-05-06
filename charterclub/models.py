@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import admin
+from django import forms
 
 class Person(models.Model):
     first_name = models.CharField(max_length=100)
@@ -258,5 +259,19 @@ class SocialEvent(models.Model):
     # Some times
     date_and_time = models.DateTimeField(blank=True)
     end_time = models.DateTimeField(blank=True)
+
+DAYS = [("Monday", "Monday"),
+        ("Tuesday", "Tuesday"),
+        ("Wednesday", "Wednesday"),
+        ("Thursday", "Thursday"),
+        ("Friday", "Friday"),
+        ("Saturday", "Saturday"),
+        ("Sunday", "Sunday")]
+MEALS = [("Lunch", "Lunch"), ("Dinner", "Dinner")]
+class MenuItem(models.Model):
+    day = models.CharField(choices=DAYS, max_length=10)
+    meal = models.CharField(choices=MEALS, max_length=10)
+    date = models.DateField()
+    food = models.CharField(max_length=1000)
 
 

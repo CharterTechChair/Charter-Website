@@ -245,9 +245,47 @@ def socialevent_create(request):
      # 'netid': request.user.username,
    })  
 
+def menu_input(request):
+   now = datetime.datetime.now().date()
+   #Generate Event Form
+   if request.method == 'POST':
+     form = MenuForm(request.POST)
+     if form.is_valid():
+        data = form.cleaned_data
+
+        menuitem = MenuItem(day=data['day'], meal=data['meal'], 
+          date=data['date'], food=data['food'])
+        menuitem.save()
+        print menuitem
+
+        return HttpResponseRedirect('thanks_create') # Redirect after POST
+   else:
+      form = MenuForm()
+
+   return render(request, 'menu_input.html', {
+     'current_date': now,
+     'form': form,
+     'error': '',
+     'netid': 'roryf',
+     # 'netid': request.user.username,
+   })  
+
 def menu(request):
-   return render(request, "menu.html")
+   # return render(request, "menu.html")
    # return HttpResponse("This is a completely functional menu")
+   now = datetime.datetime.now().date()
+
+   startdate = date.today() - timedelta(days=3)
+   enddate = startdate + timedelta(weeks=1)
+   # mlist = MenuItem.objects.filter(date__range=[startdate, enddate]).order_by('date', '-meal')
+   mlist = MenuItem.objects.filter(date__range=[startdate, enddate]).order_by('date')
+
+   return render(request, 'menu.html', {
+     'current_date': now,
+     'error': '',
+     'netid': 'quanzhou',
+     'menu_list': mlist ,
+   })  
 
 def history(request):
    return render(request, "history.html")
