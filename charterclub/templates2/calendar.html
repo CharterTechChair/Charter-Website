@@ -3,8 +3,17 @@
 
 {% block content %}
 
-<iframe src="https://www.google.com/calendar/embed?src=princeton.edu_d0f45f6f0num37nonorgo4ougc%40group.calendar.google.com&ctz=America/New_York" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+<!-- <iframe src="https://www.google.com/calendar/embed?src=princeton.edu_d0f45f6f0num37nonorgo4ougc%40group.calendar.google.com&ctz=America/New_York" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe> -->
 
-<!-- <iframe src="{%url 'calendar2' %}" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe> -->
+{% for event in events_list %}
+   <div class="panel panel-transparent">
+      <h4> {{ event.title }} </h4>
+      <p>
+         {{ event.snippet }} <br>
+         {{ event.date_and_time }}
+      </p>
+  </div>
+        
+{% endfor %}
 
 {% endblock %}

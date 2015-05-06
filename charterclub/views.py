@@ -24,8 +24,20 @@ def index(request):
 #    return HttpResponse(html)
 
 def calendar(request):
-   return render(request, "calendar.html")
+   # return render(request, "calendar.html")
    # return HttpResponse("This is a completely functional calendar")
+   now = datetime.datetime.now().date()
+
+   startdate = date.today() - timedelta(days=1)
+   enddate = startdate + timedelta(weeks=52)
+   elist = SocialEvent.objects.filter(date_and_time__range=[startdate, enddate])
+
+   return render(request, 'calendar.html', {
+     'current_date': now,
+     'error': '',
+     'netid': 'quanzhou',
+     'events_list': elist ,
+   })  
 
 def calendar2(request):
    return render(request, "calendar2.html")
@@ -158,8 +170,6 @@ def events_view(request):
    })  
 
 def events_create(request):
-   # NEED TO ACTUALLY CREATE THE EVENT
-
    now = datetime.datetime.now().date()
    #Generate Event Form
    if request.method == 'POST':
@@ -208,6 +218,31 @@ def events_list(request):
      'error': '',
      'netid': 'quanzhou',
      'events_list': ev ,
+   })  
+
+def socialevent_create(request):
+   now = datetime.datetime.now().date()
+   #Generate Event Form
+   if request.method == 'POST':
+     form = AddSocialEventForm(request.POST)
+     if form.is_valid():
+        data = form.cleaned_data
+
+        socialevent = SocialEvent(title=data['title'], snippet=data['snippet'], 
+          date_and_time=data['date_and_time'], end_time=data['end_time'])
+        socialevent.save()
+        print socialevent
+
+        return HttpResponseRedirect('thanks_create') # Redirect after POST
+   else:
+      form = AddSocialEventForm()
+
+   return render(request, 'events_create.html', {
+     'current_date': now,
+     'form': form,
+     'error': '',
+     'netid': 'roryf',
+     # 'netid': request.user.username,
    })  
 
 def menu(request):

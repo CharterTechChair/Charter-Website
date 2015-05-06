@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+   <div class="col-md-5">
+      <p> Hi there, Social Chair of the Princeton Charter Club! Go ahead and add
+      social events to the calendar here! You'll also be able to remove events
+      eventually. </p>
+      <br>
+
+      {% crispy form %}
+   </div>
+
+<p></p>
+
+{% endblock %}

@@ -108,7 +108,7 @@
                             </div>
                             <div id="collapseTwo" class="accordion-body collapse">
                                 <div class="accordion-inner">
-                                    <a href="{%url 'faceboard' %}">All Members</a>
+                                    <a href="{%url '#' %}">All Members</a>
                                 </div>
                                 <div class="accordion-inner">
                                     Officers
@@ -124,7 +124,7 @@
                     <div class="accordion-group">
                             <div class="accordion-heading">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
-                                    Winetasting
+                                    Events
                                 </a>
                             </div>
                             <div id="collapseThree" class="accordion-body collapse">
@@ -157,24 +157,28 @@
                 <div class="panel-heading" style="background-color:#555;color:#eee;">Quick Links</div> 
                 <div class="panel-body">
                 
+                  <div class="panel panel-transparent">
+                          <h4>House account balance</h4>
+                          <p>
+                          ${{ member.house_account }}
+                          </p>
+                  </div>
+
+                  <div class="panel panel-transparent">
+                          <h3>Upcoming events:</h3>
+
                   {% for event,room in events %}
                     <div class="panel panel-transparent">
-                            <h3> {{ event }} </h3>
+                            <h4> {{ event }} </h4>
                             <p>
                             You RSVP'd for the {{ room }}!
                             </p>
                     </div>
 
                   {% endfor %}
-                    
-                    <div class="panel panel-transparent">
-                          <h4>House account balance</h4>
-                          <p>
-                          ${{ member.house_account }}
-                          </p>
-                    </div>
                   
-                  
+                  </div>
+
                </div> 
                </div><!--/panel-->
           </div><!--/end mid column-->
@@ -184,7 +188,9 @@
                 <div class="panel panel-transparent">
                   <div class="panel-heading" style="background-color:#111;color:#fff;">Welcome, {{ member.first_name }}!</div>   
                 <div class="panel-body">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam posuere mi eu ipsum lobortis porttitor. Pellentesque a auctor nunc. Integer imperdiet egestas enim, vel ultricies erat congue id. Integer placerat elit mollis euismod luctus. Etiam accumsan est id vulputate accumsan. Nullam dictum faucibus elementum. Morbi sollicitudin ullamcorper ex, vitae fringilla metus bibendum id. Sed vitae venenatis quam. Maecenas consequat odio est, eget ultrices augue faucibus id.
+                  <!-- Class of {{ member.year }} -->
+
+                  <img src="{{STATIC_URL}}img/pcc.jpg" style="border: 0" align="middle" width="100%" >
                 </div>
               </div>
                 </div><!--/panel-->

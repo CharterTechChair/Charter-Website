@@ -74,3 +74,15 @@ class EventEntryForm(forms.Form):
         if (room.get_num_of_people() + add_people > room.max_capacity):
             raise forms.ValidationError("Sorry! This room is beyond capacity")
         return room_choice_s
+
+class AddSocialEventForm(forms.Form):
+    title = forms.CharField(max_length = 40)
+    snippet = forms.CharField(max_length = 150, required = False)
+    date_and_time = forms.DateTimeField(
+                    help_text="Enter date and time in the form '2006-10-25 14:30'")
+    end_time = forms.DateTimeField(
+                    help_text="Enter date and time in the form '2006-10-25 14:30'")
+
+    # Submit buttons
+    helper = FormHelper()   
+    helper.add_input(Submit('add', 'submit', css_class='btn-primary'))
