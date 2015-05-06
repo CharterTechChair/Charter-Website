@@ -84,10 +84,6 @@ urlpatterns = patterns('',
         r'^events_list$', 
         'charterclub.views.events_list', 
         name='events_list'),
-    url(
-        r'^hello$', 
-        'charterclub.views.hello', 
-        name='hello'),
     # for CAS
     url(
         r'^accounts/login/$',
@@ -97,6 +93,10 @@ urlpatterns = patterns('',
         r'^accounts/logout/$',
         'django_cas.views.logout',
         name = 'logout'),
+    url(
+        r'^accounts/login/hello$', 
+        'charterclub.views.hello', 
+        name='hello'),
 
     url(
         r'^admin/', 
