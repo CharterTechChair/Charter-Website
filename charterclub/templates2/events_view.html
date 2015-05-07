@@ -10,6 +10,7 @@
       <br>
 
       {% for room in room_list %}
+        <div class="col-xs-12" style="margin-bottom: 30px">
           <h3> {{room.name }} ({{room.total}}/{{room.max_capacity}})</h3>
         
           <div class="col-xs-12">
@@ -22,7 +23,7 @@
               <div class="col-xs-5 col-centered"> {{ guest}} </div>
           </div>
           {% endfor %}
-          <br><br><br>
+        </div>
       {% endfor %}
    </div>
 

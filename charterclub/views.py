@@ -278,7 +278,8 @@ def menu(request):
 
    startdate = date.today() - timedelta(days=3)
    enddate = startdate + timedelta(weeks=1)
-   mlist = MenuItem.objects.order_by('day')
+   mlist = MenuItem.objects.all()
+   # mlist = MenuItem.objects.order_by('day')
    # mlist = MenuItem.objects.filter(date__range=[startdate, enddate]).order_by('date')
 
    return render(request, 'menu.html', {
@@ -333,7 +334,7 @@ def profile(request):
   now = datetime.datetime.now().date()
 
   # m = Member.objects.filter(netid=request.user.username)
-  m = Member.objects.filter(netid='roryf')[0]
+  m = Member.objects.filter(netid=request.user.username)[0]
 
   e = m.get_events()
   # house_account = m.house_account

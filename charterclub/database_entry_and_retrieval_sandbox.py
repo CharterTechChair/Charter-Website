@@ -19,21 +19,6 @@ g1.save()
 guests = [g1]
 
 
-event = Event(title='Winetasting', snippet='Get Ready for Wine-Tazing' , date_and_time=timezone.now())
-event.save()
-
-room = Room(name='UDR', max_capacity=15)
-room.save()
-
-room.members.add(*members)
-room.guests.add(*guests)
-room.save()
-
-event.rooms.add(room)
-event.save()
-
-
-
 # ----- spit the data back ------
 
 # First search hit
@@ -55,8 +40,8 @@ person = Member.objects.filter(netid='quanzhou')
 from charterclub.models import *
 from datetime import timedelta
 
-e = Event(title='Winetasting',
-         snippet='Get Ready for Wine-Tazing' ,
+e = Event(title='Formals',
+         snippet='yay houseparties!' ,
          date_and_time=timezone.now(),
          end_time=timezone.now() + timedelta(days=1),
          sophomore_signup_start=timezone.now(),
@@ -66,8 +51,15 @@ e = Event(title='Winetasting',
 e.save()
 
 room = Room(name='UDR', max_capacity=15)
-e.rooms.add(room)
 room.save()
+room2 = Room(name='MDR', max_capacity=3)
+room2.save()
+room3 = Room(name='Great Room', max_capacity=15)
+room3.save()
+
+rooms = [room, room2, room3]
+
+e.rooms.add(*rooms)
 e.save()
 
 
