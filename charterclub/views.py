@@ -161,7 +161,6 @@ def events_view(request):
    now = datetime.datetime.now().date()
 
    wt_obj = Event.objects.filter(title='Formals')[0]
-
    return render(request, 'events_view.html', {
      'current_date': now,
      'error': '',
@@ -253,8 +252,9 @@ def menu_input(request):
      if form.is_valid():
         data = form.cleaned_data
 
-        menuitem = MenuItem(day=data['day'], date=data['date'], 
-          lunch_food=data['lunch'], dinner_food=data['dinner'])
+#         menuitem = MenuItem(day=data['day'], date=data['date'], 
+        menuitem = MenuItem(day=data['day'], 
+                             lunch_food=data['lunch'], dinner_food=data['dinner'])
         menuitem.save()
 
         return HttpResponseRedirect('menu') # Redirect after POST
@@ -278,7 +278,7 @@ def menu(request):
 
    startdate = date.today() - timedelta(days=3)
    enddate = startdate + timedelta(weeks=1)
-   mlist = MenuItem.objects.filter(date__range=[startdate, enddate]).order_by('date')
+   mlist = MenuItem.objects.order_by('day')
    # mlist = MenuItem.objects.filter(date__range=[startdate, enddate]).order_by('date')
 
    return render(request, 'menu.html', {

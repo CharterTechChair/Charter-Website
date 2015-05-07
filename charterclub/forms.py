@@ -97,8 +97,8 @@ DAYS = [("Monday", "Monday"),
         ("Sunday", "Sunday")]
 class MenuForm(forms.Form):
     day = forms.ChoiceField(widget=forms.Select, choices=DAYS)
-    date = forms.DateField(widget=forms.DateInput,
-                        help_text="Enter date in the form '10/25/2006'")
+#     date = forms.DateField(widget=forms.DateInput,
+#                         help_text="Enter date in the form '10/25/2006'")
     lunch = forms.CharField(max_length=None,
                 help_text="input newlines with '&#60;br&#62;'")
     dinner = forms.CharField(max_length=None,
