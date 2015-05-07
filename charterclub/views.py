@@ -177,7 +177,7 @@ def events_create(request):
      if form.is_valid():
         data = form.cleaned_data
         title = data['title']
-        snippet = data['snippet']
+        snippet = data['description']
         date_and_time = data['date_and_time']
         soph = data['sophomore_signup_start']
         jr = data['junior_signup_start']
