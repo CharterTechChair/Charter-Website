@@ -96,7 +96,7 @@ def feedback(request):
         #     recipients.append(sender)
 
         from django.core.mail import send_mail
-        send_mail(subject, message, sender, recipients, fail_silently=False)
+        # send_mail(subject, message, sender, recipients, fail_silently=False)
         return HttpResponseRedirect('thanks') # Redirect after POST
    else:
       form = FeedbackForm()
