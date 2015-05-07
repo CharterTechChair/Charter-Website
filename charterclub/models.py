@@ -153,7 +153,7 @@ class Room(models.Model):
         if casted_person:
             listing.remove(casted_person)
         else:
-            raise Exceptoin("Error, person '%s' was not found in Member and Guest List" % person)
+            raise Exception("Error, person '%s' was not found in Member and Guest List" % person)
 
 
         # If the listing was the members listing, remove the guest

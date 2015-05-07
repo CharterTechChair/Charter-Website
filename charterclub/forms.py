@@ -28,16 +28,17 @@ class FeedbackForm(forms.Form):
 
 class EventCreateForm(forms.Form):
     title = forms.CharField(max_length = 40)
-    snippet = forms.CharField(max_length = 150, required = False)
+    description = forms.CharField(max_length = 150, required = False)
     date_and_time = forms.DateTimeField(
                         help_text="Enter date and time in the form '2006-10-25 14:30'")
     # end_time = forms.DateTimeField(required = False)
-    sophomore_signup_start = forms.DateTimeField(
+    senior_signup_start    = forms.DateTimeField(
                         help_text="Enter date and time in the form '2006-10-25 14:30'")
     junior_signup_start    = forms.DateTimeField(
                         help_text="Enter date and time in the form '2006-10-25 14:30'")
-    senior_signup_start    = forms.DateTimeField(
+    sophomore_signup_start = forms.DateTimeField(
                         help_text="Enter date and time in the form '2006-10-25 14:30'")
+    
 
     rooms = forms.MultipleChoiceField(widget = forms.CheckboxSelectMultiple, choices = ROOMS)
 

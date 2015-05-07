@@ -145,7 +145,7 @@ def events(request):
             # Now try to add a person 
             event.add_to_event(member, guest, form.cleaned_data['room_choice'])
 
-        return HttpResponseRedirect('thanks')
+        return HttpResponseRedirect('thanks_signup')
     else:
         form = EventEntryForm()
 
@@ -257,7 +257,7 @@ def menu_input(request):
           lunch_food=data['lunch'], dinner_food=data['dinner'])
         menuitem.save()
 
-        return HttpResponseRedirect('thanks_create') # Redirect after POST
+        return HttpResponseRedirect('menu') # Redirect after POST
    else:
       form = MenuForm()
 
@@ -308,6 +308,14 @@ def thanks(request):
 def thanks_create(request):
   now = datetime.datetime.now().date()
   return render(request, "thanks_create.html", {
+     'current_date': now,
+     'error': '',
+     'netid': request.user.username,
+  })
+
+def thanks_signup(request):
+  now = datetime.datetime.now().date()
+  return render(request, "thanks_signup.html", {
      'current_date': now,
      'error': '',
      'netid': request.user.username,
