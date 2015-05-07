@@ -30,7 +30,7 @@ def calendar(request):
 
    startdate = date.today() - timedelta(days=1)
    enddate = startdate + timedelta(weeks=52)
-   elist = SocialEvent.objects.filter(date_and_time__range=[startdate, enddate])
+   elist = SocialEvent.objects.filter(date_and_time__range=[startdate, enddate]).order_by('date_and_time')
 
    return render(request, 'calendar.html', {
      'current_date': now,
@@ -253,10 +253,9 @@ def menu_input(request):
      if form.is_valid():
         data = form.cleaned_data
 
-        menuitem = MenuItem(day=data['day'], meal=data['meal'], 
-          date=data['date'], food=data['food'])
+        menuitem = MenuItem(day=data['day'], date=data['date'], 
+          lunch_food=data['lunch'], dinner_food=data['dinner'])
         menuitem.save()
-        print menuitem
 
         return HttpResponseRedirect('thanks_create') # Redirect after POST
    else:
@@ -271,14 +270,16 @@ def menu_input(request):
    })  
 
 def menu(request):
+  # NEED TO COME UP WITH A MORE ELEGANT WAY TO DO THIS WITH TWO COLUMNS
+
    # return render(request, "menu.html")
    # return HttpResponse("This is a completely functional menu")
    now = datetime.datetime.now().date()
 
    startdate = date.today() - timedelta(days=3)
    enddate = startdate + timedelta(weeks=1)
-   # mlist = MenuItem.objects.filter(date__range=[startdate, enddate]).order_by('date', '-meal')
    mlist = MenuItem.objects.filter(date__range=[startdate, enddate]).order_by('date')
+   # mlist = MenuItem.objects.filter(date__range=[startdate, enddate]).order_by('date')
 
    return render(request, 'menu.html', {
      'current_date': now,
@@ -331,15 +332,19 @@ def profile(request):
   # officer = m.position
   # year = m.year
 
-  print m.first_name
-  print e
-
   return render(request, "profile.html", {
      'current_date': now,
      'error': '',
      'member': m,
      'events': e,
      'netid': request.user.username,
+  })
+
+def officer(request):
+  m = Member.objects.filter(netid='roryf')[0]
+
+  return render(request, "officer.html", {
+  'member': m
   })
 
 # def login(request):

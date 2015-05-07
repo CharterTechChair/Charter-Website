@@ -94,13 +94,14 @@ DAYS = [("Monday", "Monday"),
         ("Friday", "Friday"),
         ("Saturday", "Saturday"),
         ("Sunday", "Sunday")]
-MEALS = [("Lunch", "Lunch"), ("Dinner", "Dinner")]
 class MenuForm(forms.Form):
     day = forms.ChoiceField(widget=forms.Select, choices=DAYS)
-    meal = forms.ChoiceField(widget=forms.Select, choices=MEALS)
     date = forms.DateField(widget=forms.DateInput,
                         help_text="Enter date in the form '10/25/2006'")
-    food = forms.CharField(max_length=None)
+    lunch = forms.CharField(max_length=None,
+                help_text="input newlines with '&#60;br&#62;'")
+    dinner = forms.CharField(max_length=None,
+                help_text="input newlines with '&#60;br&#62;'")
 
     # Submit buttons
     helper = FormHelper()   

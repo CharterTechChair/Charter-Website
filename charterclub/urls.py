@@ -92,6 +92,11 @@ urlpatterns = patterns('',
         r'^socialevent_create$', 
         'charterclub.views.socialevent_create', 
         name='socialevent_create'),
+    # for Officers only
+    url(
+        r'^officer$', 
+        'charterclub.views.officer', 
+        name='officer'),
     # for CAS
     url(
         r'^accounts/login/$',
@@ -105,7 +110,6 @@ urlpatterns = patterns('',
         r'^accounts/login/hello$', 
         'charterclub.views.hello', 
         name='hello'),
-
     url(
         r'^admin/', 
         include(admin.site.urls)),

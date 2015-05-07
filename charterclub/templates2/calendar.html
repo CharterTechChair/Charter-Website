@@ -5,15 +5,23 @@
 
 <!-- <iframe src="https://www.google.com/calendar/embed?src=princeton.edu_d0f45f6f0num37nonorgo4ougc%40group.calendar.google.com&ctz=America/New_York" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe> -->
 
-{% for event in events_list %}
-   <div class="panel panel-transparent">
-      <h4> {{ event.title }} </h4>
-      <p>
-         {{ event.snippet }} <br>
-         {{ event.date_and_time }} - {{ event.end_time }}
-      </p>
-  </div>
-        
-{% endfor %}
+<div class="col-md-2">
+</div>
+
+<div class="col-md-8">
+   {% for event in events_list %}
+      <div>
+         <hr>
+         <h4> {{ event.title }}</h4>
+         <hr>
+         <p>
+            {{ event.date_and_time }} - {{ event.end_time }} <br>
+            {{ event.snippet }}
+         </p>
+         <br>
+
+     </div>    
+   {% endfor %}
+</div>
 
 {% endblock %}

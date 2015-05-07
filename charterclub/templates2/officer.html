@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+   <div class="col-md-2">
+   </div>
+   <div class="col-md-8">
+      Hi {{ member.first_name }}! Here's some of the pages you can access to update
+      and create events!
+
+      Don't forget there's also the Django admin site (you should get the login info
+      from one of your predecessors) if you need to update member information.
+
+      <div>
+         <ul>
+            <li> To create an event signup page for Winetasting, Teatasting, Formals, etc.,
+            visit <a href="{%url 'events_create' %}">
+            <font color="C6852A">this page</font></a>! </li>
+
+            <li> To add an event to the calendar, visit 
+            <a href="{%url 'socialevent_create' %}">
+            <font color="C6852A">this page</font></a>! </li>
+
+            <li> To update the week's menu, you can use
+            <a href="{%url 'menu_input' %}">
+            <font color="C6852A">this page</font></a>! </li>
+         </ul>
+      </div>
+   </div>
+
+{% endblock %}

@@ -267,11 +267,10 @@ DAYS = [("Monday", "Monday"),
         ("Friday", "Friday"),
         ("Saturday", "Saturday"),
         ("Sunday", "Sunday")]
-MEALS = [("Lunch", "Lunch"), ("Dinner", "Dinner")]
 class MenuItem(models.Model):
     day = models.CharField(choices=DAYS, max_length=10)
-    meal = models.CharField(choices=MEALS, max_length=10)
     date = models.DateField()
-    food = models.CharField(max_length=1000)
+    lunch_food = models.CharField(max_length=1000)
+    dinner_food = models.CharField(max_length=1000)
 
 
