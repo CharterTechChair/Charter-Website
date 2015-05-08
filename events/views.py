@@ -146,3 +146,18 @@ def socialevent_create(request):
                  'netid': 'roryf',
                  # 'netid': request.user.username,
             })  
+def thanks_create(request):
+  now = datetime.datetime.now().date()
+  return render(request, "thanks_create.html", {
+     'current_date': now,
+     'error': '',
+     'netid': request.user.username,
+  })
+
+def thanks_signup(request):
+  now = datetime.datetime.now().date()
+  return render(request, "thanks_signup.html", {
+     'current_date': now,
+     'error': '',
+     'netid': request.user.username,
+  })

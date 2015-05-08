@@ -45,6 +45,8 @@ INSTALLED_APPS = (
     'charterclub',
     'crispy_forms',
     'events',
+    'menus',
+    'feedback',
 )
 
 MIDDLEWARE_CLASSES = (

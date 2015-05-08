@@ -20,51 +20,51 @@ from models import *
 
 
 def index(request):
-   html = "Hello World"
-   return render(request, "index.html")
+    html = "Hello World"
+    return render(request, "index.html")
 #    return HttpResponse(html)
 
 def calendar(request):
-   # return render(request, "calendar.html")
-   # return HttpResponse("This is a completely functional calendar")
-   now = datetime.datetime.now().date()
+    # return render(request, "calendar.html")
+    # return HttpResponse("This is a completely functional calendar")
+    now = datetime.datetime.now().date()
 
-   startdate = date.today() - timedelta(days=1)
-   enddate = startdate + timedelta(weeks=52)
-   elist = SocialEvent.objects.filter(date_and_time__range=[startdate, enddate]).order_by('date_and_time')
+    startdate = date.today() - timedelta(days=1)
+    enddate = startdate + timedelta(weeks=52)
+    elist = SocialEvent.objects.filter(date_and_time__range=[startdate, enddate]).order_by('date_and_time')
 
-   return render(request, 'calendar.html', {
+    return render(request, 'calendar.html', {
      'current_date': now,
      'error': '',
      'netid': 'quanzhou',
      'events_list': elist ,
-   })  
+    })  
 
 def calendar2(request):
    return render(request, "calendar2.html")
    # return HttpResponse("This is a completely functional calendar")
    
 def faceboard(request):
-   def picsfromyear(year):
-      piclocation = "static/img/faceboard/"
-      pics = []
-      if not path.exists(piclocation + str(year)):
-         return
-      
-      for pic in listdir(piclocation + str(year)):
-         pics.append(str(year) + "/" + pic)
-      return pics
-            
-   year = datetime.date.today().year
-   template = get_template("faceboard.html")
-   seniorpics = picsfromyear(year)
-   juniorpics = picsfromyear(year + 1)
-   sophpics = picsfromyear(year + 2)
-   context = RequestContext(request,
-                            {"seniorpics" : seniorpics,
-                             "juniorpics" : juniorpics,
-                             "sophpics" : sophpics})
-   return HttpResponse(template.render(context))
+    def picsfromyear(year):
+        piclocation = "static/img/faceboard/"
+        pics = []
+        if not path.exists(piclocation + str(year)):
+           return
+        
+        for pic in listdir(piclocation + str(year)):
+           pics.append(str(year) + "/" + pic)
+        return pics
+              
+    year = datetime.date.today().year
+    template = get_template("faceboard.html")
+    seniorpics = picsfromyear(year)
+    juniorpics = picsfromyear(year + 1)
+    sophpics = picsfromyear(year + 2)
+    context = RequestContext(request,
+                             {"seniorpics" : seniorpics,
+                              "juniorpics" : juniorpics,
+                              "sophpics" : sophpics})
+    return HttpResponse(template.render(context))
    
 def send_email(request):
     subject = request.POST.get('subject', '')
@@ -81,81 +81,6 @@ def send_email(request):
         # to get proper validation errors.
         return HttpResponse('Make sure all fields are entered and valid.')
 
-def feedback(request):
-   now = datetime.datetime.now().date()
-   #Generate Feedback Form
-   if request.method == 'POST':
-     form = FeedbackForm(request.POST)
-     if form.is_valid():
-        subject = 'Anonymous Feedback'
-        message = form.cleaned_data['anonymous_feedback']
-        sender = 'roryf@princeton.edu'
-        # cc_myself = form.cleaned_data['cc_myself']
-
-        recipients = ['roryf@princeton.edu']
-        # if cc_myself:
-        #     recipients.append(sender)
-
-        from django.core.mail import send_mail
-        # send_mail(subject, message, sender, recipients, fail_silently=False)
-        return HttpResponseRedirect('thanks') # Redirect after POST
-   else:
-      form = FeedbackForm()
-
-   return render(request, 'feedback.html', {
-     'current_date': now,
-     'form': form,
-     'error': '',
-     'netid': request.user.username,
-   })  
-
-
-
-
-def menu_input(request):
-   now = datetime.datetime.now().date()
-   #Generate Event Form
-   if request.method == 'POST':
-     form = MenuForm(request.POST)
-     if form.is_valid():
-        data = form.cleaned_data
-
-#         menuitem = MenuItem(day=data['day'], date=data['date'], 
-        menuitem = MenuItem(day=data['day'], 
-                             lunch_food=data['lunch'], dinner_food=data['dinner'])
-        menuitem.save()
-
-        return HttpResponseRedirect('menu') # Redirect after POST
-   else:
-      form = MenuForm()
-
-   return render(request, 'menu_input.html', {
-     'current_date': now,
-     'form': form,
-     'error': '',
-     'netid': 'roryf',
-     # 'netid': request.user.username,
-   })  
-
-def menu(request):
-  # NEED TO COME UP WITH A MORE ELEGANT WAY TO DO THIS WITH TWO COLUMNS
-
-   # return render(request, "menu.html")
-   # return HttpResponse("This is a completely functional menu")
-   now = datetime.datetime.now().date()
-
-   startdate = date.today() - timedelta(days=3)
-   enddate = startdate + timedelta(weeks=1)
-   mlist = MenuItem.objects.all()
-   # mlist = MenuItem.objects.order_by('day')
-   # mlist = MenuItem.objects.filter(date__range=[startdate, enddate]).order_by('date')
-
-   return render(request, 'menu.html', {
-     'current_date': now,
-     'error': '',
-     'netid': 'quanzhou',
-     'menu_list': mlist ,
-   })  
 
 def history(request):
    return render(request, "history.html")
@@ -166,29 +91,7 @@ def song(request):
 def constitution(request):
    return render(request, "constitution.html")
 
-def thanks(request):
-  now = datetime.datetime.now().date()
-  return render(request, "thanks.html", {
-     'current_date': now,
-     'error': '',
-     'netid': request.user.username,
-  })
 
-def thanks_create(request):
-  now = datetime.datetime.now().date()
-  return render(request, "thanks_create.html", {
-     'current_date': now,
-     'error': '',
-     'netid': request.user.username,
-  })
-
-def thanks_signup(request):
-  now = datetime.datetime.now().date()
-  return render(request, "thanks_signup.html", {
-     'current_date': now,
-     'error': '',
-     'netid': request.user.username,
-  })
 
 def hello(request):
   now = datetime.datetime.now().date()

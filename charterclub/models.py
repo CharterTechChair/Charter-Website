@@ -32,8 +32,6 @@ class Prospective(Student):
 class Guest(Person):
     member_association = models.ForeignKey('Member')
 
-
-
 class Member(Student):
     allow_rsvp = models.BooleanField(
         'Whether or not this member may attend events', default=True)

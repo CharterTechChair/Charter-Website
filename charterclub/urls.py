@@ -16,8 +16,16 @@ urlpatterns = patterns('',
         r'^index$',
         'charterclub.views.index',
         name='index'),
+
     url(r'^events',
         include('events.urls')),
+
+    url(r'^menus',
+        include('menus.urls')),
+
+    url(r'^feedback',
+        include('feedback.urls')),
+
     url(
         r'^calendar$',
         'charterclub.views.calendar',
@@ -30,14 +38,6 @@ urlpatterns = patterns('',
         r'^faceboard$',
         'charterclub.views.faceboard',
         name='faceboard'),
-    url(
-        r'^menu$',
-        'charterclub.views.menu',
-        name='menu'),
-    url(
-        r'^menu_input$',
-        'charterclub.views.menu_input',
-        name='menu_input'),
     url(
         r'^profile$',
         'charterclub.views.profile',
@@ -59,25 +59,10 @@ urlpatterns = patterns('',
         'charterclub.views.help',
         name='help'),
     url(
-        r'^thanks$',
-        'charterclub.views.thanks',
-        name='thanks'),
-    url(
-        r'^thanks_create$',
-        'charterclub.views.thanks_create',
-        name='thanks_create'),
-    url(
-        r'^thanks_signup$',
-        'charterclub.views.thanks_signup',
-        name='thanks_signup'),
-    url(
         r'^#$',
         'charterclub.views.underconstruction',
         name='#'),
-    url(
-        r'^feedback$',
-        'charterclub.views.feedback',
-        name='feedback'), 
+
     # for Officers only
     url(
         r'^officer$', 
@@ -100,5 +85,5 @@ urlpatterns = patterns('',
         r'^admin/', 
         include(admin.site.urls)),
 )
-
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+

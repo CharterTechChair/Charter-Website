@@ -26,6 +26,14 @@ urlpatterns = patterns('',
         r'^/create_social$', 
         'events.views.socialevent_create', 
         name='socialevent_create'),
+    url(
+        r'^/thanks_create$',
+        'events.views.thanks_create',
+        name='thanks_create'),
+    url(
+        r'^/thanks_signup$',
+        'events.views.thanks_signup',
+        name='thanks_signup'),
 )
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
