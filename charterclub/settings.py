@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'charterclub',
     'crispy_forms',
+    'events',
 )
 
 MIDDLEWARE_CLASSES = (

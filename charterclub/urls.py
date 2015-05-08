@@ -16,6 +16,8 @@ urlpatterns = patterns('',
         r'^index$',
         'charterclub.views.index',
         name='index'),
+    url(r'^events',
+        include('events.urls')),
     url(
         r'^calendar$',
         'charterclub.views.calendar',
@@ -76,26 +78,6 @@ urlpatterns = patterns('',
         r'^feedback$',
         'charterclub.views.feedback',
         name='feedback'), 
-    url(
-        r'^events$',
-        'charterclub.views.events',
-        name='events'),  
-    url(
-        r'^events_view$', 
-        'charterclub.views.events_view', 
-        name='events_view'),
-    url(
-        r'^events_create$', 
-        'charterclub.views.events_create', 
-        name='events_create'),
-    url(
-        r'^events_list$', 
-        'charterclub.views.events_list', 
-        name='events_list'),
-    url(
-        r'^socialevent_create$', 
-        'charterclub.views.socialevent_create', 
-        name='socialevent_create'),
     # for Officers only
     url(
         r'^officer$', 
