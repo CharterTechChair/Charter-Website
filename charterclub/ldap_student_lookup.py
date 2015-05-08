@@ -1,5 +1,5 @@
 import ldap
-import models.Student
+import models
 import re
 
 # As follows is the expected return from an ldap query.
@@ -69,7 +69,7 @@ def get_student_info(netid):
 
     # assume there will only be one student returned
     attributes = ldap_lookup("uid=" + netid)[0]
-    student = Student(netid = attributes["uid"],
+    student = models.Student(netid = attributes["uid"],
                       first_name = attributes["givenName"],
                       last_name = attributes["sn"])
     if "puclassyear" in attributes:

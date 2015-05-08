@@ -17,7 +17,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render_to_response
 
 from models import *
-
+import permissions
 
 def index(request):
     html = "Hello World"
@@ -91,21 +91,23 @@ def song(request):
 def constitution(request):
    return render(request, "constitution.html")
 
-
-
 def hello(request):
   now = datetime.datetime.now().date()
   return render(request, "hello.html", {
      'current_date': now,
      'error': '',
-     'netid': request.user.username,
+     'netid': permissions.get_username(request),
   })
 
 def profile(request):
+  if not permissions.check_member(request):
+      return render(request, "permission_denied.html",
+                    {"required_permission": "member"})
+  
   now = datetime.datetime.now().date()
 
   # m = Member.objects.filter(netid=request.user.username)
-  m = Member.objects.filter(netid=request.user.username)[0]
+  m = Member.objects.filter(netid=permissions.get_username(request))[0]
 
   e = m.get_events()
   # house_account = m.house_account
@@ -117,11 +119,14 @@ def profile(request):
      'error': '',
      'member': m,
      'events': e,
-     'netid': request.user.username,
+     'netid': permissions.get_username(request)
   })
 
 def officer(request):
-  m = Member.objects.filter(netid='roryf')[0]
+  if not permissions.check_officer(request):
+      return render(request, "permission_denied.html",
+                    {"required_permission": "officer"})
+  m = Member.objects.filter(netid=permissions.get_username(request))[0]
 
   return render(request, "officer.html", {
   'member': m
@@ -129,6 +134,9 @@ def officer(request):
 
 # def login(request):
 #    return HttpResponse("This is a completely functional CAS login page")
+
+def permission_denied(request):
+    return render(request, "permission_denied.html")
 
 def help(request):
    return HttpResponse("This is under construction!")
