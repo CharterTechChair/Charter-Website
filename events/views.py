@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from charterclub.models import *
 from charterclub.forms import *
 import charterclub
-import charterclub.permissions
+import charterclub.permissions as permissions
 
 from events.models import Event
 from events.forms import EventEntryForm, EventCreateForm, AddSocialEventForm, EventChoiceForm
