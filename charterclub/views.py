@@ -107,6 +107,7 @@ def profile(request):
 
   # m = Member.objects.filter(netid=request.user.username)
   m = Member.objects.filter(netid=permissions.get_username(request))[0]
+  # m = Member.objects.filter(netid='roryf')
 
   e = m.get_events()
   # house_account = m.house_account
@@ -119,6 +120,7 @@ def profile(request):
      'member': m,
      'events': e,
      'netid': permissions.get_username(request)
+     # 'netid': 'roryf'
   })
 
 @permissions.officer

@@ -96,9 +96,17 @@
                         </div>
                     </div>
                   </div>
-               <ul class="nav nav-stacked">
-                <li><a href="#">Anonymous Feedback</a></li>
-              </ul>
+                  <ul></ul>
+                <div class="accordion" id="accordion2">
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                                <a href="{% url 'feedback' %}">Anonymous Feedback</a>
+                            </a>
+                        </div>
+                    </div>
+                  </div>
+                  <ul></ul>
                 <div class="accordion" id="accordion2">
                     <div class="accordion-group">
                             <div class="accordion-heading">
@@ -125,28 +133,42 @@
                             <div class="accordion-heading">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
                                     Events
-                                </a>
                             </div>
                             <div id="collapseThree" class="accordion-body collapse">
                                 <div class="accordion-inner">
-                                    RSVP
+                                     <a href="{%url 'events' %}">RSVP</a>
                                 </div>
                                 <div class="accordion-inner">
-                                    Seatings
+                                    <a href="{%url 'events_view' %}">Seatings</a>
                                 </div>
                             </div>
                         </div>
                      </div> 
                   
                   <hr>
-<!-- 
-                <div class="col col-span-12">
-                  <i class="icon-2x icon-facebook"></i>&nbsp;
-                  <i class="icon-2x icon-twitter"></i>&nbsp;
-                  <i class="icon-2x icon-linkedin"></i>&nbsp;
-                  <i class="icon-2x icon-pinterest"></i>
-                </div> -->
-                
+
+                                  <div class="accordion" id="accordion3">
+                    <div class="accordion-group">
+                            <div class="accordion-heading">
+                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
+                                    <a href="{%url 'officer' %}">Officers!
+                                </a>
+                            </div>
+                            <div id="collapseThree" class="accordion-body collapse">
+                                <div class="accordion-inner">
+                                     RSVP
+                                </div>
+                                <div class="accordion-inner">
+                                    Seatings
+                                </div>
+                            </div>
+                    </div>
+                     </div> 
+
+                     <hr>
+
+               <div class="fb-follow" data-href="https://www.facebook.com/pages/Princeton-Charter-Club/38696166101?fref=nf" data-width="100" data-colorscheme="dark" data-layout="button" data-show-faces="true"></div>
+                      
                 </div><!--/panel body-->
               </div><!--/panel-->
             </div><!--/end left column-->
