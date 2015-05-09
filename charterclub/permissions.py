@@ -28,14 +28,14 @@ def sophomore(func):
         return func(request)
     return check_s
 
-from settings import DEBUG
+from settings import CAS_DISABLED
 # get the username of the currently CAS logged-in user.
 # if there is no currently logged-in user, return an empty string
 # if the application is in debug mode, assume that CAS is non-functional,
 # and return a test value (in this case jwhitton)
 def get_username(request):
-    if DEBUG:
-        return "jwhitton"
+    if CAS_DISABLED:
+        return "testuser"
     else:
         if not request.user.username:
             return ""
@@ -49,7 +49,7 @@ def check_officer(request):
     if netid == "":
         return False
 
-    user = Officer.objects.filter(netid = 'netid')
+    user = Officer.objects.filter(netid=netid)
 
     if len(user) == 0:
         return False
@@ -63,7 +63,7 @@ def check_member(request):
     if netid == "":
         return False
 
-    user = Member.objects.filter(netid = 'netid')
+    user = Member.objects.filter(netid=netid)
 
     if len(user) == 0:
         return False
