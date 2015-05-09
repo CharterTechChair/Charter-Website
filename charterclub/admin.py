@@ -1,5 +1,7 @@
 from django.contrib import admin
-from charterclub.models import Person, Member
+from charterclub.models import Person
+from charterclub.models import Member
+from charterclub.models import Officer
 
 class PersonAdmin(admin.ModelAdmin):
     fields = ['first_name', 'last_name']
