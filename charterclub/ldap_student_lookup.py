@@ -55,7 +55,7 @@ def ldap_lookup(query):
                                      ldap.SCOPE_SUBTREE, query)
 
     # format return value of query
-    students = ()
+    students = []
     for match in matches:
         dn, student = match
         students.append(student)
@@ -69,10 +69,10 @@ def get_student_info(netid):
 
     # assume there will only be one student returned
     attributes = ldap_lookup("uid=" + netid)[0]
-    student = models.Student(netid = attributes["uid"],
-                      first_name = attributes["givenName"],
-                      last_name = attributes["sn"])
+    student = models.Student(netid = attributes["uid"][0],
+                      first_name = attributes["givenName"][0],
+                             last_name = attributes["sn"][0])
     if "puclassyear" in attributes:
-        student.year = int(attributes["puclassyear"])
+        student.year = int(attributes["puclassyear"][0])
 
     return student
