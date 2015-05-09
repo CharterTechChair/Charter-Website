@@ -6,6 +6,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from charterclub.models import *
 from charterclub.forms import *
+import charterclub
+import charterclub.permissions
 
 from events.models import Event
 from events.forms import EventEntryForm, EventCreateForm, AddSocialEventForm, EventChoiceForm
@@ -31,7 +33,7 @@ def events_entry(request, title, date):
             return render(request, 'events.html', {
                 'form': form,
                 'error': '',
-                'netid': request.user.username,
+                'netid': permissions.get_username(request),
             })
         # If the form is filled out, check it
         else:
@@ -92,7 +94,7 @@ def events_view(request):
     return render(request, 'events_view.html', {
      'current_date': now,
      'error': '',
-     'netid': 'quanzhou',
+     'netid': permissions.get_username(request),
      'room_list' : wt_obj.to_JSON()['rooms'],
     })  
     # return HttpResponse("Hello, world. You're at a events view")
@@ -134,7 +136,7 @@ def events_create(request):
      'form': form,
      'error': '',
      'netid': 'roryf',
-     # 'netid': request.user.username,
+     # 'netid': permissions.get_username(request),
    })  
 
 def events_list(request):
@@ -145,7 +147,7 @@ def events_list(request):
    return render(request, 'events_list.html', {
      'current_date': now,
      'error': '',
-     'netid': 'quanzhou',
+     'netid': permissions.get_username(request),
      'events_list': ev ,
    })  
 
@@ -170,15 +172,14 @@ def socialevent_create(request):
                  'current_date': now,
                  'form': form,
                  'error': '',
-                 'netid': 'roryf',
-                 # 'netid': request.user.username,
+                 'netid': permissions.get_username(request),
             })  
 def thanks_create(request):
   now = datetime.datetime.now().date()
   return render(request, "thanks_create.html", {
      'current_date': now,
      'error': '',
-     'netid': request.user.username,
+     'netid': permissions.get_username(request),
   })
 
 def thanks_signup(request):
@@ -186,5 +187,5 @@ def thanks_signup(request):
   return render(request, "thanks_signup.html", {
      'current_date': now,
      'error': '',
-     'netid': request.user.username,
+     'netid': permissions.get_username(request),
   })
