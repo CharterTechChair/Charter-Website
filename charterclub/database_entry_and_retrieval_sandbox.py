@@ -50,11 +50,11 @@ e = Event(title='Formals',
          )
 e.save()
 
-room = Room(name='UDR', max_capacity=15)
+room = Room(name='UDR', max_capacity=64)
 room.save()
-room2 = Room(name='MDR', max_capacity=3)
+room2 = Room(name='MDR', max_capacity=80)
 room2.save()
-room3 = Room(name='Great Room', max_capacity=15)
+room3 = Room(name='Great Room', max_capacity=64)
 room3.save()
 
 rooms = [room, room2, room3]
