@@ -195,19 +195,3 @@ class Event(models.Model):
     def __unicode__(self):
         return "%s, %s" % (self.title, self.date_and_time.isoformat()[:10])
 
-class SocialEvent(models.Model):
-    title = models.CharField(max_length=40)
-    snippet = models.CharField(max_length=150, blank=True)
-
-    # Some times
-    date_and_time = models.DateTimeField(blank=True)
-    end_time = models.DateTimeField(blank=True)
-
-DAYS = [("Monday", "Monday"),
-        ("Tuesday", "Tuesday"),
-        ("Wednesday", "Wednesday"),
-        ("Thursday", "Thursday"),
-        ("Friday", "Friday"),
-        ("Saturday", "Saturday"),
-        ("Sunday", "Sunday")]
-

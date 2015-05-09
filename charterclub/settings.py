@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'events',
     'menus',
     'feedback',
+    'cal',
 )
 
 MIDDLEWARE_CLASSES = (
