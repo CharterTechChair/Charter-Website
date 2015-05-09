@@ -4,6 +4,7 @@ from django.contrib import admin
 from django import forms
 # from events.models import Event
 
+    
 class Person(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
@@ -42,7 +43,7 @@ class Member(Student):
         ans = []
         print self
 
-        for e in Event.objects.all():
+        for e in events.models.Event.objects.all():
             print e
             for r in e.rooms.all():
                 for member in r.get_people():
@@ -57,6 +58,7 @@ class Member(Student):
         for m in self.all():
             yield m
 
+import events.models
 
 class Officer(Member):
     position = models.CharField('Officer\'s position/title', max_length=100)
