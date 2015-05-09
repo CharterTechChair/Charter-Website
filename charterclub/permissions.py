@@ -1,7 +1,32 @@
+from django.shortcuts import render
 import models
 from models import Officer
 from models import Member
 from models import Student
+
+def officer(func):
+    def check_o(request):
+        if not check_officer(request):
+            return render(request, "permission_denied.html",
+                          {"required_permission": "officer"})
+        return func(request)
+    return check_o
+
+def member(func):
+    def check_m(request):
+        if not check_member(request):
+            return render(request, "permission_denied.html",
+                          {"required_permission": "member"})
+        return func(request)
+    return check_m
+
+def sophomore(func):
+    def check_s(request):
+        if not check_sophomore(request):
+            return render(request, "permission_denied.html",
+                          {"required_permission": "sophomore"})
+        return func(request)
+    return check_s
 
 from settings import DEBUG
 # get the username of the currently CAS logged-in user.
