@@ -8,7 +8,12 @@ class PersonAdmin(admin.ModelAdmin):
 
 admin.site.register(Person, PersonAdmin)
 
-# class MemberAdmin(admin.ModelAdmin):
-#     fields = ['first_name', 'last_name']
+class MemberAdmin(admin.ModelAdmin):
+    fields = ['first_name', 'last_name', 'house_account', 'allow_rsvp']
 
-# admin.site.register(Member, MemberAdmin)
+admin.site.register(Member, MemberAdmin)
+
+class OfficerAdmin(admin.ModelAdmin):
+    fields = ['person', 'position']
+
+admin.site.register(Officer, OfficerAdmin)
