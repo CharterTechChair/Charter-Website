@@ -7,6 +7,7 @@ from django.conf import settings
 
 import datetime
 from forms import *
+from events.models import *
 # import configuration
 from os import listdir, path
 from django.core.mail import send_mail, BadHeaderError

@@ -49,7 +49,7 @@ def check_officer(request):
     if netid == "":
         return False
 
-    user = Officer.objects.filter(netid = 'netid')
+    user = Officer.objects.filter(netid=netid)
 
     if len(user) == 0:
         return False
@@ -63,7 +63,7 @@ def check_member(request):
     if netid == "":
         return False
 
-    user = Member.objects.filter(netid = 'netid')
+    user = Member.objects.filter(netid=netid)
 
     if len(user) == 0:
         return False
