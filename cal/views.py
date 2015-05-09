@@ -23,26 +23,26 @@ def _show_users(request):
         s["show_users"] = True
     return s["show_users"]
 
-@login_required
+# @login_required
 def settings(request):
     """Settings screen."""
     s = request.session
     _show_users(request)
     if request.method == "POST":
         s["show_users"] = (True if "show_users" in request.POST else False)
-    return render_to_response("cal/settings.html", add_csrf(request, show_users=s["show_users"]))
+    return render_to_response("settings.html", add_csrf(request, show_users=s["show_users"]))
 
 def reminders(request):
     """Return the list of reminders for today and tomorrow."""
     year, month, day = time.localtime()[:3]
     reminders = Entry.objects.filter(date__year=year, date__month=month,
-                                   date__day=day, creator=request.user, remind=True)
+                                   date__day=day, creator='testuser', remind=True)
     tomorrow = datetime.now() + timedelta(days=1)
     year, month, day = tomorrow.timetuple()[:3]
     return list(reminders) + list(Entry.objects.filter(date__year=year, date__month=month,
-                                   date__day=day, creator=request.user, remind=True))
+                                   date__day=day, creator='testuser', remind=True))
 
-@login_required
+# @login_required
 def main(request, year=None):
     """Main listing, years and months; three years per page."""
     # prev / next years
@@ -59,7 +59,7 @@ def main(request, year=None):
             entry = current = False   # are there entry(s) for this month; current month?
             entries = Entry.objects.filter(date__year=y, date__month=n+1)
             if not _show_users(request):
-                entries = entries.filter(creator=request.user)
+                entries = entries.filter(creator='testuser')
 
             if entries:
                 entry = True
@@ -68,10 +68,10 @@ def main(request, year=None):
             mlst.append(dict(n=n+1, name=month, entry=entry, current=current))
         lst.append((y, mlst))
 
-    return render_to_response("cal/main.html", dict(years=lst, user=request.user, year=year,
+    return render_to_response("main.html", dict(years=lst, user='testuser', year=year,
                                                    reminders=reminders(request)))
 
-@login_required
+# @login_required
 def month(request, year, month, change=None):
     """Listing of days in `month`."""
     year, month = int(year), int(month)
@@ -98,7 +98,7 @@ def month(request, year, month, change=None):
         if day:
             entries = Entry.objects.filter(date__year=year, date__month=month, date__day=day)
             if not _show_users(request):
-                entries = entries.filter(creator=request.user)
+                entries = entries.filter(creator='testuser')
             if day == nday and year == nyear and month == nmonth:
                 current = True
 
@@ -107,10 +107,10 @@ def month(request, year, month, change=None):
             lst.append([])
             week += 1
 
-    return render_to_response("cal/month.html", dict(year=year, month=month, user=request.user,
+    return render_to_response("month.html", dict(year=year, month=month, user='testuser',
                         month_days=lst, mname=mnames[month-1], reminders=reminders(request)))
 
-@login_required
+# @login_required
 def day(request, year, month, day):
     """Entries for the day."""
     EntriesFormset = modelformset_factory(Entry, extra=1, exclude=("creator", "date"),
@@ -118,7 +118,7 @@ def day(request, year, month, day):
     other_entries = []
     if _show_users(request):
         other_entries = Entry.objects.filter(date__year=year, date__month=month,
-                                       date__day=day).exclude(creator=request.user)
+                                       date__day=day).exclude(creator='testuser')
 
     if request.method == 'POST':
         formset = EntriesFormset(request.POST)
@@ -126,7 +126,7 @@ def day(request, year, month, day):
             # add current user and date to each entry & save
             entries = formset.save(commit=False)
             for entry in entries:
-                entry.creator = request.user
+                entry.creator = 'testuser'
                 entry.date = date(int(year), int(month), int(day))
                 entry.save()
             return HttpResponseRedirect(reverse("cal.views.month", args=(year, month)))
@@ -134,13 +134,13 @@ def day(request, year, month, day):
     else:
         # display formset for existing enties and one extra form
         formset = EntriesFormset(queryset=Entry.objects.filter(date__year=year,
-            date__month=month, date__day=day, creator=request.user))
+            date__month=month, date__day=day, creator='testuser'))
     return render_to_response("cal/day.html", add_csrf(request, entries=formset, year=year,
             month=month, day=day, other_entries=other_entries, reminders=reminders(request)))
 
 
 def add_csrf(request, **kwargs):
     """Add CSRF and user to dictionary."""
-    d = dict(user=request.user, **kwargs)
+    d = dict(user='testuser', **kwargs)
     d.update(csrf(request))
     return d

@@ -26,13 +26,13 @@ urlpatterns = patterns('',
     url(r'^feedback',
         include('feedback.urls')),
 
-    url(r'^cal',
-        include('cal.urls')),
+    # url(r'^cal',
+    #     include('cal.urls')),
 
-    # url(
-    #     r'^calendar$',
-    #     'charterclub.views.calendar',
-    #     name='calendar'),
+    url(
+        r'^calendar$',
+        'charterclub.views.calendar',
+        name='calendar'),
     # url(
     #     r'^calendar2$',
     #     'charterclub.views.calendar2',

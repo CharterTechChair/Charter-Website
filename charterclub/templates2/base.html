@@ -36,7 +36,7 @@
     </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">  
-          <li><a href="{%url 'cal' %}">Calendar</a></li>
+          <li><a href="{%url 'calendar' %}">Calendar</a></li>
           <li><a href="{%url 'menu' %}">Menu</a></li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">About</a>
@@ -127,9 +127,17 @@
                         </div>
                     </div>
                   </div>
-               <ul class="nav nav-stacked">
-                <li><a href="{% url 'feedback' %}">Anonymous Feedback</a></li>
-              </ul>
+                  <ul></ul>
+                <div class="accordion" id="accordion2">
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
+                                <a href="{% url 'feedback' %}">Anonymous Feedback</a>
+                            </a>
+                        </div>
+                    </div>
+                  </div>
+                  <ul></ul>
                 <div class="accordion" id="accordion2">
                     <div class="accordion-group">
                             <div class="accordion-heading">
@@ -155,33 +163,14 @@
                     <div class="accordion-group">
                             <div class="accordion-heading">
                                 <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
-                                    <a href="{%url 'events' %}">Events
-                                </a>
+                                    Events
                             </div>
                             <div id="collapseThree" class="accordion-body collapse">
                                 <div class="accordion-inner">
-                                     RSVP
+                                     <a href="{%url 'events' %}">RSVP</a>
                                 </div>
                                 <div class="accordion-inner">
-                                    Seatings
-                                </div>
-                            </div>
-                        </div>
-                     </div> 
-
-                                  <div class="accordion" id="accordion3">
-                    <div class="accordion-group">
-                            <div class="accordion-heading">
-                                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion3" href="#collapseThree">
-                                    <a href="{%url 'events_view' %}">Event Seatings
-                                </a>
-                            </div>
-                            <div id="collapseThree" class="accordion-body collapse">
-                                <div class="accordion-inner">
-                                     RSVP
-                                </div>
-                                <div class="accordion-inner">
-                                    Seatings
+                                    <a href="{%url 'events_view' %}">Seatings</a>
                                 </div>
                             </div>
                         </div>
