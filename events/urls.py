@@ -7,9 +7,14 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(
-        r'^$',
-        'events.views.events',
+        r'^/signup$',
+        'events.views.events_choose',
         name='events'),  
+    url(
+        r'^/signup/(.+)/([0-9]{4}-[0-9]{2}-[0-9]{2})',
+        'events.views.events_entry',
+        name='event_entry'),
+
     url(
         r'^/view$', 
         'events.views.events_view', 

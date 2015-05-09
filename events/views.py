@@ -1,62 +1,89 @@
 # Some standard imports here
-import datetime
-from django.shortcuts import render
-from django.http import HttpResponse
+import datetime, urllib
+
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseRedirect
 
 from charterclub.models import *
 from charterclub.forms import *
 
 from events.models import Event
-from events.forms import EventEntryForm, EventCreateForm, AddSocialEventForm
+from events.forms import EventEntryForm, EventCreateForm, AddSocialEventForm, EventChoiceForm
 
-def events(request):
-    now = datetime.datetime.now().date()
-    event = Event.objects.filter(title='Formals')[0]
+def events_entry(request, title, date):
+    start = datetime.datetime.strptime(date, "%Y-%m-%d")
+    end = start + datetime.timedelta(days=1)
 
-    # request['netid'] = 'quanzhou'
-    # member = Member.objects.filter(netid=request.netid)
+    # Look for the event
+    event_search = Event.objects.filter(title=title, date_and_time__range = [start, end])
 
+    if not event_search:
+        subject = 'No Signups Available'
+        body = "Looks like there are no upcoming events with signups at the moment."
+        return render(request, 'standard_message.html', {
+                'subject' : subject,
+                'body'    : body,
+          })
+    else:
+        # Give them the form
+        if request.method != 'POST':
+            form = EventEntryForm(event=event_search[0])
+            return render(request, 'events.html', {
+                'form': form,
+                'error': '',
+                'netid': request.user.username,
+            })
+        # If the form is filled out, check it
+        else:
+            form = EventEntryForm(request.POST, event=event_search[0])
 
-    #Check if Form is valid. If so, then do submission
-    if request.method == 'POST':
-        form = EventEntryForm(request.POST)
+            if form.is_valid():
+                data =  form.cleaned_data
+                # Lookup the Member   
+                lookup_m =  Member.objects.filter(first_name=data['first_name'],
+                                                 last_name =data['last_name'])
+                if not lookup_m:
+                    raise Exception('Error: Member with netid "%s" not found in member database' % request['netid']) 
+                member = lookup_m[0]
 
-        if form.is_valid():
-            data =  form.cleaned_data   # Also validates the number of people in a room
-            lookup_m =  Member.objects.filter(first_name=data['first_name'],
-                                             last_name =data['last_name'])
-            if not lookup_m:
-                raise Exception('Error: Member with netid "%s" not found in member database' % request['netid']) 
-            member = lookup_m[0]
-            # If there's a guest, either find the guest or make one
-            if data['has_guest']:
-               lookup_g =  Guest.objects.filter(first_name=data['guest_first_name'],
-                                                last_name =data['guest_last_name'])
-               # Try to find the guest - else, look them up
-               if lookup_g:
-                  guest = lookup_g[0]
-               else:
-                   guest = Guest(first_name=data['guest_first_name'], 
-                             last_name =data['guest_last_name'],
-                             member_association=member)
-                   guest.save()
+                # If there's a guest, either find the guest or make one
+                if data['guest_first_name'] or data['guest_last_name']:
+                   lookup_g =  Guest.objects.filter(first_name=data['guest_first_name'],
+                                                    last_name =data['guest_last_name'])
+                   # Try to find the guest - else, look them up
+                   if lookup_g:
+                      guest = lookup_g[0]
+                   else:
+                       guest = Guest(first_name=data['guest_first_name'], 
+                                 last_name =data['guest_last_name'],
+                                 member_association=member)
+                       guest.save()
             else:
                 guest = None
 
             # Now try to add a person 
-            event.add_to_event(member, guest, form.cleaned_data['room_choice'])
+            event_search[0].add_to_event(member, guest, form.cleaned_data['room_choice'])
 
-        return HttpResponseRedirect('thanks_signup')
-    else:
-        form = EventEntryForm()
+        return redirect('thanks_signup')
 
-    return render(request, 'events.html', {
-        'current_date': now,
-        'form': form,
-        'error': '',
-        'netid': request.user.username,
-    })  
 
+def events_choose(request):
+  if request.method == 'POST':
+      form = EventChoiceForm(request.POST)
+
+      if form.is_valid():
+        data = form.cleaned_data
+        event = data['event_choice']
+        event_s = "%s/%s" % (event.title, event.date_and_time.isoformat()[:10])
+        return HttpResponseRedirect('/events/signup/' + urllib.quote(event_s))
+  else:
+    form = EventChoiceForm()
+
+  return render(request, 'form.html', {
+        'form' : form,
+    })
+
+  return render(request, 'events_choose.html',{})
 
 def events_view(request):
     now = datetime.datetime.now().date()

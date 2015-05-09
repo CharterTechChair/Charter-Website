@@ -1,9 +1,14 @@
+import datetime
+
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import admin
 from django import forms
 
+
+
 from charterclub.models import *
+
 
 # -- Models for Events ---
 class Room(models.Model):
@@ -141,7 +146,6 @@ class Event(models.Model):
         if room_g:
             room_g.remove_from_room(guest)
 
-
         room.add_pair_to_room(member, guest)
 
     # Remove a person or guest from this event
@@ -173,6 +177,12 @@ class Event(models.Model):
                 return r
         return None
 
+    # is this person in this event?
+    def has_person(self, person):
+        if self.get_room_of_person(person):
+            return True
+        return False
+
     def to_JSON(self):
         data = {}
         data['title'] = self.title
@@ -184,10 +194,12 @@ class Event(models.Model):
             data['rooms'].append(r.to_JSON())
 
         return data
-
+    
+    @staticmethod   
     def get_future_events():
-        startdate = date.today() - timedelta(days=1)
-        enddate = startdate + timedelta(weeks=52)
+
+        startdate = datetime.datetime.today() - datetime.timedelta(days=1)
+        enddate = startdate + datetime.timedelta(weeks=52)
         elist = Event.objects.filter(date_and_time__range=[startdate, enddate])
 
         return elist
