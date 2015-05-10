@@ -181,3 +181,6 @@ def help(request):
 
 def underconstruction(request):
    return HttpResponse("This is under construction!")
+
+def error404(request):
+    return render(request, "404.html")
