@@ -6,22 +6,26 @@
 
    <div class="col-xs-12">
 
-      <h2> See what events you've created
-
+      <h2> Upcoming Events: </h2>
+      <hr>
+      <div class="col-xs-12">
       {% for event in events_list %}
           <h3> {{ event }}</h3>
-        
-<!--           <div class="col-xs-12">
-              <div class="col-xs-5 col-centered"> <h4> Member </h4> </div>
-              <div class="col-xs-5 col-centered">  <h4> Guest</h4> </div>
+          <div class="col-xs-12 col-centered">
+              <p> {{ event.snippet }} </p>
+              <a class="btn btn-default minimal-button" href="{{event.get_signup_url }}">
+                   <span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>
+                    RSVP
+              </a>
+
+
+               <a class="btn btn-default minimal-button" href="{{event.get_view_url }}">
+                   <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                    View Seatings
+              </a>
           </div>
-          {% for member,guest in room.people %}
-          <div class="col-xs-12">
-              <div class="col-xs-5 col-centered"> {{ member }} </div>
-              <div class="col-xs-5 col-centered"> {{ guest}} </div>
-          </div>
-          {% endfor %} -->
       {% endfor %}
+      </div>
    </div>
 
 <p></p>

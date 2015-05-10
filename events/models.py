@@ -1,12 +1,11 @@
-import datetime
+import datetime, urllib
 
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import admin
-from django import forms
+from  django.core.urlresolvers import reverse
 
 from charterclub.models import *
-
 
 # -- Models for Events ---
 class Room(models.Model):
@@ -118,18 +117,17 @@ class Room(models.Model):
         ordering = ("name",)
 
 class Event(models.Model):
-    title = models.CharField(max_length=40)
-    snippet = models.CharField(max_length=150, blank=True)
+    title = models.CharField(max_length=255)
+    snippet = models.CharField(max_length=10000, blank=True)
 
     # Some times
-    date_and_time = models.DateTimeField(blank=True)
-    end_time = models.DateTimeField(blank=True)
+    date_and_time   = models.DateTimeField(blank=True)
+    signup_end_time = models.DateTimeField(blank=True)
 
     # Times for Junior Seniors and Sophomores
     sophomore_signup_start = models.DateTimeField(blank=True)
     junior_signup_start    = models.DateTimeField(blank=True)
     senior_signup_start    = models.DateTimeField(blank=True)
-    
 
     rooms = models.ManyToManyField(Room)
 
@@ -192,6 +190,18 @@ class Event(models.Model):
             data['rooms'].append(r.to_JSON())
 
         return data
+
+    def get_signup_url(self):
+        url =  'events/signup'
+        url += "/%s/%s" % (self.title, self.date_and_time.isoformat()[:10])
+        return urllib.quote(url)
+
+    def get_view_url(self):
+        url =  'events/view'
+        url += "/%s/%s" % (self.title, self.date_and_time.isoformat()[:10])
+        return urllib.quote(url)
+
+
     
     @staticmethod   
     def get_future_events():

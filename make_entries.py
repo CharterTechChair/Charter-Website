@@ -18,7 +18,7 @@ members = [m1, m2, m3]
 e = Event(title='Formals',
          snippet='yay houseparties!' ,
          date_and_time=timezone.now(),
-         end_time=timezone.now() + timedelta(days=1),
+         signup_end_time=timezone.now() + timedelta(days=1),
          sophomore_signup_start=timezone.now(),
          junior_signup_start   =timezone.now(),
          senior_signup_start   =timezone.now(),
