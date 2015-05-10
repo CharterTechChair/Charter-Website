@@ -162,6 +162,11 @@ h3.highlight  {
   	border-radius:0;
     /*opacity:0.6;*/
 }
+
+.loggedin {
+  padding-left:20px;
+}
+
 .navbar-nav > li > a {
   	color:#fff;
   	padding-left:20px;

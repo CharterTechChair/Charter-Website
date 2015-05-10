@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 
 from feedback.forms import FeedbackForm
+import charterclub.permissions as permissions
 
 def feedback(request):
    now = datetime.datetime.now().date()
@@ -29,7 +30,7 @@ def feedback(request):
      'current_date': now,
      'form': form,
      'error': '',
-     'netid': request.user.username,
+     'netid': permissions.get_username(request),
    })  
 
 def thanks(request):
@@ -37,5 +38,5 @@ def thanks(request):
     return render(request, "thanks.html", {
      'current_date': now,
      'error': '',
-     'netid': request.user.username,
+     'netid': permissions.get_username(request),
     })
