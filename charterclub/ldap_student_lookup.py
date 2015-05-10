@@ -68,7 +68,7 @@ def get_student_info(netid):
     netid = re.sub(r"\W+", "", netid)
 
     # assume there will only be one student returned
-    attributes = ldap_lookup("uid=" + netid)[0]
+    attributes = ldap_lookup("uid=" + netid)
     if len(attributes) > 0:
         attributes = attributes[0]
         student = models.Student(netid = attributes["uid"][0],
