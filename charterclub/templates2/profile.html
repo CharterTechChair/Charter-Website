@@ -4,34 +4,7 @@
 {% block content %}
 
    <div class="col-md-3">
-      <div class="panel panel-transparent" id="midCol">
-        <div class="panel-heading" style="background-color:#555;color:#eee;">Quick Links</div> 
-        <div class="panel-body">
-        
-          <div class="panel panel-transparent">
-              <h4>House account balance</h4>
-              <p>
-              ${{ member.house_account }}
-              </p>
-          </div>
 
-          <div class="panel panel-transparent">
-                  <h3>Upcoming events:</h3>
-
-          {% for event,room in events %}
-            <div class="panel panel-transparent">
-                <h4> {{ event }} </h4>
-                <p>
-                You RSVP'd for the {{ room }}!
-                </p>
-            </div>
-
-          {% endfor %}
-          
-          </div>
-
-       </div> 
-       </div><!--/panel-->
    </div>
 
    <div class="col-md-6">
@@ -42,7 +15,7 @@
         ${{ member.house_account }}
         </p>
 
-        <h3>Upcoming events:</h3>
+        <h4>Upcoming events:</h4>
 
           {% for event,room in events %}
             <h4> {{ event }} </h4>
