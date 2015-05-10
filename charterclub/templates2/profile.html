@@ -3,16 +3,16 @@
 
 {% block content %}
 
-   <div class="col-md-4">
+   <div class="col-md-3">
       <div class="panel panel-transparent" id="midCol">
         <div class="panel-heading" style="background-color:#555;color:#eee;">Quick Links</div> 
         <div class="panel-body">
         
           <div class="panel panel-transparent">
-                  <h4>House account balance</h4>
-                  <p>
-                  ${{ member.house_account }}
-                  </p>
+              <h4>House account balance</h4>
+              <p>
+              ${{ member.house_account }}
+              </p>
           </div>
 
           <div class="panel panel-transparent">
@@ -20,10 +20,10 @@
 
           {% for event,room in events %}
             <div class="panel panel-transparent">
-                    <h4> {{ event }} </h4>
-                    <p>
-                    You RSVP'd for the {{ room }}!
-                    </p>
+                <h4> {{ event }} </h4>
+                <p>
+                You RSVP'd for the {{ room }}!
+                </p>
             </div>
 
           {% endfor %}
@@ -34,15 +34,24 @@
        </div><!--/panel-->
    </div>
 
-   <div class="col-md-8">
-      <div class="panel panel-transparent">
-          <div class="panel-heading" style="background-color:#111;color:#fff;"> Welcome, {{ member.first_name }}!</div>   
-        <div class="panel-body">
-          <!-- Class of {{ member.year }} -->
+   <div class="col-md-6">
+       Welcome, {{ member.first_name }}!
+ 
+        <h4>House account balance</h4>
+        <p>
+        ${{ member.house_account }}
+        </p>
 
-          <img src="{{STATIC_URL}}img/pcc.jpg" style="border: 0" align="middle" width="100%" >
-        </div>
-      </div>
+        <h3>Upcoming events:</h3>
+
+          {% for event,room in events %}
+            <h4> {{ event }} </h4>
+            <p>
+            You RSVP'd for the {{ room }}!
+            </p>
+
+          {% endfor %} 
+
    </div>
 
 {% endblock %}    
