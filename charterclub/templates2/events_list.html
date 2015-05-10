@@ -9,14 +9,22 @@
       <h2> Upcoming Events: </h2>
       <hr>
       <div class="col-xs-12">
-      {% for event in events_list %}
+      {% for event, has_rsvp in events_info %}
           <h3> {{ event }}</h3>
           <div class="col-xs-12 col-centered">
               <p> {{ event.snippet }} </p>
+
+              {% if has_rsvp %}
               <a class="btn btn-default minimal-button" href="{{event.get_signup_url }}">
                    <span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>
-                    RSVP
+                    Resubmit RSVP
               </a>
+              {% else %}
+                            <a class="btn btn-default minimal-button" href="{{event.get_signup_url }}">
+                   <span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    RSVP here
+              </a>
+              {% endif %}
 
 
                <a class="btn btn-default minimal-button" href="{{event.get_view_url }}">

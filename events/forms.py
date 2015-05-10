@@ -151,9 +151,6 @@ class EventCreateForm(forms.Form):
         else:
             raise Exception('EventCreateForm: Cannot make an event with invalid data')
 
-        
-
-
 class EventChoiceForm(forms.Form):
     event_choice     = forms.ModelChoiceField(widget = forms.Select, queryset = Event.get_future_events())
     helper = FormHelper()   
