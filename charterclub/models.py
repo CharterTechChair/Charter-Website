@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import admin
 from django import forms
+from django.core.validators import RegexValidator
 # from events.models import Event
 
     
@@ -22,13 +23,14 @@ class Staff(Person):
     position = models.CharField('Staff\'s position/title', max_length=100)
     
 class Student(Person):
-    netid = models.CharField('Person\'s Princeton Net ID', max_length=100)
-    year = models.IntegerField('Person\'s Graduation Year')
+    alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
+    netid = models.CharField('Princeton Net ID', max_length=100, validators=[alphanumeric])
+    year = models.IntegerField('Graduation Year')
 
 
 class Prospective(Student):
     events_attended = models.IntegerField(
-        'Number of events this prospective has attended')
+        'Number of events attended')
     # meals = make another model for meals signups? use date fields?
     
 class Guest(Person):
@@ -61,8 +63,7 @@ class Member(Student):
 import events.models
 
 class Officer(Member):
-    position = models.CharField('Officer\'s position/title', max_length=100)
-
+    position = models.CharField('Position/title', max_length=100)
 
 # THIS WILL GET MOVED TO A CAL APP EVENTUALLY
 class SocialEvent(models.Model):
