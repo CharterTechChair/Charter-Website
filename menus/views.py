@@ -2,12 +2,14 @@ import datetime
 
 # Some standard stuff from the Django Library
 from django import template
-from django.shortcuts import render
+#from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 
 # Forms and Models
 from menus.models import MenuItem
 from menus.forms import MenuForm
+
+from charterclub.views import render
 
 def menu_input(request):
    now = datetime.datetime.now().date()

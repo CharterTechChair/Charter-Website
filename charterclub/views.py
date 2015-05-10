@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django import template
-from django.shortcuts import render
+import django.shortcuts
 from django.template import RequestContext
 from django.template.loader import get_template
 from django.conf import settings
@@ -19,6 +19,38 @@ from django.shortcuts import get_object_or_404, render_to_response
 
 from models import *
 import permissions
+
+from ldap_student_lookup import get_student_info
+
+# a replacement render function which passes some additional
+# user information to our template by wrapping the original
+# render function. specifically, it passes information about the
+# student/member/officer status of the user.
+def render(request, template_name, context=None, *args, **kwargs):
+    netid = permissions.get_username(request)
+    if not netid == "":
+        s = get_student_info(netid)
+    else:
+        s = None
+        
+    m = Member.objects.filter(netid=netid)
+    if len(m) > 0:
+        m = m[0]
+    else:
+        m = None
+
+    o = Officer.objects.filter(netid=netid)
+    if len(o) > 0:
+        o = o[0]
+    else:
+        o = None
+    
+    additional_context = {"member" : m, "student" : s, "officer" : o}
+    if context:
+        additional_context.update(context)
+
+    return django.shortcuts.render(request, template_name, additional_context,
+                                   *args, **kwargs)
 
 def index(request):
     html = "Hello World"

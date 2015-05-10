@@ -1,11 +1,12 @@
 # Some standard imports here
 import datetime, urllib
 
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.http import HttpResponse, HttpResponseRedirect
 
 from charterclub.models import *
 from charterclub.forms import *
+from charterclub.views import render
 import charterclub
 import charterclub.permissions as permissions
 

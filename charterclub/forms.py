@@ -20,6 +20,10 @@ DAYS = [("Monday", "Monday"),
         ("Saturday", "Saturday"),
         ("Sunday", "Sunday")]
 
+
+# form for entering a new member into the database
+# takes a netid as input as uses ldap lookup to find corresponding
+# first name, last name, and graduation year.
 class NewMemberForm(forms.ModelForm):
     class Meta:
         model = Officer
@@ -27,10 +31,12 @@ class NewMemberForm(forms.ModelForm):
 
     def save(self, commit=True):
         newMember = super(NewMemberForm, self).save(commit = False)
+        
         student = get_student_info(newMember.netid)
         newMember.first_name = student.first_name
         newMember.last_name = student.last_name
         newMember.year = student.year
+        
         if commit:
             newMember.save()
 
