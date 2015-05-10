@@ -198,6 +198,10 @@ h3.highlight  {
 	min-width: 250px;
 }
 
+.dropdown-backdrop {
+    position: static;
+}
+
 .caret {
 	color:#fff;
 }
