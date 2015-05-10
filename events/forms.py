@@ -46,7 +46,7 @@ class EventCreateForm(forms.Form):
     def clean_title(self):
         ans = self.cleaned_data['title']
         # restrict field to alphanumeric + whitespace
-        m = re.search(r'[\w\s0-9]+', 'ans') 
+        m = re.search(r'[\w\s0-9]+', ans) 
         if m or m.group() == ans:
             raise forms.ValidationError("Title can not contain special characters like !,+*/ (etc)")
 
