@@ -1,5 +1,5 @@
 import datetime
-from django.shortcuts import render
+from charterclub.views import render
 from django.http import HttpResponse, HttpResponseRedirect
 
 from feedback.forms import FeedbackForm
@@ -16,7 +16,7 @@ def feedback(request):
         sender = 'charter.techchair@gmail.com'
         # cc_myself = form.cleaned_data['cc_myself']
 
-        recipients = ['roryf@princeton.edu']
+        recipients = ['charter-officers@princeton.edu']
         # if cc_myself:
         #     recipients.append(sender)
 

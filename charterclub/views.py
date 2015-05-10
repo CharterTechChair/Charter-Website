@@ -86,7 +86,8 @@ def calendar(request):
 def calendar2(request):
    return render(request, "calendar2.html")
    # return HttpResponse("This is a completely functional calendar")
-   
+ 
+@permissions.member   
 def faceboard(request):
     def picsfromyear(year):
         piclocation = "static/img/faceboard/"
@@ -99,15 +100,16 @@ def faceboard(request):
         return pics
               
     year = datetime.date.today().year
-    template = get_template("faceboard.html")
     seniorpics = picsfromyear(year)
     juniorpics = picsfromyear(year + 1)
     sophpics = picsfromyear(year + 2)
-    context = RequestContext(request,
-                             {"seniorpics" : seniorpics,
-                              "juniorpics" : juniorpics,
-                              "sophpics" : sophpics})
-    return HttpResponse(template.render(context))
+
+    return render(request, "faceboard.html", {
+      'seniorpics': seniorpics,
+      'juniorpics': juniorpics,
+      'sophpics': sophpics
+      'netid': permissions.get_username(request)
+  })
 
 def history(request):
    return render(request, "history.html")
@@ -146,7 +148,6 @@ def profile(request):
      'member': m,
      'events': e,
      'netid': permissions.get_username(request)
-     # 'netid': 'roryf'
   })
 
 @permissions.officer
