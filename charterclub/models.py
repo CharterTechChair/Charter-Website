@@ -9,7 +9,7 @@ from django.core.validators import RegexValidator
 class Person(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-
+    
     class meta:
         ordering = ('last_name', 'first_name')
 
@@ -27,6 +27,12 @@ class Student(Person):
     netid = models.CharField('Princeton Net ID', max_length=100, validators=[alphanumeric])
     year = models.IntegerField('Graduation Year')
 
+    # def __init__(self, member):
+    #     self.pk = member.pk
+    #     self.netid = member.netid
+    #     self.year = member.year
+    #     self.first_name = member.first_name
+    #     self.last_name = member.last_name
 
 class Prospective(Student):
     events_attended = models.IntegerField(

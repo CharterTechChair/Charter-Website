@@ -28,22 +28,29 @@ from ldap_student_lookup import get_student_info
 # student/member/officer status of the user.
 def render(request, template_name, context=None, *args, **kwargs):
     netid = permissions.get_username(request)
-    if not netid == "":
-        s = get_student_info(netid)
-    else:
-        s = None
-        
-    m = Member.objects.filter(netid=netid)
-    if len(m) > 0:
-        m = m[0]
-    else:
-        m = None
 
     o = Officer.objects.filter(netid=netid)
     if len(o) > 0:
         o = o[0]
     else:
         o = None
+
+    if not o:
+        m = Member.objects.filter(netid=netid)
+        if len(m) > 0:
+            m = m[0]
+        else:
+            m = None
+    else:
+        m = o
+
+    if not m:
+        if not netid == "":
+            s = get_student_info(netid)
+        else:
+            s = None
+    else:
+        s = m   
     
     additional_context = {"member" : m, "student" : s, "officer" : o}
     if context:
