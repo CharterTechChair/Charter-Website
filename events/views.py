@@ -175,7 +175,7 @@ def socialevent_create(request):
             socialevent.save()
             print socialevent
 
-            return HttpResponseRedirect('thanks_create') # Redirect after POST
+            return HttpResponseRedirect('calendar') # Redirect after POST
     else:
         form = AddSocialEventForm()
 

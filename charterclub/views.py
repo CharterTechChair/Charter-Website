@@ -22,13 +22,9 @@ import permissions
 
 from ldap_student_lookup import get_student_info
 
-# a replacement render function which passes some additional
-# user information to our template by wrapping the original
-# render function. specifically, it passes information about the
-# student/member/officer status of the user.
-def render(request, template_name, context=None, *args, **kwargs):
+def additional_context(request):
     netid = permissions.get_username(request)
-
+    
     o = Officer.objects.filter(netid=netid)
     if len(o) > 0:
         o = o[0]
@@ -52,11 +48,18 @@ def render(request, template_name, context=None, *args, **kwargs):
     else:
         s = m   
     
-    additional_context = {"member" : m, "student" : s, "officer" : o}
-    if context:
-        additional_context.update(context)
+    return {"member" : m, "student" : s, "officer" : o}
 
-    return django.shortcuts.render(request, template_name, additional_context,
+# a replacement render function which passes some additional
+# user information to our template by wrapping the original
+# render function. specifically, it passes information about the
+# student/member/officer status of the user.
+def render(request, template_name, context=None, *args, **kwargs):
+    add_context = additional_context(request)
+    if context:
+        add_context.update(context)
+
+    return django.shortcuts.render(request, template_name, add_context,
                                    *args, **kwargs)
 
 def index(request):
@@ -181,3 +184,6 @@ def help(request):
 
 def underconstruction(request):
    return HttpResponse("This is under construction!")
+
+def error404(request):
+    return render(request, "404.html")

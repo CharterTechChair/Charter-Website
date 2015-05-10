@@ -10,7 +10,9 @@ from menus.models import MenuItem
 from menus.forms import MenuForm
 
 from charterclub.views import render
+from charterclub import permissions
 
+@permissions.officer
 def menu_input(request):
    now = datetime.datetime.now().date()
    #Generate Event Form
@@ -20,11 +22,12 @@ def menu_input(request):
         data = form.cleaned_data
 
 #         menuitem = MenuItem(day=data['day'], date=data['date'], 
-        menuitem = MenuItem(day=data['day'], 
-                             lunch_food=data['lunch'], dinner_food=data['dinner'])
+        menuitem = MenuItem(date=data['date'], 
+                            lunch_food=data['lunch_food'],
+                            dinner_food=data['dinner_food'])
         menuitem.save()
 
-        return HttpResponseRedirect('menu') # Redirect after POST
+        return HttpResponseRedirect('view') # Redirect after POST
    else:
       form = MenuForm()
 
@@ -43,11 +46,11 @@ def menu(request):
    # return HttpResponse("This is a completely functional menu")
    now = datetime.datetime.now().date()
 
-   startdate = datetime.date.today() - datetime.timedelta(days=3)
-   enddate = startdate + datetime.timedelta(weeks=1)
+   startdate = datetime.date.today()
+   enddate = startdate + datetime.timedelta(days = 7)
    mlist = MenuItem.objects.all()
    # mlist = MenuItem.objects.order_by('day')
-   # mlist = MenuItem.objects.filter(date__range=[startdate, enddate]).order_by('date')
+   #mlist = MenuItem.objects.filter(date__range=[startdate, enddate])
 
    return render(request, 'menu.html', {
      'current_date': now,

@@ -88,5 +88,11 @@ urlpatterns = patterns('',
         r'^admin/', 
         include(admin.site.urls)),
 )
+
+if not settings.DEBUG:
+    urlpatterns += patterns('', url(r'',
+                                    'charterclub.views.error404',
+                                    name='error404'))
+    
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
