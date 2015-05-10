@@ -104,10 +104,10 @@ def faceboard(request):
     juniorpics = picsfromyear(year + 1)
     sophpics = picsfromyear(year + 2)
 
-    return render(request, "faceboard.html", {
+    return render(request, 'faceboard.html', {
       'seniorpics': seniorpics,
       'juniorpics': juniorpics,
-      'sophpics': sophpics
+      'sophpics': sophpics,
       'netid': permissions.get_username(request)
   })
 
