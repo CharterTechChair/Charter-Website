@@ -13,7 +13,7 @@ def feedback(request):
      if form.is_valid():
         subject = 'Anonymous Feedback'
         message = form.cleaned_data['anonymous_feedback']
-        sender = 'roryf@princeton.edu'
+        sender = 'charter.techchair@gmail.com'
         # cc_myself = form.cleaned_data['cc_myself']
 
         recipients = ['roryf@princeton.edu']
@@ -21,7 +21,7 @@ def feedback(request):
         #     recipients.append(sender)
 
         from django.core.mail import send_mail
-        # send_mail(subject, message, sender, recipients, fail_silently=False)
+        send_mail(subject, message, sender, recipients, fail_silently=False)
         return HttpResponseRedirect('thanks') # Redirect after POST
    else:
       form = FeedbackForm()
