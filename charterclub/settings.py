@@ -46,6 +46,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'dajaxice',
+    'dajax',
     'charterclub',
     'crispy_forms',
     'events',
@@ -65,6 +67,22 @@ MIDDLEWARE_CLASSES = (
     # required for CAS
     'django_cas.middleware.CASMiddleware',
     'django.middleware.doc.XViewMiddleware',
+)
+
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+    'django.template.loaders.eggs.Loader',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+    'django.core.context_processors.static',
+    'django.core.context_processors.request',
+    'django.contrib.messages.context_processors.messages'
 )
 
 # needed for CAS
@@ -141,6 +159,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = 'staticfiles'
 
+STATICFILES_FINDERS = ('django.contrib.staticfiles.finders.FileSystemFinder',
+                       'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+                       'dajaxice.finders.DajaxiceFinder')
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
 

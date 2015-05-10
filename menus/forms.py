@@ -30,9 +30,12 @@ class MenuForm(forms.ModelForm):
             # format as month day, day-of-week
             choices.append( (d, d.strftime("%b %d, %A")) )
 
-        self.fields['date'] = forms.ChoiceField(widget=forms.Select,
-                                                choices = choices,
-                                                initial = choices[0])
+        self.fields['date'] = forms.ChoiceField(
+            widget=forms.Select(
+                attrs={"onChange":
+                      "Dajaxice.menus.updatemenu(Dajax.process,{'date':this.value})"}),
+                choices = choices,
+                initial = choices[0])
     
     # Submit buttons
     helper = FormHelper()   

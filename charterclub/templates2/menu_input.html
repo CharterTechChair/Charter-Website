@@ -1,9 +1,15 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load static %}
+{% load dajaxice_templatetags%}
 {% load crispy_forms_tags %}
+
 
 {% block content %}
 
+<script type="text/javascript" src="jquery.dajax.core.js"></script>
+{% static "/static/dajax/jquery.dajax.core.js" %}
+{% dajaxice_js_import %}
    <div class="col-md-5">
       <p> Add menu items here! </p>
       <br>

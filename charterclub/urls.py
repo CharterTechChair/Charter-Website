@@ -2,7 +2,10 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+import dajaxice
+from dajaxice.core import dajaxice_config, dajaxice_autodiscover
 
+dajaxice_autodiscover()
 admin.autodiscover()
 #Here is a mapping between the pattern in the URL to the function that
 #   generates the page.
@@ -84,6 +87,7 @@ urlpatterns = patterns('',
         r'^accounts/login/hello$', 
         'charterclub.views.hello', 
         name='hello'),
+    url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
     url(
         r'^admin/', 
         include(admin.site.urls)),
