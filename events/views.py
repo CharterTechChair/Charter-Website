@@ -154,14 +154,21 @@ def events_create(request):
      # 'netid': permissions.get_username(request),
    })  
 
+@permissions.member
 def events_list(request):
-   ev = Event.objects.order_by('date_and_time')
+    events = Event.objects.order_by('date_and_time')
+    member = Member.objects.filter(netid=permissions.get_username(request))[0]
+    events_info = [(e, e.has_person(member)) for  e in events]
+ 
+    for e in events:
+        print "%s has %s" % (e, member)
 
-   return render(request, 'events_list.html', {
-     'error': '',
-     'netid': permissions.get_username(request),
-     'events_list': ev ,
-   })  
+    e.has_person(member)
+    return render(request, 'events_list.html', {
+      'error': '',
+      'netid': permissions.get_username(request),
+      'events_info': events_info ,
+    })  
 
 def socialevent_create(request):
     #Generate Event Form
