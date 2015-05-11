@@ -11,7 +11,11 @@ from menus.models import MenuItem
 def updatemenu(request, date):
     dajax = Dajax()
 
-    menu = MenuItem.objects.filter(date=date)
+    if date:
+        menu = MenuItem.objects.filter(date=date)
+    else:
+        menu = []
+    
     if len(menu) > 0:
         menu = menu[0]
     else:

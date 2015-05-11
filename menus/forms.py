@@ -20,7 +20,7 @@ class MenuForm(forms.ModelForm):
         super(MenuForm, self).__init__(*args, **kwargs)
         today = datetime.date.today()
         dates = [today + datetime.timedelta(days=i) for i in range(0,14)]
-        choices = []
+        choices = [(None, "Select a day")]
 
         # allow entry for days in the next two weeks
         for d in dates:
@@ -32,8 +32,8 @@ class MenuForm(forms.ModelForm):
 
         self.fields['date'] = forms.ChoiceField(
             widget=forms.Select(
-                attrs={"onChange":
-                      "Dajaxice.menus.updatemenu(Dajax.process,{'date':this.value})"}),
+                attrs={"onChange" :
+                       "Dajaxice.menus.updatemenu(Dajax.process,{'date':this.value})"}),
                 choices = choices,
                 initial = choices[0])
     
