@@ -3,8 +3,14 @@
 
 {% block content %}
 
-<div class="col-xs-5 col-centered">
-   If you're a sophomore interested in joining Charter, add yourself to our mailing list! Don't hesitate to email President {{ prez.first_name }} {{ prez.last_name }} at {{ prez.netid }}@princeton.edu or Vice President {{ vp.first_name }} {{ vp.last_name }} at {{ vp.netid }}@princeton.edu with any questions! We're always happy to welcome new members to the Charter family.
+<div class="col-xs-3 col-centered"> </div>
+
+<div class="col-xs-6 col-centered">
+   <img src="{{STATIC_URL}}img/bear.png" style="border: 0" align="middle" width="100%" >
+
+   <hr>
+   
+   If you're a sophomore interested in joining Charter, add yourself to our mailing list! Don't hesitate to email President {{ prez.first_name }} {{ prez.last_name }} at {{ prez.netid }}@princeton.edu or Vice President {{ vp.first_name }} {{ vp.last_name }} at {{ vp.netid }}@princeton.edu with any questions. We're always happy to welcome new members to the Charter family.
 </div>
 
 {% endblock %}
