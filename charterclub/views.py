@@ -180,8 +180,32 @@ def officer(request):
   'member': m
   })
 
-# def login(request):
-#    return HttpResponse("This is a completely functional CAS login page")
+def mailinglist(request):
+  if request.method == 'POST':
+    form = MailingListForm(request.POST)
+    if form.is_valid():
+      form.add_soph()
+
+      return HttpResponseRedirect('contactus')
+        
+  else:
+    form = MailingListForm()
+
+
+  return render(request, 'mailinglist.html', {
+     'form': form,
+     'error': '',
+     'netid': permissions.get_username(request),
+   })  
+
+def mailinglist_view(request):
+  plist = Prospective.objects.all()
+
+  return render(request, "mailinglist_view.html", {
+     'error': '',
+     'plist': plist,
+     'netid': permissions.get_username(request)
+  })
 
 def permission_denied(request):
     return render(request, "permission_denied.html")
