@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+      {% for menuitem in menu_list %}
+         <h3> {{ menuitem.date|date:"l, M j " }} </h3>
+         <div class="col-xs-12" style="margin-bottom: 30px">
+            <div class="col-xs-6 col-centered"> 
+               <hr>
+               <h4> Lunch </h4>
+               <hr>
+               {{ menuitem.lunch_food|linebreaks }} 
+            </div>
+            <div class="col-xs-6 col-centered"> 
+               <hr>
+               <h4> Dinner </h4>
+               <hr>
+               {{ menuitem.dinner_food|linebreaks }} 
+            </div>
+         </div>
+      {% endfor %}
+
+{% endblock %}
+
