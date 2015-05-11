@@ -2,6 +2,11 @@ from dajax.core import Dajax
 from dajaxice.decorators import dajaxice_register
 from menus.models import MenuItem
 
+# uses ajax: whenever the date field in our form is changed, the
+# page loads the menu associated with that date and updates the
+# associated text_area with the current information for that menu
+
+# this encapsulates the server-response part of this process
 @dajaxice_register
 def updatemenu(request, date):
     dajax = Dajax()
