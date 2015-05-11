@@ -7,9 +7,10 @@
 
 {% block content %}
 
-<script type="text/javascript" src="jquery.dajax.core.js"></script>
-{% static "/static/dajax/jquery.dajax.core.js" %}
+<script type="text/javascript" src="{% static "js/jquery-2.1.3.min.js" %}"></script>
+<script type="text/javascript" src="{% static "dajax/jquery.dajax.core.js" %}"></script>
 {% dajaxice_js_import %}
+
    <div class="col-md-5">
       <p> Add menu items here! </p>
       <br>
