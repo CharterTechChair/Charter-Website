@@ -21,11 +21,18 @@ def menu_input(request):
      if form.is_valid():
         data = form.cleaned_data
 
-#         menuitem = MenuItem(day=data['day'], date=data['date'], 
-        menuitem = MenuItem(date=data['date'], 
+        lookup = MenuItem.objects.filter(date=data['date'])
+
+        if not lookup:
+          menuitem = MenuItem(date=data['date'], 
                             lunch_food=data['lunch_food'],
                             dinner_food=data['dinner_food'])
-        menuitem.save()
+          menuitem.save()
+        else:
+          menuitem = lookup[0]
+          menuitem.lunch_food = data['lunch_food']
+          menuitem.dinner_food = data['dinner_food']
+          menuitem.save()
 
         return HttpResponseRedirect('view') # Redirect after POST
    else:
@@ -35,26 +42,19 @@ def menu_input(request):
      'current_date': now,
      'form': form,
      'error': '',
-     'netid': 'roryf',
-     # 'netid': request.user.username,
+     'netid':  permissions.get_username(request),
    })  
 
 def menu(request):
-  # NEED TO COME UP WITH A MORE ELEGANT WAY TO DO THIS WITH TWO COLUMNS
-
-   # return render(request, "menu.html")
-   # return HttpResponse("This is a completely functional menu")
    now = datetime.datetime.now().date()
 
    startdate = datetime.date.today()
    enddate = startdate + datetime.timedelta(days = 7)
-   mlist = MenuItem.objects.all()
-   # mlist = MenuItem.objects.order_by('day')
-   #mlist = MenuItem.objects.filter(date__range=[startdate, enddate])
+   mlist = MenuItem.objects.filter(date__range=[startdate, enddate]).order_by('date')
 
    return render(request, 'menu.html', {
      'current_date': now,
      'error': '',
-     'netid': 'quanzhou',
+     'netid': permissions.get_username(request),
      'menu_list': mlist ,
    })  
