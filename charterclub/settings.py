@@ -47,8 +47,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'jquery'
-    'dajaxice-ng',
-    'dajax-ng',
+    'dajaxice',
+    'dajax',
     'charterclub',
     'crispy_forms',
     'events',
