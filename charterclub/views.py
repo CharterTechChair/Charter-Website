@@ -120,12 +120,12 @@ def song(request):
 def constitution(request):
    return render(request, "constitution.html")
 
-def officers_list(request):
+def officer_list(request):
     now = datetime.datetime.now().date()
 
     olist = Officer.objects.all()
 
-    return render(request, 'calendar.html', {
+    return render(request, 'officer_list.html', {
      'current_date': now,
      'error': '',
      'netid': permissions.get_username(request),

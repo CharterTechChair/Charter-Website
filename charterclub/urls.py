@@ -62,9 +62,9 @@ urlpatterns = patterns('',
         'charterclub.views.constitution',
         name='constitution'),
     url(
-        r'^officers_list$',
-        'charterclub.views.officers_list',
-        name='officers_list'),
+        r'^officer_list$',
+        'charterclub.views.officer_list',
+        name='officer_list'),
     url(
         r'^underconstruction$',
         'charterclub.views.underconstruction',
