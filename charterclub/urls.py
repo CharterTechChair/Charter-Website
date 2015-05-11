@@ -70,6 +70,14 @@ urlpatterns = patterns('',
         'charterclub.views.contactus',
         name='contactus'),
     url(
+        r'^mailinglist$',
+        'charterclub.views.mailinglist',
+        name='mailinglist'),
+    url(
+        r'^mailinglist_view$',
+        'charterclub.views.mailinglist_view',
+        name='mailinglist_view'),
+    url(
         r'^underconstruction$',
         'charterclub.views.underconstruction',
         name='underconstruction'),

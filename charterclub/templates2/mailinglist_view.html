@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+{% for prospective in plist %}
+   <div class="col-xs-12">
+     {{ prospective.netid }}@princeton.edu
+   </div>
+{% endfor %}
+
+{% endblock %}
+

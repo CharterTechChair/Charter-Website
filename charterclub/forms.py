@@ -72,3 +72,36 @@ class EditOfficerForm(forms.ModelForm):
         model = Officer
         fields = ['position']
 
+year = (date.today() + timedelta(days=6*30)).year
+years = [year, year+1, year+2, year+3]
+
+YEARS = []
+
+for y in years:
+    YEARS.append((y, str(y)))
+
+class MailingListForm(forms.Form):
+    netid = forms.CharField(max_length=10)
+    first_name = forms.CharField(max_length=30)
+    last_name = forms.CharField(max_length=30)
+    year = forms.ChoiceField(widget=forms.Select, choices=YEARS)
+
+    # Submit buttons
+    helper = FormHelper()   
+    helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
+
+    def add_soph(self):
+
+        if self.is_valid():
+            data = self.cleaned_data
+            
+            p = Prospective.objects.filter(netid=data['netid'])
+            print "here"
+            if not p:
+                pnew = Prospective(netid=data['netid'],
+                                   first_name=data['first_name'],
+                                   last_name=data['last_name'],
+                                   year=data['year'],
+                                   events_attended=0)
+                pnew.save()
+
