@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+This is a faceboard! <p>
+
+Seniors <p>
+{% for officer in officerlist %}
+   <strong> {{ officer.position }}: </string> {{ officer.first_name }} {{ officer.last_name }} <i> {{ officer.netid }}@princeton.edu </i>
+{% endfor %}
+
+
+{% endblock %}

@@ -120,6 +120,18 @@ def song(request):
 def constitution(request):
    return render(request, "constitution.html")
 
+def officers_list(request):
+    now = datetime.datetime.now().date()
+
+    olist = Officer.objects.all()
+
+    return render(request, 'calendar.html', {
+     'current_date': now,
+     'error': '',
+     'netid': permissions.get_username(request),
+     'officerlist': olist ,
+    }) 
+
 def hello(request):
   now = datetime.datetime.now().date()
   return render(request, "hello.html", {
@@ -133,14 +145,9 @@ def profile(request):
   
   now = datetime.datetime.now().date()
 
-  # m = Member.objects.filter(netid=request.user.username)
   m = Member.objects.filter(netid=permissions.get_username(request))[0]
-  # m = Member.objects.filter(netid='roryf')
 
   e = m.get_events()
-  # house_account = m.house_account
-  # officer = m.position
-  # year = m.year
 
   return render(request, "profile.html", {
      'current_date': now,
@@ -164,11 +171,9 @@ def officer(request):
 def permission_denied(request):
     return render(request, "permission_denied.html")
 
-def help(request):
-   return HttpResponse("This is under construction!")
-
 def underconstruction(request):
-   return HttpResponse("This is under construction!")
+  return render(request, "underconstruction.html", {
+  })
 
 def error404(request):
     return render(request, "404.html")

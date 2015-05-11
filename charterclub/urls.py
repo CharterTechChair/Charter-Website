@@ -11,6 +11,10 @@ urlpatterns = patterns('',
         r'^$',
         'charterclub.views.index',
         name='index'), 
+     url(
+        r'^#$',
+        'charterclub.views.index',
+        name='index'), 
 
     url(
         r'^index$',
@@ -58,13 +62,13 @@ urlpatterns = patterns('',
         'charterclub.views.constitution',
         name='constitution'),
     url(
-        r'^help$',
-        'charterclub.views.help',
-        name='help'),
+        r'^officers_list$',
+        'charterclub.views.officers_list',
+        name='officers_list'),
     url(
-        r'^#$',
+        r'^underconstruction$',
         'charterclub.views.underconstruction',
-        name='#'),
+        name='underconstruction'),
 
     # for Officers only
     url(
