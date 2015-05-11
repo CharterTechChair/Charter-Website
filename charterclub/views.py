@@ -120,6 +120,7 @@ def song(request):
 def constitution(request):
    return render(request, "constitution.html")
 
+@permissions.member 
 def officer_list(request):
     now = datetime.datetime.now().date()
 
