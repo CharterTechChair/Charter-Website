@@ -133,6 +133,20 @@ def officer_list(request):
      'officerlist': olist ,
     }) 
 
+def contactus(request):
+    now = datetime.datetime.now().date()
+
+    prez = Officer.objects.filter(position='President')
+    vp = Officer.objects.filter(position='Vice President')
+
+    return render(request, 'contactus.html', {
+     'current_date': now,
+     'error': '',
+     'netid': permissions.get_username(request),
+     'prez': prez,
+     'vp': vp,
+    }) 
+
 def hello(request):
   now = datetime.datetime.now().date()
   return render(request, "hello.html", {
