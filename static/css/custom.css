@@ -16,6 +16,11 @@
 .minimal-button {
   background: transparent;
   color:#fff;
+  margin: 10px;
+}
+
+.web-link{
+  color :#C6852A;
 }
 
 .btn-warning, .btn-warning.active, .btn, .btn-primary {
