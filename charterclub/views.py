@@ -66,26 +66,6 @@ def index(request):
     html = "Hello World"
     return render(request, "index.html")
 #    return HttpResponse(html)
-
-def calendar(request):
-    # return render(request, "calendar.html")
-    # return HttpResponse("This is a completely functional calendar")
-    now = datetime.datetime.now().date()
-
-    startdate = date.today() - timedelta(days=1)
-    enddate = startdate + timedelta(weeks=52)
-    elist = SocialEvent.objects.filter(date_and_time__range=[startdate, enddate]).order_by('date_and_time')
-
-    return render(request, 'calendar.html', {
-     'current_date': now,
-     'error': '',
-     'netid': 'quanzhou',
-     'events_list': elist ,
-    })  
-
-def calendar2(request):
-   return render(request, "calendar2.html")
-   # return HttpResponse("This is a completely functional calendar")
  
 @permissions.member   
 def faceboard(request):
@@ -136,8 +116,20 @@ def officer_list(request):
 def contactus(request):
     now = datetime.datetime.now().date()
 
-    prez = Officer.objects.filter(position='President')[0]
-    vp = Officer.objects.filter(position='Vice President')[0]
+    prez = Officer.objects.filter(position='President')
+    vp = Officer.objects.filter(position='Vice President')
+
+    if not prez: 
+      prez = ''
+    else:
+      prez = prez[0]
+
+
+    if not vp:
+      vp = ''
+    else:
+      vp = vp[0]
+
 
     return render(request, 'contactus.html', {
      'current_date': now,

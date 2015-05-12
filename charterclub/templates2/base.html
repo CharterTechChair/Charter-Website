@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load bootstrap_calendar %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -9,12 +10,19 @@
       <title>Princeton Charter Club</title>
       <meta name="generator" content="Bootply" />
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+      {% block css %}
       <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
       <link href="{% static "css/font-awesome.min.css" %}" rel="stylesheet">
       <!--[if lt IE 9]>
          <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
       <![endif]-->
       <link href="{% static "css/styles.css" %}" rel="stylesheet">
+      {% bootstrap_calendar_css %}
+
+      <link href="{% static "css/custom.css" %}" rel="stylesheet">
+
+      {% endblock %}
    </head>
    <body>
     <div id="fb-root"></div>
@@ -147,8 +155,12 @@
 
 
    <!-- script references -->
+   {% block javascript %}
       <script src="{% static "js/jquery-2.1.3.min.js" %}"></script>
       <script src="{% static "js/bootstrap.min.js" %}"></script>
       <script src="{% static "js/scripts.js" %}"></script>
+      {% bootstrap_calendar_js language='template' %}
+      {% bootstrap_calendar_init language='template' %}
+    {% endblock javascript %}
    </body>
 </html>

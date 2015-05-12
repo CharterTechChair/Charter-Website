@@ -54,7 +54,7 @@ INSTALLED_APPS = (
     'events',
     'menus',
     'feedback',
-    'cal',
+    'django_bootstrap_calendar',
 )
 
 MIDDLEWARE_CLASSES = (

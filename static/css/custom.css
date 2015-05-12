@@ -1,0 +1,51 @@
+.cal-day-today {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+.cal-day-today span[data-cal-date] {
+  color: #fff;
+}
+
+.event-info {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.cal-day-holiday span[data-cal-date] {
+  color: #fff;
+}
+
+.minimal-button {
+  background: transparent;
+  color:#fff;
+}
+
+.btn-warning, .btn-warning.active, .btn, .btn-primary {
+  color: #fff;
+  background-color: #fff;
+  border-color: #fff;
+  background: transparent;
+}
+
+.btn-right {
+   margin-right: 10px;
+}
+
+.btn-group .btn + .btn,
+.btn-group .btn + .btn-group,
+.btn-group .btn-group + .btn,
+.btn-group .btn-group + .btn-group {
+  margin-left: -1px;
+  margin-bottom: 10px;
+
+}
+
+#cal-slide-content {
+  background-image: url("../img/skinny.png");
+}
+
+#cal-week-box {
+  border: 1px solid #e1e1e1;
+  border-right: 0px;
+  border-radius: 5px 0 0 5px;
+  background-color: rgba(255, 255, 255, 0.3);
+  text-align: right;
+}
