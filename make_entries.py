@@ -15,6 +15,9 @@ m3.save()
 m4.save()
 members = [m1, m2, m3]
 
+o = Officer(first_name='Quan', last_name='Zhou', position='webmaster', netid='quanzhou', year=2015)
+o.save()
+
 e = Event(title='Formals',
          snippet='yay houseparties!' ,
          date_and_time=timezone.now(),

@@ -160,10 +160,8 @@ class EventChoiceForm(forms.Form):
 
 class EventEntryForm(forms.Form):
     # Fields that don't change from Event to Event
-    first_name = forms.CharField(max_length = 100)
-    last_name = forms.CharField(max_length = 100)
-    guest_first_name = forms.CharField(max_length = 100, required = False)
-    guest_last_name = forms.CharField(max_length = 100, required = False)
+    guest_first_name = forms.CharField(max_length = 100, required = False, help_text="Leave blank if you do not plan on bringing a guest")
+    guest_last_name = forms.CharField(max_length = 100, required = False, help_text="Leave blank if you do not plan on bringing a guest")
 
     # Submit buttons
     helper = FormHelper()   
@@ -172,27 +170,26 @@ class EventEntryForm(forms.Form):
     # Fields that do change from Event to Event
     def __init__(self, *args, **kwargs):
         self.event = kwargs.pop('event')
+        self.netid = kwargs.pop('netid')
         super(EventEntryForm, self).__init__(*args, **kwargs)
-        
+        choices = [('yes', 'Yes, I will be coming to "%s"' % (self.event)), 
+                   ('no', "Nope, I can't make it"                , )]
+        self.fields['is_attending'] = forms.ChoiceField(choices=choices)
         self.fields['room_choice']= forms.ModelChoiceField(widget = forms.Select, queryset = self.event.rooms.all())
         
+        for key in ['is_attending', 'guest_first_name', 'guest_last_name', 'room_choice']:
+            self.fields[key] = self.fields.pop(key)
+         
+
+
     def clean_room_choice(self):
         room = self.cleaned_data['room_choice']
-        
         num_add = 0
 
-        member_s = Member.objects.filter(first_name=self.cleaned_data['first_name'], 
-                                         last_name=self.cleaned_data['last_name'])
-
-        guest_s = Guest.objects.filter(first_name=self.cleaned_data['guest_first_name'], 
-                                       last_name=self.cleaned_data['guest_last_name'])
-        if self.cleaned_data['guest_first_name'] or self.cleaned_data['guest_last_name']:
-            has_guest = True
-        else:
-            has_guest = False
-        if not room.has_person(member_s[0]):
+        member = Member.objects.filter(netid=self.netid)[0]
+        if not room.has_member(member):
             num_add += 1
-        if has_guest and (not guest_s or not room.has_person(guest_s[0])):
+        if self.cleaned_data['guest_first_name'] or self.cleaned_data['guest_last_name']:
             num_add += 1
         
         num_people = room.get_num_of_people()

@@ -14,7 +14,7 @@
           <div class="col-xs-12 col-centered">
               <p> {{ event.snippet }} </p>
               
-              <p> {{ rsvp_msg }} </p>
+              <p class='rsvp-text'> {{ rsvp_msg }} </p>
               
               {% if has_rsvp %}
               <a class="btn btn-default minimal-button" href="{{event.get_signup_url }}">
@@ -41,6 +41,7 @@
               </a>
               {% endif %}
           </div>
+          <br>
       {% endfor %}
       </div>
    </div>
