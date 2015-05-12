@@ -158,7 +158,11 @@ class EventCreateForm(forms.ModelForm):
     def save(self, commit = True, *args, **kwargs):
       
         instance = super(EventCreateForm, self).save(commit=False, *args, **kwargs)
-        instance.pk = self.cleaned_data['event_choice'].pk
+        if self.cleaned_data['event_choice']:
+            instance.pk = self.cleaned_data['event_choice'].pk
+        else:
+            instance.pk = None
+        
         rooms = self.cleaned_data['chooserooms']
         
         if not self.cleaned_data["event_choice"]:
