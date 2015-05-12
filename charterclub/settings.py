@@ -33,6 +33,7 @@ TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), "templates2").replace(
 
 ALLOWED_HOSTS = [
     '.princetoncharterclub.org',
+    'localhost'
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'

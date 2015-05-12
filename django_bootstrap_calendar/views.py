@@ -9,6 +9,8 @@ from serializers import event_serializer
 from utils import timestamp_to_datetime
 from forms import AddCalendarEventForm
 
+from django.shortcuts import redirect
+
 from charterclub.views import render
 import charterclub
 import charterclub.permissions as permissions
@@ -55,7 +57,7 @@ def add(request):
      form = AddCalendarEventForm(request.POST)
      if form.is_valid():
         form.make_event()
-        return HttpResponseRedirect('/calendar') # Redirect after POST
+        return redirect('calendar') # Redirect after POST
    else:
       form = AddCalendarEventForm()
 

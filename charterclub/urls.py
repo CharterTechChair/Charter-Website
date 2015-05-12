@@ -94,7 +94,7 @@ urlpatterns = patterns('',
         include(admin.site.urls)),
 )
 
-if not settings.DEBUG:
+if settings.DEBUG == False:
     urlpatterns += patterns('', url(r'',
                                     'charterclub.views.error404',
                                     name='error404'))
