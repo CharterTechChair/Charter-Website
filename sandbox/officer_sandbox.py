@@ -46,7 +46,7 @@ m3 = Officer(netid='jwhitton', year=2016, first_name='Jeremy', last_name='Whitto
 m1.save()
 m3.save()
 
-o = Officer(netid='bwk', year=2015, first_name='Brian', last_name='Kernigan', house_account=0.0, position='COS 333 Professor')
+o1 = Officer(netid='bwk', year=2015, first_name='Brian', last_name='Kernigan', house_account=0.0, position='COS 333 Professor')
 o2 = Officer(netid='amytai', year=2015, first_name='Amy', last_name='Tai', house_account=0.0, position='COS 333 TA')
 
 o1.save()
