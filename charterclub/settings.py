@@ -110,6 +110,7 @@ EMAIL_HOST_USER = 'roryf@princeton.edu'
 EMAIL_HOST_PASSWORD = 'bjxslmlxjynwyfef'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 ON_HEROKU = os.environ.get('ON_HEROKU')
