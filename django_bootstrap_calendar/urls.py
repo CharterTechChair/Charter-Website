@@ -2,7 +2,7 @@
 __author__ = 'sandlbn'
 
 from django.conf.urls import patterns, url
-from views import CalendarJsonListView, CalendarView
+from views import CalendarJsonListView
 
 from django.contrib import admin
 from django.conf import settings
@@ -16,7 +16,7 @@ urlpatterns = patterns('django_bootstrap_calendar.views',
        ),
        url(
           r'^$',
-          CalendarView.as_view(),
+          'calendar',
           name='calendar'
        ),
        url(

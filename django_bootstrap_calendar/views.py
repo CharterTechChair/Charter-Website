@@ -43,10 +43,11 @@ class CalendarJsonListView(ListView):
 
         return event_serializer(queryset)
 
-
-class CalendarView(TemplateView):
-
-    template_name = 'django_bootstrap_calendar/calendar.html'
+def calendar(request):
+    return render(request, 'django_bootstrap_calendar/calendar.html', {
+        'error': '',
+        'netid': permissions.get_username(request),
+    })  
 
 def add(request):
    #Generate Event Form
@@ -62,5 +63,4 @@ def add(request):
      'form': form,
      'error': '',
      'netid': permissions.get_username(request),
-     # 'netid': permissions.get_username(request),
    })  
