@@ -23,11 +23,6 @@ urlpatterns = patterns('',
         r'^/create$', 
         'events.views.events_create', 
         name='events_create'),
-
-    url(
-        r'^/create_social$', 
-        'events.views.socialevent_create', 
-        name='socialevent_create'),
     url(
         r'^/thanks_create$',
         'events.views.thanks_create',

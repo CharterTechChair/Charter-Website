@@ -12,7 +12,7 @@ import charterclub
 import charterclub.permissions as permissions
 
 from events.models import Event, Room
-from events.forms import EventEntryForm, EventCreateForm, AddSocialEventForm, EventChoiceForm
+from events.forms import EventEntryForm, EventCreateForm, EventChoiceForm
 
 def events_entry(request, title, date):
   # Look for the event
@@ -169,28 +169,7 @@ def events_list(request):
       'netid': permissions.get_username(request),
       'events_info': events_info ,
     })  
-
-def socialevent_create(request):
-    #Generate Event Form
-    if request.method == 'POST':
-        form = AddSocialEventForm(request.POST)
-        if form.is_valid():
-            data = form.cleaned_data
-
-            socialevent = SocialEvent(title=data['title'], snippet=data['snippet'], 
-              date_and_time=data['date_and_time'], end_time=data['end_time'])
-            socialevent.save()
-            print socialevent
-
-            return HttpResponseRedirect('calendar') # Redirect after POST
-    else:
-        form = AddSocialEventForm()
-
-    return render(request, 'events_create.html', {
-                 'form': form,
-                 'error': '',
-                 'netid': permissions.get_username(request),
-            })  
+ 
 def thanks_create(request):
   now = datetime.datetime.now().date()
   return render(request, "thanks_create.html", {
