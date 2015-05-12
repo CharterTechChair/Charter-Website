@@ -13,16 +13,26 @@ from crispy_forms.bootstrap import (
 # For some models 
 from datetime import date, timedelta, datetime
 
+from models import CalendarEvent
 
-class AddSocialEventForm(forms.Form):
-    title = forms.CharField(max_length = 40)
-    snippet = forms.CharField(max_length = 150, required = False)
-    date_and_time = forms.DateTimeField(
-                    help_text="Enter date and time in the form '2006-10-25 14:30'")
-    end_time = forms.DateTimeField(
-                    help_text="Enter date and time in the form '2006-10-25 14:30'")
+class AddCalendarEventForm(forms.Form):
+   title = forms.CharField(max_length = 255)
+   start = forms.DateTimeField(
+                 help_text="Enter date and time in the form '2006-10-25 14:30'")
+   end = forms.DateTimeField(
+                 help_text="Enter date and time in the form '2006-10-25 14:30'")
 
-    # Submit buttons
-    helper = FormHelper()   
-    helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
+   # Submit buttons
+   helper = FormHelper()   
+   helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
 
+   def make_event(self):
+
+      if self.is_valid():
+         data = self.cleaned_data
+         
+         e = CalendarEvent(title=data['title'],
+                           css_class='event-important',
+                           start=data['start'],
+                           end=data['end'])
+         e.save()
