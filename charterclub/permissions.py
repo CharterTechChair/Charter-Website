@@ -5,27 +5,27 @@ from models import Member
 from models import Student
 
 def officer(func):
-    def check_o(request):
+    def check_o(request, *args, **kwargs):
         if not check_officer(request):
             return render(request, "permission_denied.html",
                           {"required_permission": "officer"})
-        return func(request)
+        return func(request, *args, **kwargs)
     return check_o
 
 def member(func):
-    def check_m(request):
+    def check_m(request, *args, **kwargs):
         if not check_member(request):
             return render(request, "permission_denied.html",
                           {"required_permission": "member"})
-        return func(request)
+        return func(request, *args, **kwargs)
     return check_m
 
 def sophomore(func):
-    def check_s(request):
+    def check_s(request, *args, **kwargs):
         if not check_sophomore(request):
             return render(request, "permission_denied.html",
                           {"required_permission": "sophomore"})
-        return func(request)
+        return func(request, *args, **kwargs)
     return check_s
 
 from django.conf import settings

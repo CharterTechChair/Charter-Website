@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.contrib import admin
 from django import forms
 from django.core.validators import RegexValidator
+
+import pdb
 # from events.models import Event
 
     
@@ -39,9 +41,6 @@ class Prospective(Student):
         'Number of events attended')
     # meals = make another model for meals signups? use date fields?
     
-class Guest(Person):
-    member_association = models.ForeignKey('Member')
-
 class Member(Student):
     allow_rsvp = models.BooleanField(
         'Whether or not this member may attend events', default=True)
@@ -50,14 +49,13 @@ class Member(Student):
     def get_events(self):
         ans = []
 
+        # Do a brute force search through all of the events, the rooms, and the seatings
         for e in events.models.Event.objects.all():
             for r in e.rooms.all():
-                for member in r.get_people():
-                    if member[0] == self:
-                        ans.append((e, r))
-                    if len(member) > 1:
-                        if member[1] == self:
-                            ans.append((e, r))
+                for member, guest_s in r.get_people_as_objects():
+                    
+                    if member == self:
+                        ans.append((e, r, guest_s))
         return ans
 
     def __iter__(self):

@@ -2,6 +2,7 @@ db.sqlite3
 venv
 *.pyc
 charterclub/*.pyc
+charterclub/__init__.pyc
 staticfiles
 *~
 #*#

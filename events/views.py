@@ -12,8 +12,14 @@ import charterclub
 import charterclub.permissions as permissions
 
 from events.models import Event, Room
-from events.forms import EventEntryForm, EventCreateForm, EventChoiceForm
+from events.forms import EventEntryForm, EventCreateForm, EventChoiceForm, EventEditForm
 
+# ------------------------------------------------------------
+# Responsible for creating entries to events. 
+# 
+# Chooses the event from the title and date parsed from the url. 
+# ------------------------------------------------------------
+@permissions.member
 def events_entry(request, title, date):
   # Look for the event
     start = parse_date(date)
@@ -28,50 +34,24 @@ def events_entry(request, title, date):
         return render(request, 'standard_message.html', {
                 'subject' : subject,
                 'body'    : body,
-          })
+        })
     event = event_search[0]
     # If we do find it, give them the form
     if request.method != 'POST':
-        form = EventEntryForm(event=event)
+        form = EventEntryForm(event=event, netid=permissions.get_username(request))
     # If the form is filled out, check it
     else:
-        form = EventEntryForm(request.POST, event=event)
-
+        form = EventEntryForm(request.POST, event=event, netid=permissions.get_username(request))
         if form.is_valid():
             data =  form.cleaned_data
             # Lookup the Member   
-            lookup_m =  Member.objects.filter(first_name=data['first_name'],
-                                             last_name =data['last_name'])
-            if not lookup_m:
-                raise Exception('Error: Member with netid "%s" not found in member database' % request['netid']) 
-            member = lookup_m[0]
-
-
-            # If there's a guest, either find the guest or make one
-            if data['guest_first_name'] or data['guest_last_name']:
-                lookup_g =  Guest.objects.filter(first_name=data['guest_first_name'],
-                                                last_name =data['guest_last_name'])
-                # Try to find the guest - else, look them up
-                if lookup_g:
-                   guest = lookup_g[0]
-                else:
-                    guest = Guest(first_name=data['guest_first_name'], 
-                              last_name =data['guest_last_name'],
-                              member_association=member)
-                    guest.save()
-            else:
-                guest = None
+            member = Member.objects.filter(netid=permissions.get_username(request))[0]
+            guest_s = "%s %s" % (form.cleaned_data['guest_first_name'], form.cleaned_data['guest_last_name'])
+            guest_s = guest_s.strip()
 
             # Now try to add a person 
-            event.add_to_event(member, guest, form.cleaned_data['room_choice'])
+            event.add_to_event(member, guest_s, form.cleaned_data['room_choice'])
 
-            # subject = 'Congraduations!'
-            # body = 'You just signed up for "%s" on %s' % (event.title, 
-            #                                                 event.date_and_time.isoformat()[:10])
-            # return render(request, 'standard_message.html', {
-            #       'subject' : 'Congrats',
-            #       'body'    : body
-            # })
             return redirect('events')
     return render(request, 'events_form.html', {
         'form': form,
@@ -80,42 +60,7 @@ def events_entry(request, title, date):
         'netid': permissions.get_username(request),
     })
 
-
-
-# def events_signup_choose(request):
-#     if request.method == 'POST':
-#         form = EventChoiceForm(request.POST)
-
-#         if form.is_valid():
-#           data = form.cleaned_data
-#           event = data['event_choice']
-#           return HttpResponseRedirect(event.get_signup_url())
-#     else:
-#         form = EventChoiceForm()
-
-#     return render(request, 'form.html', {
-#           'form' : form,
-#     })
-
-#     return render(request, 'events_signup_choose.html',{})
-
-# def events_view_choose(request):
-#   if request.method == 'POST':
-#       form = EventChoiceForm(request.POST)
-
-#       if form.is_valid():
-#         data = form.cleaned_data
-#         event = data['event_choice']
-#         return HttpResponseRedirect(event.get_view_url())
-#   else:
-#     form = EventChoiceForm()
-
-#   return render(request, 'form.html', {
-#         'form' : form,
-#     })
-
-#   return render(request, 'events_signup_choose.html',{})
-
+@permissions.member
 def events_view(request, title, date):
     start = parse_date(date)
     end = start + datetime.timedelta(days=1)
@@ -132,14 +77,16 @@ def events_view(request, title, date):
 
     # If we find the event, show it to them
     else:
-        wt_obj = event_search[0]
+        event = event_search[0]
+
         return render(request, 'events_view.html', {
                      'error': '',
                      'netid': permissions.get_username(request),
-                     'room_list' : wt_obj.to_JSON()['rooms'],
+                     'room_list' : event.to_JSON()['rooms'],
         })  
-    # return HttpResponse("Hello, world. You're at a events view")
 
+    # return HttpResponse("Hello, world. You're at a events view")
+@permissions.member
 def events_unrsvp(request, title, date):
     start = parse_date(date)
     end = start + datetime.timedelta(days=1)
@@ -163,7 +110,7 @@ def events_unrsvp(request, title, date):
         member = lookup_m[0]
 
         # If the member is in the room, take the person out. 
-        if event.has_person(member):
+        if event.has_member(member):
             event.remove_from_event(member)
             return redirect('events')
         else:
@@ -174,19 +121,20 @@ def events_unrsvp(request, title, date):
 
 
 
-
+@permissions.officer
 def events_create(request):
    #Generate Event Form
    if request.method == 'POST':
      form = EventCreateForm(request.POST)
      if form.is_valid():
-        form.make_event()
+        form.save()
         return HttpResponseRedirect('thanks_create') # Redirect after POST
    else:
       form = EventCreateForm()
 
    return render(request, 'events_create.html', {
      'form': form,
+     'dropdown': EventEditForm(),
      'error': '',
      'netid': permissions.get_username(request),
      # 'netid': permissions.get_username(request),
@@ -197,22 +145,21 @@ def events_list(request):
     events = Event.objects.order_by('date_and_time')
     member = Member.objects.filter(netid=permissions.get_username(request))[0]
 
-    has_rsvp = [e.has_person(member) for  e in events]
+    has_rsvp = [e.has_member(member) for  e in events]
     event_msg = []
     for event, rsvp in zip(events, has_rsvp):
         if rsvp:
-            room  =  event.get_room_of_person(member)
-            guest =  room.get_guest_of_member(member)
+            room    =  event.get_room_of_member(member)
+            listing =  room.get_seating(member)
 
             msg = "You" 
-            if guest:
-                msg += ' and your guest "%s %s"' % (guest.first_name, guest.last_name)
+            if listing.guest:
+                msg += ' and your guest "%s"' % (listing.guest)
             msg +=  " are in the %s." % room
         else:
             msg = "You have not RSVP'd for this event."
 
-        event_msg.append(msg)
-     
+        event_msg.append(msg)     
 
     return render(request, 'events_list.html', {
       'error': '',
@@ -220,18 +167,16 @@ def events_list(request):
       'events_info': zip(events, has_rsvp, event_msg) ,
     })  
  
+@permissions.officer
 def thanks_create(request):
-  now = datetime.datetime.now().date()
   return render(request, "thanks_create.html", {
-     'current_date': now,
      'error': '',
      'netid': permissions.get_username(request),
   })
 
+@permissions.member
 def thanks_signup(request):
-  now = datetime.datetime.now().date()
   return render(request, "thanks_signup.html", {
-     'current_date': now,
      'error': '',
      'netid': permissions.get_username(request),
   })
