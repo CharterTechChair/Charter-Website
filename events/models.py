@@ -29,8 +29,7 @@ class Room(models.Model):
     # event = models.ManyToManyField(Event) # point back
 
     def __unicode__(self):
-        events = self.event_set.all()
-        return "%s (%s/%s) for %s" % (self.name, self.get_num_of_people(), self.max_capacity, events)
+        return "%s (%s/%s)" % (self.name, self.get_num_of_people(), self.max_capacity)
 
     # Returns whether the member exists in this room
     def has_member(self, member):

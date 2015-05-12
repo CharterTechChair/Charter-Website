@@ -9,6 +9,7 @@ m2 = Member(netid='roryf'   , year=2016, first_name='Rory', last_name='Fitzpatri
 m3 = Member(netid='jwhitton', year=2016, first_name='Jeremy', last_name='Whitton', house_account=50.0)
 m4 = Member(netid='ajeon', year=2015, first_name='Andrew', last_name='Jeon', house_account=-20.0)
 
+
 m1.save()
 m2.save()
 m3.save()

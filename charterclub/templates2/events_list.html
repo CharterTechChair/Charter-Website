@@ -12,8 +12,8 @@
       <hr>
       <div class="col-xs-12">
       {% for event, has_rsvp, rsvp_msg in events_info %}
-          <h3> {{ event }}</h3>
-          <div class="col-xs-12 col-centered">
+          <div class="col-xs-12 col-centered event-entry">
+              <h3> {{ event }}</h3>
               <p> {{ event.snippet }} </p>
               
               <p class='rsvp-text'> {{ rsvp_msg }} </p>
@@ -43,7 +43,6 @@
               </a>
               {% endif %}
           </div>
-          <br>
       {% endfor %}
       </div>
    </div>
