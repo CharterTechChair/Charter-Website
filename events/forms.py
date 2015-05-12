@@ -55,9 +55,12 @@ class EventCreateForm(forms.ModelForm):
         t2 = today + timedelta(days=2, hours=random.randint(12,23), minutes=random.randint(0,59), seconds=random.randint(0,59)) 
         t3 = today + timedelta(days=3, hours=random.randint(12,23), minutes=random.randint(0,59), seconds=random.randint(0,59)) 
         super(EventCreateForm, self).__init__(*args, **kwargs)
+        
         self.fields['event_choice'] = forms.ModelChoiceField(empty_label = "New Event",
                                    widget = forms.Select(attrs = {"onchange":"Dajaxice.events.loadevent(Dajax.process,{'event':this.value})"}),
-                                   queryset = Event.objects.all())
+                                                             queryset = Event.objects.all(),
+                                                             required = False)
+        
         self.fields['chooserooms'] = forms.MultipleChoiceField(widget = forms.CheckboxSelectMultiple, choices = ROOMS, label = "Available Rooms", required = False)
         self.fields['date_and_time'] = forms.DateTimeField(
                         help_text="Enter date and time in the form '2006-10-25 14:30'", initial=t3)
