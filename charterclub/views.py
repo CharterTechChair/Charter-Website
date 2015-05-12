@@ -63,9 +63,7 @@ def render(request, template_name, context=None, *args, **kwargs):
                                    *args, **kwargs)
 
 def index(request):
-    html = "Hello World"
     return render(request, "index.html")
-#    return HttpResponse(html)
  
 @permissions.member   
 def faceboard(request):
@@ -141,9 +139,13 @@ def contactus(request):
 
 def hello(request):
   now = datetime.datetime.now().date()
+  
+  m = Member.objects.filter(netid=permissions.get_username(request))[0]
+
   return render(request, "hello.html", {
      'current_date': now,
      'error': '',
+     'm': m,
      'netid': permissions.get_username(request),
   })
 
