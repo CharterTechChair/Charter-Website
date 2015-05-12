@@ -29,17 +29,13 @@ def events_entry(request, title, date):
                 'subject' : subject,
                 'body'    : body,
           })
+    event = event_search[0]
     # If we do find it, give them the form
     if request.method != 'POST':
-        form = EventEntryForm(event=event_search[0])
-        return render(request, 'events.html', {
-            'form': form,
-            'error': '',
-            'netid': permissions.get_username(request),
-        })
+        form = EventEntryForm(event=event)
     # If the form is filled out, check it
     else:
-        form = EventEntryForm(request.POST, event=event_search[0])
+        form = EventEntryForm(request.POST, event=event)
 
         if form.is_valid():
             data =  form.cleaned_data
@@ -67,15 +63,23 @@ def events_entry(request, title, date):
                 guest = None
 
             # Now try to add a person 
-            event_search[0].add_to_event(member, guest, form.cleaned_data['room_choice'])
+            event.add_to_event(member, guest, form.cleaned_data['room_choice'])
 
-            subject = 'Congraduations!'
-            body = 'You just signed up for "%s" on %s' % (event_search[0].title, 
-                                                            event_search[0].date_and_time.isoformat()[:10])
-            return render(request, 'standard_message.html', {
-                  'subject' : 'Congrats',
-                  'body'    : body
-            })
+            # subject = 'Congraduations!'
+            # body = 'You just signed up for "%s" on %s' % (event.title, 
+            #                                                 event.date_and_time.isoformat()[:10])
+            # return render(request, 'standard_message.html', {
+            #       'subject' : 'Congrats',
+            #       'body'    : body
+            # })
+            return redirect('events')
+    return render(request, 'events_form.html', {
+        'form': form,
+        'event': event,
+        'error': '',
+        'netid': permissions.get_username(request),
+    })
+
 
 
 # def events_signup_choose(request):
@@ -136,6 +140,40 @@ def events_view(request, title, date):
         })  
     # return HttpResponse("Hello, world. You're at a events view")
 
+def events_unrsvp(request, title, date):
+    start = parse_date(date)
+    end = start + datetime.timedelta(days=1)
+    event_search = Event.objects.filter(title=urllib.unquote(title), date_and_time__range = [start, end])
+    
+    # If we don't find the event then send them the error message
+    if not event_search:  
+        subject = "Doesn't look like this event exists"
+        body = "Checkout "
+        return render(request, 'standard_message.html', {
+                'subject' : subject,
+                'message' : body,
+        })
+    else:
+        # Lookup the Member   
+        lookup_m =  Member.objects.filter(netid=permissions.get_username(request))
+        event = event_search[0]
+
+        if not lookup_m:
+            raise Exception('Error: Member with netid "%s" not found in member database' % request['netid']) 
+        member = lookup_m[0]
+
+        # If the member is in the room, take the person out. 
+        if event.has_person(member):
+            event.remove_from_event(member)
+            return redirect('events')
+        else:
+            return render(request, 'standard_message.html', {
+                'subject' : 'No RSVP found',
+                'message' : "are you sure you had RSVP'd to this event?",
+        })
+
+
+
 
 def events_create(request):
    #Generate Event Form
@@ -150,7 +188,7 @@ def events_create(request):
    return render(request, 'events_create.html', {
      'form': form,
      'error': '',
-     'netid': 'roryf',
+     'netid': permissions.get_username(request),
      # 'netid': permissions.get_username(request),
    })  
 
@@ -158,16 +196,28 @@ def events_create(request):
 def events_list(request):
     events = Event.objects.order_by('date_and_time')
     member = Member.objects.filter(netid=permissions.get_username(request))[0]
-    events_info = [(e, e.has_person(member)) for  e in events]
- 
-    for e in events:
-        print "%s has %s" % (e, member)
 
-    e.has_person(member)
+    has_rsvp = [e.has_person(member) for  e in events]
+    event_msg = []
+    for event, rsvp in zip(events, has_rsvp):
+        if rsvp:
+            room  =  event.get_room_of_person(member)
+            guest =  room.get_guest_of_member(member)
+
+            msg = "You" 
+            if guest:
+                msg += ' and your guest "%s %s"' % (guest.first_name, guest.last_name)
+            msg +=  " are in the %s." % room
+        else:
+            msg = "You have not RSVP'd for this event."
+
+        event_msg.append(msg)
+     
+
     return render(request, 'events_list.html', {
       'error': '',
       'netid': permissions.get_username(request),
-      'events_info': events_info ,
+      'events_info': zip(events, has_rsvp, event_msg) ,
     })  
 
 def socialevent_create(request):
