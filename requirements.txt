@@ -10,7 +10,8 @@ requests==2.3.0
 -e ./django-cas/
 python-ldap==2.4.19
 django-crispy-forms==1.4.0
-
+django-dajax-ng==0.9.4
+django-dajaxice-ng==0.7.0.1
 django-jquery==1.9.1
 django-static-jquery==2.1.4
 simplejson==3.6.5
