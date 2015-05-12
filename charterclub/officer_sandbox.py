@@ -11,7 +11,7 @@ o06 = Officer(netid='cat3', year=2016, first_name='Cynthia', last_name='Tremonte
 o07 = Officer(netid='kblair', year=2016, first_name='Kelsey', last_name='Blair', house_account=50.0, position='House Manager')
 o08 = Officer(netid='ecblum', year=2016, first_name='Eric', last_name='Blum', house_account=50.0, position='Liquid Assets')
 o09 = Officer(netid='moluo', year=2016, first_name='Mo', last_name='Luo', house_account=50.0, position='Liquid Assets')
-o10 = Officer(netid='shirleyz'   , year=2016, first_name='Shirley', last_name='Zhu', house_account=50.0, position='Liquid Assets')
+o10 = Officer(netid='shirleyz', year=2016, first_name='Shirley', last_name='Zhu', house_account=50.0, position='Liquid Assets')
 o11 = Officer(netid='hannahgm', year=2016, first_name='Hannah', last_name='Miller', house_account=50.0, position='Communications Chair')
 o12 = Officer(netid='dennisds', year=2016, first_name='Dennis', last_name='Smith', house_account=50.0, position='Events Chair')
 o13 = Officer(netid='dzirkel', year=2016, first_name='Daniel', last_name='Zirkel', house_account=50.0, position='Events Chair')
@@ -39,3 +39,15 @@ o15.save()
 o16.save()
 o17.save()
 o18.save()
+
+m1 = Officer(netid='quanzhou', year=2015, first_name='Quan', last_name='Zhou', house_account=50.0, position='Webmaster')
+m3 = Officer(netid='jwhitton', year=2016, first_name='Jeremy', last_name='Whitton', house_account=50.0, position='Webmaster')
+
+m1.save()
+m3.save()
+
+o = Officer(netid='bwk', year=2015, first_name='Brian', last_name='Kernigan', house_account=0.0, position='COS 333 Professor')
+o2 = Officer(netid='amytai', year=2015, first_name='Amy', last_name='Tai', house_account=0.0, position='COS 333 TA')
+
+o1.save()
+o2.save()
