@@ -12,7 +12,7 @@ from crispy_forms.bootstrap import (
 
 # For some models 
 from events.models import Event, Room
-from charterclub.models import Member, Guest
+from charterclub.models import Member
 from datetime import date, timedelta, datetime
 
 
@@ -76,7 +76,8 @@ class EventCreateForm(forms.ModelForm):
         cleaned_data = super(EventCreateForm, self).clean()
 
         
-        
+        if not self.is_valid():
+            return
         # Forbid events on the same day to have the same name
         title = cleaned_data.get('title')
         start = cleaned_data.get('date_and_time')
@@ -108,6 +109,7 @@ class EventCreateForm(forms.ModelForm):
         # Closure for signups must happen before the event occurs 
         if cleaned_data.get('signup_end_time') > cleaned_data.get('date_and_time'):
             raise forms.ValidationError('Ending signup time must happen before event happens')
+        return
 
     def clean_title(self):
         ans = self.cleaned_data['title']
@@ -203,6 +205,8 @@ class EventEditForm(forms.Form):
                                           widget = forms.Select(attrs = {"onchange":"Dajaxice.events.loadevent(Dajax.process,{'event':this.value})"}),
                                           queryset = Event.objects.all())
     helper = FormHelper()
+
+
 
 class EventChoiceForm(forms.Form):
     event_choice     = forms.ModelChoiceField(widget = forms.Select, queryset = Event.get_future_events())

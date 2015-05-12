@@ -12,7 +12,7 @@ import charterclub
 import charterclub.permissions as permissions
 
 from events.models import Event, Room
-from events.forms import EventEntryForm, EventCreateForm, EventChoiceForm
+from events.forms import EventEntryForm, EventCreateForm, EventChoiceForm, EventEditForm
 
 # ------------------------------------------------------------
 # Responsible for creating entries to events. 
@@ -169,18 +169,14 @@ def events_list(request):
  
 @permissions.officer
 def thanks_create(request):
-  now = datetime.now().date()
   return render(request, "thanks_create.html", {
-     'current_date': now,
      'error': '',
      'netid': permissions.get_username(request),
   })
 
 @permissions.member
 def thanks_signup(request):
-  now = datetime.datetime.now().date()
   return render(request, "thanks_signup.html", {
-     'current_date': now,
      'error': '',
      'netid': permissions.get_username(request),
   })

@@ -25,7 +25,7 @@ def loadevent(request, event):
 
     def tstr(date_and_time):
         if date_and_time:
-            return date_and_time.strftime("%Y-%m-%d %H:%M:%S")
+            return date_and_time.strftime("%Y-%m-%d %H:%M")
         else:
             return ""
         

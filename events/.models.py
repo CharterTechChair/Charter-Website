@@ -93,15 +93,10 @@ class Room(models.Model):
         return {
             'name'          : self.name, 
             'max_capacity'  : self.max_capacity,
-            'people'        : self.get_people_as_string(),
+            'people'        : [(str(s.member), str(s.guest)) for s in self.seatings.all()],
             'total'         : self.get_num_of_people()
         }
 
-    def get_people_as_string(self):
-        return [(str(s.member), str(s.guest)) for s in self.seatings.all()]
-    
-    def get_people_as_objects(self):
-        return [(s.member, str(s.guest)) for s in self.seatings.all()]    
     class Meta:
         ordering = ("name",)
 

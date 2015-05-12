@@ -141,6 +141,7 @@ def contactus(request):
      'vp': vp,
     }) 
 
+@permissions.member
 def hello(request):
   now = datetime.datetime.now().date()
   
