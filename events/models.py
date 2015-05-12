@@ -88,6 +88,11 @@ class Room(models.Model):
             if g.first_name == person.first_name and g.last_name == person.last_name:
                 return g
         return None
+        
+    def has_person(self, person):
+        if self.get_person(person):
+            return True
+        return False
 
     # safely remove the person from the room
     def remove_from_room(self, person):
@@ -196,12 +201,16 @@ class Event(models.Model):
         url += "/%s/%s" % (self.title, self.date_and_time.isoformat()[:10])
         return urllib.quote(url)
 
+
+    def get_unrsvp_url(self):
+        url =  'events/unrsvp'
+        url += "/%s/%s" % (self.title, self.date_and_time.isoformat()[:10])
+        return urllib.quote(url)
+
     def get_view_url(self):
         url =  'events/view'
         url += "/%s/%s" % (self.title, self.date_and_time.isoformat()[:10])
         return urllib.quote(url)
-
-
     
     @staticmethod   
     def get_future_events():

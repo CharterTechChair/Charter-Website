@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+Thanks, {{ netid }}! You just signed up for Formals! View the event seatings
+<a href="{%url 'events_view' %}"><font color="C6852A">here</font></a>!
+
+{% endblock %}

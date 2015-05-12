@@ -6,9 +6,10 @@
 
    <div class="col-xs-12">
 
-      <h2> See where your friends are sitting</h2>
+      <h2> See where your friends are sitting!</h2>
+      <p>  Back to the <a class='web-link' href="{% url 'events' %}"> events overview page. </a><p>
       <br>
-
+  
       {% for room in room_list %}
         <div class="col-xs-12" style="margin-bottom: 30px">
           <h3> {{room.name }} ({{room.total}}/{{room.max_capacity}})</h3>

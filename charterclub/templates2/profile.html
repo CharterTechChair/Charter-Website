@@ -8,22 +8,26 @@
    </div>
 
    <div class="col-md-6">
-       Welcome, {{ member.first_name }}!
+    <h2> Welcome, {{ member.first_name }}! </h2>
+
+    <hr>
+       
  
-        <h4>House account balance</h4>
+    <h4>House account balance:</h4>
+    
+    ${{ member.house_account }}
+
+    <hr>
+
+    <h4>Upcoming events:</h4>
+
+      {% for event,room in events %}
+        <h4> {{ event }} </h4>
         <p>
-        ${{ member.house_account }}
+        You RSVP'd for the {{ room }}!
         </p>
 
-        <h4>Upcoming events:</h4>
-
-          {% for event,room in events %}
-            <h4> {{ event }} </h4>
-            <p>
-            You RSVP'd for the {{ room }}!
-            </p>
-
-          {% endfor %} 
+      {% endfor %} 
 
    </div>
 

@@ -1,10 +1,17 @@
 # -*- coding: utf-8 -*-
 __author__ = 'sandlbn and w3lly'
 
+from django.http import HttpResponse, HttpResponseRedirect
+
 from django.views.generic import ListView, TemplateView
 from models import CalendarEvent
 from serializers import event_serializer
 from utils import timestamp_to_datetime
+from forms import AddCalendarEventForm
+
+from charterclub.views import render
+import charterclub
+import charterclub.permissions as permissions
 
 import datetime
 
@@ -36,7 +43,24 @@ class CalendarJsonListView(ListView):
 
         return event_serializer(queryset)
 
+def calendar(request):
+    return render(request, 'django_bootstrap_calendar/calendar.html', {
+        'error': '',
+        'netid': permissions.get_username(request),
+    })  
 
-class CalendarView(TemplateView):
+def add(request):
+   #Generate Event Form
+   if request.method == 'POST':
+     form = AddCalendarEventForm(request.POST)
+     if form.is_valid():
+        form.make_event()
+        return HttpResponseRedirect('/calendar') # Redirect after POST
+   else:
+      form = AddCalendarEventForm()
 
-    template_name = 'django_bootstrap_calendar/calendar.html'
+   return render(request, 'calendar_add.html', {
+     'form': form,
+     'error': '',
+     'netid': permissions.get_username(request),
+   })  

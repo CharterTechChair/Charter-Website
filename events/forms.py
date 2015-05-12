@@ -1,4 +1,4 @@
-import re, random
+import re, random, pdb
 
 from django import forms
 from django.shortcuts import redirect
@@ -12,6 +12,7 @@ from crispy_forms.bootstrap import (
 
 # For some models 
 from events.models import Event, Room
+from charterclub.models import Member, Guest
 from datetime import date, timedelta, datetime
 
 
@@ -227,7 +228,7 @@ class EventEntryForm(forms.Form):
         
         self.fields['room_choice']= forms.ModelChoiceField(widget = forms.Select, queryset = self.event.rooms.all())
         
-    def clean_room(self):
+    def clean_room_choice(self):
         room = self.cleaned_data['room_choice']
         
         num_add = 0
@@ -237,25 +238,17 @@ class EventEntryForm(forms.Form):
 
         guest_s = Guest.objects.filter(first_name=self.cleaned_data['guest_first_name'], 
                                        last_name=self.cleaned_data['guest_last_name'])
-
-        if not member_s or room.has_person(member_s[0]):
+        if self.cleaned_data['guest_first_name'] or self.cleaned_data['guest_last_name']:
+            has_guest = True
+        else:
+            has_guest = False
+        if not room.has_person(member_s[0]):
             num_add += 1
-        if not guest_s or room.has_person(guest[0]):
+        if has_guest and (not guest_s or not room.has_person(guest_s[0])):
             num_add += 1
         
-        if (room.get_num_of_people() + num_add > room.max_capacity):
-            raise forms.ValidationError("Sorry! This room is beyond capacity")
+        num_people = room.get_num_of_people()
+        if (num_people + num_add > room.max_capacity):
+            raise forms.ValidationError("Sorry! This room is beyond capacity (%s/%s) and cannot take %s more people" % (num_people, room.max_capacity, num_add))
         return room
-
-class AddSocialEventForm(forms.Form):
-    title = forms.CharField(max_length = 40)
-    snippet = forms.CharField(max_length = 150, required = False)
-    date_and_time = forms.DateTimeField(
-                    help_text="Enter date and time in the form '2006-10-25 14:30'")
-    end_time = forms.DateTimeField(
-                    help_text="Enter date and time in the form '2006-10-25 14:30'")
-
-    # Submit buttons
-    helper = FormHelper()   
-    helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
 

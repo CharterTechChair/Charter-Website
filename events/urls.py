@@ -20,14 +20,13 @@ urlpatterns = patterns('',
         'events.views.events_view', 
         name='events_view'),
     url(
+        r'^/unrsvp/(.+)/([0-9]{4}-[0-9]{2}-[0-9]{2})',
+        'events.views.events_unrsvp', 
+        name='events_unrsvp'),
+    url(
         r'^/create$', 
         'events.views.events_create', 
         name='events_create'),
-
-    url(
-        r'^/create_social$', 
-        'events.views.socialevent_create', 
-        name='socialevent_create'),
     url(
         r'^/thanks_create$',
         'events.views.thanks_create',
