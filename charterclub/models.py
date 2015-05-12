@@ -39,9 +39,6 @@ class Prospective(Student):
         'Number of events attended')
     # meals = make another model for meals signups? use date fields?
     
-class Guest(Person):
-    member_association = models.ForeignKey('Member')
-
 class Member(Student):
     allow_rsvp = models.BooleanField(
         'Whether or not this member may attend events', default=True)
