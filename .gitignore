@@ -3,5 +3,6 @@ venv
 charterclub/*.pyc
 staticfiles
 *~
+#*#
 trash/*
 
