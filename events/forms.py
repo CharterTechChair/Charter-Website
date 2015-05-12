@@ -166,6 +166,7 @@ class EventCreateForm(forms.ModelForm):
         rooms = self.cleaned_data['chooserooms']
         
         if not self.cleaned_data["event_choice"]:
+            instance.save()
             for r in rooms:
                 room = Room(name=r, max_capacity=15)
                 room.save()
@@ -177,7 +178,6 @@ class EventCreateForm(forms.ModelForm):
         print instance.signup_end_time
         if commit:
             instance.save()
-
         
         return instance
 
