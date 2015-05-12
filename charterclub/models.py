@@ -49,10 +49,8 @@ class Member(Student):
 
     def get_events(self):
         ans = []
-        print self
 
         for e in events.models.Event.objects.all():
-            print e
             for r in e.rooms.all():
                 for member in r.get_people():
                     if member[0] == self:
