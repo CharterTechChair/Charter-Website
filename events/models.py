@@ -26,8 +26,11 @@ class Room(models.Model):
     max_capacity = models.IntegerField('Max capacity for that room for a specific event')
     seatings     = models.ManyToManyField(Seating) # Unique by member
 
+    # event = models.ManyToManyField(Event) # point back
+
     def __unicode__(self):
-        return "%s (%s/%s)" % (self.name, self.get_num_of_people(), self.max_capacity)
+        events = self.event_set.all()
+        return "%s (%s/%s) for %s" % (self.name, self.get_num_of_people(), self.max_capacity, events)
 
     # Returns whether the member exists in this room
     def has_member(self, member):
@@ -101,7 +104,8 @@ class Room(models.Model):
         return [(str(s.member), str(s.guest)) for s in self.seatings.all()]
     
     def get_people_as_objects(self):
-        return [(s.member, str(s.guest)) for s in self.seatings.all()]    
+        return [(s.member, str(s.guest)) for s in self.seatings.all()]  
+
     class Meta:
         ordering = ("name",)
 
