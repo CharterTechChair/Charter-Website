@@ -96,7 +96,6 @@ class MailingListForm(forms.Form):
             data = self.cleaned_data
             
             p = Prospective.objects.filter(netid=data['netid'])
-            print "here"
             if not p:
                 pnew = Prospective(netid=data['netid'],
                                    first_name=data['first_name'],
