@@ -4,6 +4,19 @@ from models import Officer
 from models import Member
 from models import Student
 
+# the following are decorator functions that indicate permissions required
+# to view a page.
+
+# e.g., in any views.py, the following indicates that myview
+# can only be accessed by members
+
+# import charterclub.permissions
+# ...
+# ...
+# @permissions.member
+# def myview(request):
+#     render(request, "myview.html")
+
 def officer(func):
     def check_o(request, *args, **kwargs):
         if not check_officer(request):
@@ -20,6 +33,9 @@ def member(func):
         return func(request, *args, **kwargs)
     return check_m
 
+# currently non-functional due to princeton-ldap not working on heroku
+# need to find some other way to determine sophomore status of
+# members, if this is indeed important
 def sophomore(func):
     def check_s(request, *args, **kwargs):
         if not check_sophomore(request):
@@ -73,7 +89,8 @@ def check_member(request):
 import datetime
 import ldap_student_lookup
 # check if the currently CAS logged-in user is a sophomore, returning
-# true if so and false otherwise.
+# true if so and false otherwise. probably currently nonfunctional
+# due to princeton-ldap not working on heroku
 def check_sophomore(request):
     netid = get_username(request)
     if netid == "":

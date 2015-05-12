@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from utils import datetime_to_timestamp
 
 
+# an event to be displayed on the calendar page
 class CalendarEvent(models.Model):
     """
     Calendar Events
