@@ -75,12 +75,6 @@ urlpatterns = patterns('',
         r'^underconstruction$',
         'charterclub.views.underconstruction',
         name='underconstruction'),
-
-    # for Officers only
-    url(
-        r'^officer$', 
-        'charterclub.views.officer', 
-        name='officer'),
     # for CAS
     url(
         r'^accounts/login/$',

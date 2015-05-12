@@ -1,9 +1,18 @@
+<!-- base template for the site. In all other html templates include
+
+{% extends "base.html" %}
+
+{% block content %}
+content goes here
+{% endblock %} -->
+
 {% load staticfiles %}
 {% load bootstrap_calendar %}
 
 <!DOCTYPE html>
 <html lang="en">
   <link rel="shortcut icon" type="image/png" href="{{STATIC_URL}}/img/simpleLogo.png"/>
+   
    <head>
       <meta http-equiv="content-type" content="text/html; charset=UTF-8">
       <meta charset="utf-8">
@@ -24,136 +33,128 @@
 
       {% endblock %}
    </head>
+
    <body>
-    <div id="fb-root"></div>
-      <script>(function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";
-        fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));</script>
 
-<nav class="navbar navbar-static">
-   <div class="container">
-    <div class="navbar-header">
+    <!-- navbar -->
+    <nav class="navbar navbar-static">
+       <div class="container">
+        <div class="navbar-header">
 
-      <a class="navbar-brand" href="{%url 'index' %}"><span class="glyphicon glyphicon-home"></span></a>
-      <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="glyphicon glyphicon-chevron-down"></span>
-      </a>
+          <a class="navbar-brand" href="{%url 'index' %}"><span class="glyphicon glyphicon-home"></span></a>
+          <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="glyphicon glyphicon-chevron-down"></span>
+          </a>
+        </div>
+
+          <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">  
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">About</a>
+                <ul class="dropdown-menu">
+                  <li><a href="{%url 'history' %}">History</a></li>
+                  <li><a href="{%url 'song' %}">Song</a></li>
+                  <li><a href="{%url 'constitution' %}">Constitution</a></li>
+                </ul>
+              </li>
+
+              <li><a href="{%url 'menu' %}">Menu</a></li>
+              
+              <li><a href="{%url 'calendar' %}">Calendar</a></li>
+              
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Prospective Members</a>
+                <ul class="dropdown-menu">
+                  <li><a href="{%url 'mailinglist' %}">Mailing List</a></li>
+                  <li><a href="{%url 'underconstruction' %}">Sophomore Meals</a></li>
+                  <li><a href="{%url 'contactus' %}">Contact Us!</a></li>
+                </ul>
+              </li>
+
+              {% if member %}
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Members Only</a>
+                <ul class="dropdown-menu">
+
+                  <li><a href="{%url 'feedback' %}">Anonymous Feedback</a></li>
+                  <li><a href="{%url 'events' %}"> Events </a></li>
+                  <li><a href="{%url 'underconstruction' %}"> Faceboard </a></li>
+                  <li><a href="{%url 'officer_list' %}"> Officers </a></li>
+                </ul>
+              </li>
+              {% endif %}
+
+              {% if officer %}
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Officers Only</a>
+                <ul class="dropdown-menu">
+                  <li><a href="{%url 'events_create' %}">Create an Event Signup</a></li>
+                  <li><a href="{%url 'add' %}">Update Calendar</a></li>
+                  <li><a href="{%url 'menu_input' %}">Change Menu</a></li>
+                  <li><a href="{%url 'mailinglist_view' %}">Sophomore Mailing List</a></li>
+                  <li><a href="{%url 'admin:index' %}">Admin Control Panel</a></li>
+                </ul>
+              </li>
+              {% endif %}
+            </ul>
+
+            <!-- Login/logout links -->
+            <ul class="nav navbar-right navbar-nav">
+              {% if not student %}
+              <li><a href="{%url 'login' %}">Login</a></li>
+              {% else %}
+              <li class="dropdown">
+                <!-- need to check on this url call -->
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <i class="glyphicon glyphicon-chevron-down"></i></a>
+                <ul class="dropdown-menu">
+                  <li class="loggedin"> Logged in as {{ student.first_name }} {{ student.last_name }}</li>
+                  <li><a href="{%url 'profile' %}">Profile</a></li>
+                  <li><a href="{%url 'logout' %}">Logout</a></li>
+                </ul>
+              </li>
+              {% endif %}
+            </ul>
+
+          </div>
+        </div>
+
+    </nav><!-- /.navbar -->
+
+    <!-- Begin Body -->
+    <div class="container">
+
+      <div id="outer-background-container" data-default-background-img="{{STATIC_URL}}img/oldcharter.jpg" style="background-image:url({{STATIC_URL}}img/oldcharter.jpg);"></div>
+      
+
+      <div class="background-image-overlay"></div>
+
+       <div class="no-gutter row">
+          <div class="col-md-12" id="content">
+            <div class="panel panel-transparent">
+              <div class="panel-body">
+                
+               {% block content %}{% endblock %}
+             
+              </div>
+            </div>
+          </div> 
+       </div>
+
     </div>
 
-      <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav">  
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">About</a>
-            <ul class="dropdown-menu">
-              <li><a href="{%url 'history' %}">History</a></li>
-              <li><a href="{%url 'song' %}">Song</a></li>
-              <li><a href="{%url 'constitution' %}">Constitution</a></li>
-            </ul>
-          </li>
-
-          <li><a href="{%url 'menu' %}">Menu</a></li>
-          
-          <li><a href="{%url 'calendar' %}">Calendar</a></li>
-          
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Prospective Members</a>
-            <ul class="dropdown-menu">
-              <li><a href="{%url 'mailinglist' %}">Mailing List</a></li>
-              <li><a href="{%url 'underconstruction' %}">Sophomore Meals</a></li>
-              <li><a href="{%url 'contactus' %}">Contact Us!</a></li>
-            </ul>
-          </li>
-
-          {% if member %}
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Members Only</a>
-            <ul class="dropdown-menu">
-
-              <li><a href="{%url 'feedback' %}">Anonymous Feedback</a></li>
-              <li><a href="{%url 'events' %}"> Events </a></li>
-              <li><a href="{%url 'underconstruction' %}"> Faceboard </a></li>
-              <li><a href="{%url 'officer_list' %}"> Officers </a></li>
-            </ul>
-          </li>
-          {% endif %}
-
-          {% if officer %}
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Officers Only</a>
-            <ul class="dropdown-menu">
-              <li><a href="{%url 'events_create' %}">Create an Event</a></li>
-              <li><a href="{%url 'add' %}">Update Calendar</a></li>
-              <li><a href="{%url 'menu_input' %}">Change Menu</a></li>
-              <li><a href="{%url 'mailinglist_view' %}">Sophomore Mailing List</a></li>
-              <li><a href="{%url 'admin:index' %}">Admin Control Panel</a></li>
-            </ul>
-          </li>
-          {% endif %}
-          
-
-        </ul>
-        <ul class="nav navbar-right navbar-nav">
-          {% if not student %}
-          <li><a href="{%url 'login' %}">Login</a></li>
-          {% else %}
-          <li class="dropdown">
-            <!-- need to check on this url call -->
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <i class="glyphicon glyphicon-chevron-down"></i></a>
-            <ul class="dropdown-menu">
-              <li class="loggedin"> Logged in as {{ student.first_name }} {{ student.last_name }}</li>
-              <li><a href="{%url 'profile' %}">Profile</a></li>
-              <li><a href="{%url 'logout' %}">Logout</a></li>
-            </ul>
-          </li>
-          {% endif %}
-        </ul>
-
+    <!-- credit where credit is due -->
+    <footer>
+      <div class="container">
+       <div class="row">
+          <div class="col-md-6 text-left">
+            <h5> Built by R. Fitzpatrick '16, J. Whitton '16, Q. Zhou '15</h5>
+          </div>
+          <div class="col-md-6 text-right">
+            <h5>© Princeton Charter Club 2015</h5> 
+          </div>
+        </div>
       </div>
-    </div>
-
-</nav><!-- /.navbar -->
-
-<!-- Begin Body -->
-<div class="container">
-
-  <div id="outer-background-container" data-default-background-img="{{STATIC_URL}}img/oldcharter.jpg" style="background-image:url({{STATIC_URL}}img/oldcharter.jpg);"></div>
-  
-
-  <div class="background-image-overlay"></div>
-
-   <div class="no-gutter row">
-
-            <!-- right content column-->
-            <div class="col-md-12" id="content">
-              <div class="panel panel-transparent">
-                <div class="panel-body">
-                  
-                 {% block content %}{% endblock %}
-               
-                </div><!--/panel-body-->
-              </div><!--/panel-->
-               <!--/end right column-->
-            </div> 
-   </div>
-
-</div>
-
-<footer>
-  <div class="container">
-   <div class="row">
-      <div class="col-md-6 text-left">
-        <h5> Built by R. Fitzpatrick '16, J. Whitton '16, Q. Zhou '15</h5> 
-      </div>
-      <div class="col-md-6 text-right">
-        <h5>© Princeton Charter Club 2015</h5> 
-      </div>
-    </div>
-  </div>
-</footer>
+    </footer>
 
 
    <!-- script references -->

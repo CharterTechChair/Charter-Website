@@ -172,14 +172,6 @@ def profile(request):
      'netid': permissions.get_username(request)
   })
 
-@permissions.officer
-def officer(request):
-  m = Member.objects.filter(netid=permissions.get_username(request))[0]
-
-  return render(request, "officer.html", {
-  'member': m
-  })
-
 def mailinglist(request):
   if request.method == 'POST':
     form = MailingListForm(request.POST)

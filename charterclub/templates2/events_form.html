@@ -1,3 +1,5 @@
+<!-- Form for members to sign up for events. Available to members -->
+
 {% extends "base.html" %}
 {% load staticfiles %}
 {% load crispy_forms_tags %}
@@ -8,8 +10,6 @@
       <h2> Sign up for {{ event.title }} !! </h2>
       <p> {{ event.snippet }} </p>
       <hr>
-
-      <!-- <p> See where your friends are sitting <a href="{%url 'events' %}"><font color="C6852A">here</font></a>! </p> -->
 
       {% crispy form %}
 
