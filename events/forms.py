@@ -23,6 +23,9 @@ ROOMS = [ ("UDR", "UDR"),
         ("Stewart", "Stewart"),
         ("Library", "Library") ]
 
+ROOM_CAPS = {"UDR" : 64, "Great Room" : 64, "MDR" : 80, "FJ" : 32,
+             "Stewart" : 10, "Library" : 20}
+
 
 class EventCreateForm(forms.ModelForm):
     class Meta:
@@ -168,7 +171,7 @@ class EventCreateForm(forms.ModelForm):
         if not self.cleaned_data["event_choice"]:
             instance.save()
             for r in rooms:
-                room = Room(name=r, max_capacity=15)
+                room = Room(name=r, max_capacity=ROOM_CAPS[r])
                 room.save()
                 instance.rooms.add(room)
 
