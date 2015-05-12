@@ -23,42 +23,64 @@ ROOMS = [ ("UDR", "UDR"),
         ("Library", "Library") ]
 
 
-class EventCreateForm(forms.Form):
-    title = forms.CharField(max_length = 255, initial="Charter's super awesome event")
-    description = forms.CharField(max_length = 10000, required = True, initial="This will be the most fun event ever ^_^")
-    today = timezone.now()
-
-    t1 = today + timedelta(days=1, hours=random.randint(12,23), minutes=random.randint(0,59), seconds=random.randint(0,59)) 
-    t2 = today + timedelta(days=2, hours=random.randint(12,23), minutes=random.randint(0,59), seconds=random.randint(0,59)) 
-    t3 = today + timedelta(days=3, hours=random.randint(12,23), minutes=random.randint(0,59), seconds=random.randint(0,59)) 
+class EventCreateForm(forms.ModelForm):
+    class Meta:
+        model = Event
+        exclude = ['rooms']
+        fields = ['event_choice', 'title', 'snippet', 'date_and_time',
+                  'senior_signup_start', 'junior_signup_start',
+                  'sophomore_signup_start', 'signup_end_time']
+        
+    event_choice = forms.ChoiceField()
+    
+    # title = forms.CharField(max_length = 255, initial="Charter's super awesome event")
+    # description = forms.CharField(max_length = 10000, required = True, initial="This will be the most fun event ever ^_^")
+    
 
     # Time fields describing relevant deadlines
-    date_and_time = forms.DateTimeField(
-                        help_text="Enter date and time in the form '2006-10-25 14:30'", initial=t3)
-    senior_signup_start    = forms.DateTimeField(
-                        help_text="Enter date and time in the form '2006-10-25 14:30'", initial=t1)
-    junior_signup_start    = forms.DateTimeField(
-                        help_text="Enter date and time in the form '2006-10-25 14:30'", initial=t1)
-    sophomore_signup_start = forms.DateTimeField(
-                        help_text="Enter date and time in the form '2006-10-25 14:30'", initial=t1)
-    signup_end_time = forms.DateTimeField(
-                        help_text="Enter date and time in the form '2006-10-25 14:30'", initial=t2)    
+    
 
     # Choose the rooms
-    rooms = forms.MultipleChoiceField(widget = forms.CheckboxSelectMultiple, choices = ROOMS)
+    # chooserooms = forms.MultipleChoiceField(widget = forms.CheckboxSelectMultiple, choices = ROOMS)
 
     # Submit buttons
     helper = FormHelper()   
     helper.add_input(Submit('add', 'submit', css_class='btn-primary'))
 
+    def __init__(self, *args, **kwargs):
+        today = timezone.now()
+
+        t1 = today + timedelta(days=1, hours=random.randint(12,23), minutes=random.randint(0,59), seconds=random.randint(0,59)) 
+        t2 = today + timedelta(days=2, hours=random.randint(12,23), minutes=random.randint(0,59), seconds=random.randint(0,59)) 
+        t3 = today + timedelta(days=3, hours=random.randint(12,23), minutes=random.randint(0,59), seconds=random.randint(0,59)) 
+        super(EventCreateForm, self).__init__(*args, **kwargs)
+        self.fields['event_choice'] = forms.ModelChoiceField(empty_label = "New Event",
+                                   widget = forms.Select(attrs = {"onchange":"Dajaxice.events.loadevent(Dajax.process,{'event':this.value})"}),
+                                   queryset = Event.objects.all())
+        self.fields['chooserooms'] = forms.MultipleChoiceField(widget = forms.CheckboxSelectMultiple, choices = ROOMS, label = "Available Rooms", required = False)
+        self.fields['date_and_time'] = forms.DateTimeField(
+                        help_text="Enter date and time in the form '2006-10-25 14:30'", initial=t3)
+        self.fields['senior_signup_start']    = forms.DateTimeField(
+                        help_text="Enter date and time in the form '2006-10-25 14:30'", initial=t1)
+        self.fields['junior_signup_start']    = forms.DateTimeField(
+                        help_text="Enter date and time in the form '2006-10-25 14:30'", initial=t1)
+        self.fields['sophomore_signup_start'] = forms.DateTimeField(
+                        help_text="Enter date and time in the form '2006-10-25 14:30'", initial=t1)
+        self.fields['signup_end_time'] = forms.DateTimeField(
+                        help_text="Enter date and time in the form '2006-10-25 14:30'", initial=t2)    
+#        self.initial=Event.objects.get(pk=1)
+
+
     def clean(self):
         cleaned_data = super(EventCreateForm, self).clean()
 
+        
+        
         # Forbid events on the same day to have the same name
         title = cleaned_data.get('title')
         start = cleaned_data.get('date_and_time')
         end = start + timedelta(days=1)
-        if Event.objects.filter(title=title, date_and_time__range=[start,end]):
+        if not cleaned_data.get('event_choice') and Event.objects.filter(title=title, date_and_time__range=[start,end]):
             msg = "Events on the same date must have different times"
             msg += ". Current events:[ "
             msg += ",".join([str(e) for e in Event.objects.filter(date_and_time__range=[start,end])])
@@ -100,7 +122,7 @@ class EventCreateForm(forms.Form):
         if ans < timezone.now():
             raise forms.ValidationError('Cannot create an event date in the past')
         return ans
-
+    
     # Prevent sign up dates from being created in the past
     def clean_senior_signup_start(self):
         ans = self.cleaned_data['senior_signup_start']
@@ -122,18 +144,42 @@ class EventCreateForm(forms.Form):
 
     def clean_signup_end_time(self):
         ans = self.cleaned_data['signup_end_time']
+        print ans
         if ans < timezone.now():
             raise forms.ValidationError('Cannot create a signup end date in the past')
         return ans
 
-    # Create the event and insert it into the database
+    def save(self, commit = True, *args, **kwargs):
+      
+        instance = super(EventCreateForm, self).save(commit=False, *args, **kwargs)
+        instance.pk = self.cleaned_data['event_choice'].pk
+        rooms = self.cleaned_data['chooserooms']
+        
+        if not self.cleaned_data["event_choice"]:
+            for r in rooms:
+                room = Room(name=r, max_capacity=15)
+                room.save()
+                instance.rooms.add(room)
+
+            self.cleaned_data['rooms'] = rooms
+
+        print self.cleaned_data['signup_end_time']
+        print instance.signup_end_time
+        if commit:
+            instance.save()
+
+        
+        return instance
+
+    # obsolete! do not use this!
     def make_event(self):
 
         if self.is_valid():
             data = self.cleaned_data
             rooms = data['rooms']
 
-            event = Event(title=data['title'], 
+            event = Event(pk=data['pk'],
+                          title=data['title'], 
                           snippet=data['description'],
                           date_and_time=data['date_and_time'],
                           sophomore_signup_start=data['sophomore_signup_start'],
@@ -150,6 +196,12 @@ class EventCreateForm(forms.Form):
               event.save()
         else:
             raise Exception('EventCreateForm: Cannot make an event with invalid data')
+
+class EventEditForm(forms.Form):
+    event_choice = forms.ModelChoiceField(empty_label = "New Event",
+                                          widget = forms.Select(attrs = {"onchange":"Dajaxice.events.loadevent(Dajax.process,{'event':this.value})"}),
+                                          queryset = Event.objects.all())
+    helper = FormHelper()
 
 class EventChoiceForm(forms.Form):
     event_choice     = forms.ModelChoiceField(widget = forms.Select, queryset = Event.get_future_events())

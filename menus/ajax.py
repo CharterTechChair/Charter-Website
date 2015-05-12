@@ -21,7 +21,7 @@ def updatemenu(request, date):
     else:
         menu = MenuItem(date = date, lunch_food = "", dinner_food = "")
 
-    dajax.assign("#id_lunch_food", "innerHTML", menu.lunch_food)
-    dajax.assign("#id_dinner_food", "innerHTML", menu.dinner_food)
+    dajax.assign("#id_lunch_food", "value", menu.lunch_food)
+    dajax.assign("#id_dinner_food", "value", menu.dinner_food)
 
     return dajax.json()

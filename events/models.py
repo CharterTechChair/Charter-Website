@@ -118,7 +118,7 @@ class Room(models.Model):
 
 class Event(models.Model):
     title = models.CharField(max_length=255)
-    snippet = models.CharField(max_length=10000, blank=True)
+    snippet = models.CharField("Description", max_length=10000, blank=True)
 
     # Some times
     date_and_time   = models.DateTimeField(blank=True)

@@ -1,14 +1,23 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load static %}
+{% load dajaxice_templatetags%}
 {% load crispy_forms_tags %}
 
 {% block content %}
 
-   <div class="col-md-5">
-      <p> Officers, you can create events using this form! </p>
-      <br>
+<script type="text/javascript" src="{% static "js/jquery-2.1.3.min.js" %}"></script>
+<script type="text/javascript" src="{% static "dajax/jquery.dajax.core.js" %}"></script>
+{% dajaxice_js_import %}
 
-      {% crispy form %}
+   <div class="col-md-5">
+     <p> Officers, you can create and edit events using this form!
+       Note that room availability cannot be altered after an event is created.
+     </p>
+      <br>
+      <div id="id_event_enter">
+        {% crispy form %}
+      </div>
    </div>
 
 <p></p>

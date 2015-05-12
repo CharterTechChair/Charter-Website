@@ -22,6 +22,10 @@ import permissions
 
 from ldap_student_lookup import get_student_info
 
+
+# build context data concerning the user associated with request
+# this includes a representation of them as a student, member, and officer
+# if applicable
 def additional_context(request):
     netid = permissions.get_username(request)
     
@@ -147,6 +151,7 @@ def hello(request):
      'netid': permissions.get_username(request),
   })
 
+# allows a member to view their own user profile
 @permissions.member
 def profile(request):
   
