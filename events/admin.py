@@ -1,6 +1,8 @@
 from django.contrib import admin
 from events.models import Event, Room
 
+class RoomAdmin(admin.ModelAdmin):
+    pass
 class EventAdmin(admin.ModelAdmin):
     fieldsets = [
         ('Basic Information', 
@@ -16,3 +18,4 @@ class EventAdmin(admin.ModelAdmin):
 
 # Register your models here.
 admin.site.register(Event, EventAdmin)
+admin.site.register(Room, RoomAdmin)
