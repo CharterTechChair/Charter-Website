@@ -68,7 +68,11 @@ def render(request, template_name, context=None, *args, **kwargs):
 
 def index(request):
     return render(request, "index.html")
- 
+
+
+# currently not really functional due to us having no solid way
+# of uploading member photographs. also should be rewritten
+# with more robust 
 @permissions.member   
 def faceboard(request):
     def picsfromyear(year):
@@ -102,6 +106,7 @@ def song(request):
 def constitution(request):
    return render(request, "constitution.html")
 
+# allow user to view list of current officer corps.
 @permissions.member 
 def officer_list(request):
     now = datetime.datetime.now().date()
@@ -141,6 +146,7 @@ def contactus(request):
      'vp': vp,
     }) 
 
+# greeting page
 @permissions.member
 def hello(request):
   now = datetime.datetime.now().date()
@@ -180,6 +186,7 @@ def officer(request):
   'member': m
   })
 
+# allows people to sign up for mailing list
 def mailinglist(request):
   if request.method == 'POST':
     form = MailingListForm(request.POST)
@@ -198,6 +205,10 @@ def mailinglist(request):
      'netid': permissions.get_username(request),
    })  
 
+# view the list of people who have signed up for our mailing list.
+# should probably implement an actual listserv of some description
+# at some point
+@permissions.officer
 def mailinglist_view(request):
   plist = Prospective.objects.all()
 
