@@ -76,8 +76,12 @@ def get_student_info(netid):
                              last_name = attributes["sn"][0])
         if "puclassyear" in attributes:
             student.year = int(attributes["puclassyear"][0])
+        else:
+            student.year = 2015
     else:
         student = models.Student(netid = netid, first_name = netid,
-                                 last_name = "")
+                                 last_name = "", year=2015)
+
+        
         
     return student

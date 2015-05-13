@@ -26,7 +26,7 @@ DAYS = [("Monday", "Monday"),
 # first name, last name, and graduation year.
 class NewMemberForm(forms.ModelForm):
     class Meta:
-        model = Officer
+        model = Member
         fields = ['netid', 'allow_rsvp', 'house_account']
 
     def save(self, commit=True):
