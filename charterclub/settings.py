@@ -21,7 +21,7 @@ SECRET_KEY = '(mihe#rzn6$nxj0=ht()h==#315l7ojk@b5s#b_d)p6*6geyi6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-
+ 
 # if this is true, get_username(request) will return testuser. use for
 # testing when CAS is not available
 CAS_DISABLED = False
