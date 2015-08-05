@@ -3,15 +3,34 @@ import forms
 from charterclub.models import Person
 from charterclub.models import Member
 from charterclub.models import Officer
+from list_filter import CurrentMembershipListFilter
 
-# class PersonAdmin(admin.ModelAdmin):
-#     fields = ['first_name', 'last_name']
+# Unsure if we should implement this
+'''
+class PersonAdmin(admin.ModelAdmin):
+    fields = ['first_name', 'last_name']
 
-# admin.site.register(Person, PersonAdmin)
+admin.site.register(Person, PersonAdmin)
+'''
+
+
 
 # member editing forms for django-admin. initial entry of a member
 # uses netid to fill out other fields automatically
-class MemberAdmin(admin.ModelAdmin):    
+class MemberAdmin(admin.ModelAdmin):
+    # What gets shown, and how?
+    list_display = ('__unicode__', 'netid', 'year', 'house_account', 'allow_rsvp')
+    list_editable = ('house_account', 'allow_rsvp')
+    ordering = ['-year', 'last_name', 'first_name']
+
+    # How can we narrow what gets shown?
+    search_fields = ['first_name', 'last_name', 'netid', 'year']
+    list_filter = (CurrentMembershipListFilter, 'year')
+    show_full_result_count = True
+    
+
+    
+
     def get_form(self, request, obj=None, **kwargs):
         if not obj:
             return forms.NewMemberForm
