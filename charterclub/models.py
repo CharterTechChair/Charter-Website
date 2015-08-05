@@ -67,6 +67,22 @@ import events.models
 class Officer(Member):
     position = models.CharField('Position/title', max_length=100)
 
+    def promote_member_to_officer(self, member, position):
+        # Get the fields of the Student class
+        fields = [f.get_attname() for f in Student._meta.fields]
+        fields = [f for f in fields if f != 'id']
+
+        # Create the parameters for an officer
+        officer_param = {f:getattr(member, f) for f in fields}
+        officer_param['position'] = position
+
+        # Delete the old member
+        member.delete()
+
+        # Now re-insert as an officer
+        Officer.objects.create(**officer_param)
+
+
 # THIS WILL GET MOVED TO A CAL APP EVENTUALLY
 class SocialEvent(models.Model):
     title = models.CharField(max_length=40)

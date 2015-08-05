@@ -14,9 +14,10 @@ admin.site.register(Person, PersonAdmin)
 '''
 
 
-
+#################################################################################
 # member editing forms for django-admin. initial entry of a member
 # uses netid to fill out other fields automatically
+#################################################################################
 class MemberAdmin(admin.ModelAdmin):
     # What gets shown, and how?
     list_display = ('__unicode__', 'netid', 'year', 'house_account', 'allow_rsvp')
@@ -58,9 +59,20 @@ class MemberAdmin(admin.ModelAdmin):
     
 admin.site.register(Member, MemberAdmin)
 
+#################################################################################
 # altering officers from with the admin control panel.
 # on creating a new officer, you may choose a member and enter their title
+#################################################################################
 class OfficerAdmin(admin.ModelAdmin):
+    # What gets shown, and how?
+    list_display = ('__unicode__',  'position', 'year',)
+    list_editable = ('position',)
+    ordering = ['position']
+
+    # What gets filtered/searched?
+    search_fields = ['first_name', 'last_name', 'netid', 'year', 'position']
+
+
     def get_form(self, request, obj=None, **kwargs):
         if obj:
             return forms.EditOfficerForm
@@ -73,6 +85,8 @@ class OfficerAdmin(admin.ModelAdmin):
             return ['first_name', 'last_name', 'netid']
         else:
             return []
+
+
 
     # if we are creating an officer, we will effectively have to delete
     # and overwrite the member which is becoming an officer
