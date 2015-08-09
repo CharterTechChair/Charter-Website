@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
@@ -28,8 +27,23 @@ CAS_DISABLED = False
 
 TEMPLATE_DEBUG = True
 
-TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), "templates2").replace(
-    "\\","/"),)
+# TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), "templates").replace(
+#     "\\","/"),)
+
+TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), "..", "templates").replace('\\', '/'),)
+
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': TEMPLATE_DIRS,
+        'APP_DIRS': True,
+        'OPTIONS': {
+            # ... some options here ...
+        },
+    },
+]
+
 
 ALLOWED_HOSTS = [
     '.princetoncharterclub.org',
@@ -100,7 +114,7 @@ WSGI_APPLICATION = 'charterclub.wsgi.application'
 # CAS settings
 CAS_SERVER_URL = 'https://fed.princeton.edu/cas/'
 CAS_LOGOUT_COMPLETELY = False
-CAS_REDIRECT_URL = 'templates2/hello.html'
+CAS_REDIRECT_URL = 'templates/hello.html'
 
 # email backend
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 

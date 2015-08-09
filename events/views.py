@@ -53,7 +53,7 @@ def events_entry(request, title, date):
             event.add_to_event(member, guest_s, form.cleaned_data['room_choice'])
 
             return redirect('events')
-    return render(request, 'events_form.html', {
+    return render(request, 'events/events_form.html', {
         'form': form,
         'event': event,
         'error': '',
@@ -79,7 +79,7 @@ def events_view(request, title, date):
     else:
         event = event_search[0]
 
-        return render(request, 'events_view.html', {
+        return render(request, 'events/events_view.html', {
                      'error': '',
                      'netid': permissions.get_username(request),
                      'room_list' : event.to_JSON()['rooms'],
@@ -132,7 +132,7 @@ def events_create(request):
    else:
       form = EventCreateForm()
 
-   return render(request, 'events_create.html', {
+   return render(request, 'events/events_create.html', {
      'form': form,
      'dropdown': EventEditForm(),
      'error': '',
@@ -161,7 +161,7 @@ def events_list(request):
 
         event_msg.append(msg)     
 
-    return render(request, 'events_list.html', {
+    return render(request, 'events/events_list.html', {
       'error': '',
       'netid': permissions.get_username(request),
       'events_info': zip(events, has_rsvp, event_msg) ,
@@ -169,7 +169,7 @@ def events_list(request):
  
 @permissions.officer
 def thanks_create(request):
-  return render(request, "thanks_create.html", {
+  return render(request, "events/thanks_create.html", {
      'error': '',
      'netid': permissions.get_username(request),
   })

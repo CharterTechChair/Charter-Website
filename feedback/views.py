@@ -26,7 +26,7 @@ def feedback(request):
    else:
       form = FeedbackForm()
 
-   return render(request, 'feedback.html', {
+   return render(request, 'feedback/feedback.html', {
      'current_date': now,
      'form': form,
      'error': '',
@@ -35,7 +35,7 @@ def feedback(request):
 
 def thanks(request):
     now = datetime.datetime.now().date()
-    return render(request, "thanks.html", {
+    return render(request, "feedback/thanks.html", {
      'current_date': now,
      'error': '',
      'netid': permissions.get_username(request),
