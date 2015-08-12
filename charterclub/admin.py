@@ -1,4 +1,7 @@
 from django.contrib import admin
+from django.http import  HttpResponseRedirect
+from django.conf.urls import patterns, include, url
+
 import forms
 from charterclub.models import Person
 from charterclub.models import Member
@@ -56,7 +59,32 @@ class MemberAdmin(admin.ModelAdmin):
                 obj.pk = None
                 existing[0].delete()
         obj.save()
+
     
+
+    # Adds a list of multiple members
+    def add_members(self, request):
+        print "hello world, from add_members in admin.py in the app: charterclub"
+        print "id is %s" % id
+
+        # entry = MemberAdmin.objects.get(pk=id)
+
+        # return HttpResponseRedirect(request.META["HTTP_REFERER"])
+        return render(request, 'admin/charterclub/member/my_own_form.html', {
+            'title': 'Add a list of members',
+            # 'entry': entry,
+            'opts': self.model._meta,
+            # 'root_path': self.admin_site.root_path,
+        })
+
+    # Adds the "add_members" to the url
+    def get_urls(self):
+        urls = super(MemberAdmin, self).get_urls()
+        my_urls = patterns("",
+            url(r"add-members/$", self.admin_site.admin_view(self.add_members))
+        )
+        return my_urls + urls
+
 admin.site.register(Member, MemberAdmin)
 
 #################################################################################
@@ -96,5 +124,26 @@ class OfficerAdmin(admin.ModelAdmin):
             if len(existing) > 0:
                 existing[0].delete()
         obj.save()
+
+#################################################################################
+# Let's try to do some "fancy" Django Admin here for
+# the "add list of members" button
+#################################################################################
+from django.contrib.admin.views.decorators import staff_member_required
+from charterclub.views import render
+from charterclub import permissions
+
+# @staff_member_required
+# def add_members(request):
+#     print "hello world, from add_members in admin.py in the app: charterclub"
+
+#     return render(request, 'admin/charterclub/member/my_own_form.html', {
+#      # 'form': form,
+#      'error': '',
+#      # 'netid':  permissions.get_username(request),
+#    })  
+#     # return HttpResponseRedirect(request.META["HTTP_REFERER"])
+
+
 
 admin.site.register(Officer, OfficerAdmin)

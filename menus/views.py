@@ -39,7 +39,6 @@ def menu_input(request):
       form = MenuForm()
 
    return render(request, 'menu_input.html', {
-     'current_date': now,
      'form': form,
      'error': '',
      'netid':  permissions.get_username(request),
@@ -53,7 +52,6 @@ def menu(request):
    mlist = MenuItem.objects.filter(date__range=[startdate, enddate]).order_by('date')
 
    return render(request, 'menu.html', {
-     'current_date': now,
      'error': '',
      'netid': permissions.get_username(request),
      'menu_list': mlist ,

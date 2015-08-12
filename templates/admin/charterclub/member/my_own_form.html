@@ -1,0 +1,25 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_modify  %}
+
+{% block extrastyle %}{{ block.super }}
+{% endblock %}
+{% block bodyclass %}{{ opts.app_label }}-{{ opts.object_name.lower }} change-form{% endblock %}
+{% block breadcrumbs %}{% if not is_popup %}
+<div class="breadcrumbs">  
+     <a href="../../../../">{% trans "Home" %}</a> ›
+     <a href="../../../">{{ opts.app_label|capfirst|escape }}</a> ›
+     <a href="../../">{{ opts.verbose_name_plural|capfirst }}</a> ›
+     <a href="../">{{ opts.verbose_name|capfirst }} #{{ entry.pk }}</a> ›
+     {% trans 'Add list of Members' %}</div>
+{% endif %}{% endblock %}
+{% block content %}
+<form action="." method="post">  
+<fieldset class="module aligned">  
+<div class="form-row">  
+      <h2>Hello World</h2>
+      <textarea style="height: 136px; width: 161px; margin: 2px;" rows="10">This is just filler text</textarea></div></fieldset>
+<div class="submit-row">  
+<input class="default" type="submit" value="{% trans 'Review' %}" /></div>  
+</form>
+
+{% endblock %}
