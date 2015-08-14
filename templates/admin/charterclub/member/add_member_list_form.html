@@ -1,0 +1,31 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_modify  %}
+
+{% block extrastyle %}{{ block.super }}
+{% endblock %}
+{% block bodyclass %}{{ opts.app_label }}-{{ opts.object_name.lower }} change-form{% endblock %}
+{% block breadcrumbs %}{% if not is_popup %}
+<div class="breadcrumbs">  
+     <a href="../../../../">{% trans "Home" %}</a> ›
+     <a href="../../../">{{ opts.app_label|capfirst|escape }}</a> ›
+     <a href="../../">{{ opts.verbose_name_plural|capfirst }}</a> ›
+     <a href="../">{{ opts.verbose_name|capfirst }} #{{ entry.pk }}</a> ›
+     {% trans 'Add list of Members' %}</div>
+{% endif %}{% endblock %}
+{% block content %}
+
+<h4> Use this form to upload/update members in the database in the following format: </h4>
+<div> 
+    <p> First Name, last Name, netid, year, house account amount </p>
+<div>
+
+<form action="" method="POST">
+    {% csrf_token %}
+        <table>
+            {{ form }}
+        </table>
+    <input type="hidden" name="{{ stage_field }}" value="1" />
+<p><input type="submit" value="Preview" /></p>
+</form>
+
+{% endblock %}

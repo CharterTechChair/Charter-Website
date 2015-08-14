@@ -80,7 +80,12 @@ YEARS = []
 for y in years:
     YEARS.append((y, str(y)))
 
+################################################################################
+# MailingListForm
+# To add sophomores based on the mailing list
+################################################################################
 class MailingListForm(forms.Form):
+    # Fields of this Form
     netid = forms.CharField(max_length=10)
     first_name = forms.CharField(max_length=30)
     last_name = forms.CharField(max_length=30)
@@ -90,8 +95,8 @@ class MailingListForm(forms.Form):
     helper = FormHelper()   
     helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
 
+    # Add sophomores based on the data collected
     def add_soph(self):
-
         if self.is_valid():
             data = self.cleaned_data
             
@@ -103,4 +108,26 @@ class MailingListForm(forms.Form):
                                    year=data['year'],
                                    events_attended=0)
                 pnew.save()
+
+################################################################################
+# For Django Admin
+# Form for uploading a list of members
+################################################################################
+class MemberListForm(forms.Form):
+    placeholder = '''Quan, Zhou, quanzhou, 2015, 255.00
+    Rory, Fitzpatrick, roryf, 2016, 255.00
+    Jeremy, Whitton, jwhitton, 2016, 0.00
+    '''.replace('    ','')
+    content = forms.CharField(label='content', 
+                        max_length=2000,
+                        widget=forms.Textarea(attrs={
+                        'style' : 'height:480px',
+                        'placeholder': placeholder}))
+    # Submit buttons
+    helper = FormHelper()
+    helper.add_input(Submit('submit', 'submit'))
+
+    # def __init__(self, *args, **kwargs):
+    #     super(MemberListForm, self).__init__(*args, **kwargs)
+    #     self.helper.form_tag = False
 

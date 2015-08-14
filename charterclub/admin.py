@@ -3,11 +3,19 @@ from django.http import  HttpResponseRedirect
 from django.conf.urls import patterns, include, url
 
 import forms
+
 from charterclub.models import Person
 from charterclub.models import Member
 from charterclub.models import Officer
+
+from charterclub.forms import MemberListForm
+
 from list_filter import CurrentMembershipListFilter
 
+# Form previews
+from charterclub.preview import MemberListPreview
+from charterclub.forms import MemberListForm
+from django import forms
 # Unsure if we should implement this
 '''
 class PersonAdmin(admin.ModelAdmin):
@@ -60,30 +68,68 @@ class MemberAdmin(admin.ModelAdmin):
                 existing[0].delete()
         obj.save()
 
-    
-
     # Adds a list of multiple members
-    def add_members(self, request):
-        print "hello world, from add_members in admin.py in the app: charterclub"
-        print "id is %s" % id
+    def add_members(self, request):        
+        if request.method == 'POST':
 
-        # entry = MemberAdmin.objects.get(pk=id)
+            form = MemberListForm(request.POST)
+            if form.is_valid():
+                import pdb
+                pdb.set_trace()
+
+                print "yay, form is valid"
+                return HttpResponseRedirect(request.META["HTTP_REFERER"])
+        else:
+            form = MemberListForm()
 
         # return HttpResponseRedirect(request.META["HTTP_REFERER"])
-        return render(request, 'admin/charterclub/member/my_own_form.html', {
+        return render(request, 'admin/charterclub/member/add_member_list_form.html', {
             'title': 'Add a list of members',
             # 'entry': entry,
             'opts': self.model._meta,
+            'form': form,
             # 'root_path': self.admin_site.root_path,
         })
+
+    # Confirms that each member is added or not
+    def form_confirmation(self, request):
+        labels = {'First Name', 'Last Name', 'NETID', 'House Account Balance', 'Status'}
+        table = [['Quan', 'Zhou', 'quanzhou', '$255.00', 'Ready to be Added']]
+        # Look at String
+        import pdb
+        pdb.set_trace()
+        # Look up members in database
+        string = request.POST['content']
+        # Return results
+            # Prospective: old points
+            # Added as new student member
+            # Member already exists (show data)
+        # Note: once prospectives are added to the database, the number of points they had
+        #       will be lost
+        # Give user to the opportunity to ("update all", "only update new", "cancel")
+        return render(request, 'admin/charterclub/member/add_member_list_form_confirmation.html', {
+            'title': 'Add a list of members',
+            # 'entry': entry,
+            'opts': self.model._meta,
+            'label' : labels, 
+            'table' : table,
+            # 'root_path': self.admin_site.root_path,
+        })
+
+    
 
     # Adds the "add_members" to the url
     def get_urls(self):
         urls = super(MemberAdmin, self).get_urls()
         my_urls = patterns("",
-            url(r"add-members/$", self.admin_site.admin_view(self.add_members))
+            url(r"add-members/$", self.admin_site.admin_view(self.add_members)),
+            # url(r"add-members/confirmation/$", self.admin_site.admin_view(self.form_confirmation)),
+            (r'^add-members/confirmation/$', MemberListPreview(MemberListForm)),
         )
+
         return my_urls + urls
+
+
 
 admin.site.register(Member, MemberAdmin)
 
@@ -114,8 +160,6 @@ class OfficerAdmin(admin.ModelAdmin):
         else:
             return []
 
-
-
     # if we are creating an officer, we will effectively have to delete
     # and overwrite the member which is becoming an officer
     def save_model(self, request, obj, form, change):
@@ -124,6 +168,9 @@ class OfficerAdmin(admin.ModelAdmin):
             if len(existing) > 0:
                 existing[0].delete()
         obj.save()
+
+
+
 
 #################################################################################
 # Let's try to do some "fancy" Django Admin here for

@@ -70,6 +70,7 @@ INSTALLED_APPS = (
     'menus',
     'feedback',
     'django_bootstrap_calendar',
+    'django.contrib.formtools',
 )
 
 MIDDLEWARE_CLASSES = (
