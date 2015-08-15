@@ -184,6 +184,23 @@ class MemberListForm(forms.Form):
 
         return results
 
+    # Makes the entries - requires the form to be filled out first
+    def submit_content(self):
+        result_list = self.parse_content()
+        # Based on what the person is, do actions
+        for netid, tup in result_list.iteritems():
+            info = tup[2]
+            mquery_o = Member.objects.filter(netid=netid)
+            pquery_o = Prospective.objects.filter(netid=netid)
+
+            if mquery_o:
+                pass
+            elif pquery_o: 
+                pquery_o[0].promote_to_member(info[4])
+            else:
+                m = Member(first_name=info[0], last_name=info[1], netid=netid,
+                       year=info[3], house_account=info[4], allow_rsvp=True)
+                m.save()
         
 
     # def __init__(self, *args, **kwargs):
