@@ -1,5 +1,6 @@
 from django import forms
 from django.forms.extras.widgets import SelectDateWidget
+from django.core.exceptions import ValidationError
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset
@@ -133,47 +134,53 @@ class MemberListForm(forms.Form):
     helper = FormHelper()
     helper.add_input(Submit('submit', 'submit'))
 
-    ## --- User defined Methods -----
-
+    ## ---- User defined Methods -----
     # Check if content has proper character seperated values
-    # def clean_content(self):
-    #     data = self.cleaned_data['content']
-    #     table = []
+    def clean(self):
+        data = self.cleaned_data['content'].strip()
+        table = []
 
-    #     for row in data:
-    #         table.append([l.strip() for l in row.split(',')])
-        
-    #     # Check that every row can be split into 4 colums
-    #     for (i,row) in enumerate(table):
-    #         if not len(row) == 4:
-    #             raise form.ValidationError('Comma Error: Not enough columns in %s' % data[i])        
-    #         if not any(row):
-    #             raise form.ValidationError('Comma Error: Empty column in %s' % data[i])        
-    #         if not (row[2].isalnum()):
-    #             raise form.ValidationError('"%s" is not a valid netid' % row[2])
+        for row in data.split("\n"):
+            table.append([l.strip() for l in row.strip().split(',')])
 
-    #     self.table = table
-    #     return data.strip()
+        line_s = [l.strip() for l in data.split('\n')]
+
+        # Check that every row can be split into 4 colums
+        for (i,row) in enumerate(table):
+            if not len(row) == 5:
+                raise ValidationError('Something is wrong with the following line:\n"%s"' % line_s[i])        
+            if not any(row):
+                raise ValidationError('Comma Error: Empty column in %s' % line_s[i])        
+            if not (row[2].isalnum()):
+                raise ValidationError('"%s" is not a valid netid' % line_s[2])
+
+        self.table = table
+        self.cleaned_data['content'] = "\n".join([",".join(r) for r in table])
+        return self.cleaned_data
 
     # Tries to parse itself. 
     # If successful, returns the results [was prospective, new member, existing member]
     # If unsuccessful, raises an error
     def parse_content(self):
         results = {}
-        self.clean_content()
+        self.clean()
 
         # Now try to do lookup for students
         for row in self.table:
             netid = row[2]
+
             pquery_o = Prospective.objects.filter(netid=netid)
             mquery_o = Member.objects.filter(netid=netid)
 
-            if query_o:
-                results[netid] = 'Was Prospective. Points: %s'  % (query_o[0].get_num_points())
-            elif mquery_o:
-                results[netid] = 'Member "%s" already exists in database' % mquery_o[0].__unicode__()
+
+            if mquery_o:
+                results[netid] = ('"%s" already exists in Member database.' 
+                                % (mquery_o[0].__unicode__()),0, row)
+            elif pquery_o:
+                results[netid] = ('Was a prospective. Points: %s.'  
+                                % (pquery_o[0].get_num_points()), 1,row)
             else:
-                results[netid] = 'Adding New Member'
+                results[netid] = ('Adding brand a new member.', 2, row)
 
         return results
 

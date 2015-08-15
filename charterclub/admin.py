@@ -41,8 +41,6 @@ class MemberAdmin(admin.ModelAdmin):
     show_full_result_count = True
     
 
-    
-
     def get_form(self, request, obj=None, **kwargs):
         if not obj:
             return forms.NewMemberForm
@@ -74,8 +72,6 @@ class MemberAdmin(admin.ModelAdmin):
 
             form = MemberListForm(request.POST)
             if form.is_valid():
-                import pdb
-                pdb.set_trace()
                 print "yay, form is valid"
                 return HttpResponseRedirect(request.META["HTTP_REFERER"])
         else:
@@ -95,8 +91,7 @@ class MemberAdmin(admin.ModelAdmin):
         labels = {'First Name', 'Last Name', 'NETID', 'House Account Balance', 'Status'}
         table = [['Quan', 'Zhou', 'quanzhou', '$255.00', 'Ready to be Added']]
         # Look at String
-        import pdb
-        pdb.set_trace()
+
         # Look up members in database
         string = request.POST['content']
         # Return results

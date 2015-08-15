@@ -1,3 +1,4 @@
+# This is to be copy and pasted into the shell
 from charterclub.models import *
 
 # Insert Members
@@ -101,7 +102,7 @@ member_list = [("Jean-Carlos", "Arenas", "jarenas", 2016),
 # Now insert them
 for row in member_list:
     Member(first_name=row[0], last_name=row[1], netid=row[2], year=row[3], house_account=255.00,
-           events_attended=0, meals_attended=0).save()
+           ).save()
 
 
 # Officers Here

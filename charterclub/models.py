@@ -64,26 +64,30 @@ class Prospective(Student):
         return self.events_attended
 
     # Promote a Prospective to a Member
-    def promote_to_member(self, prospective, house_account):
+    def promote_to_member(self, house_account):
         fields = [f.get_attname() for f in Prospective._meta.fields]
-        fields = [f for f in fields if ('_id' not in f and 'id' not in f)]
+        bk_lst = ['id', 'events_attended', 'meals_attended']
+        fields = [f for f in fields if ('_id' not in f and f not in bk_lst)]
+        import pdb
+        pdb.set_trace()
 
         # Create the parameters for an officer
-        member_param = {f:getattr(prospective, f) for f in fields}
+        member_param = {f:getattr(self, f) for f in fields}
         member_param['house_account'] = house_account
 
-        # Delete the old prospective
-        prospective.delete()
+        
+        # self.delete() #Keep the old Prospective
         Member.objects.create(**member_param)
 
 ###########################################################################
 # Member
 # A Student of Princeton
 ############################################################################
-class Member(Prospective):
+class Member(Student):
     allow_rsvp = models.BooleanField(
         'Whether or not this member may attend events', default=True)
     house_account = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+
 
     def get_events(self):
         ans = []

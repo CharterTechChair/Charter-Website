@@ -4,28 +4,32 @@
 {% block extrastyle %}{{ block.super }}
 {% endblock %}
 {% block bodyclass %}{{ opts.app_label }}-{{ opts.object_name.lower }} change-form{% endblock %}
-{% block breadcrumbs %}{% if not is_popup %}
-<div class="breadcrumbs">  
-     <a href="../../../../">{% trans "Home" %}</a> ›
-     <a href="../../../">{{ opts.app_label|capfirst|escape }}</a> ›
-     <a href="../../">{{ opts.verbose_name_plural|capfirst }}</a> ›
-     <a href="../">{{ opts.verbose_name|capfirst }} #{{ entry.pk }}</a> ›
-     {% trans 'Add list of Members' %}</div>
-{% endif %}{% endblock %}
+
 {% block content %}
 
 <h1>Preview your submission</h1>
 
-<table>
-{% for field in form %}
-<tr>
-<th>{{ field.label }}:</th>
-<td>{{ field.data }}</td>
-</tr>
-{% endfor %}
-</table>
+<p> Please note that when you press submit, only new members will be added to the membership list. </p>
 
-{{ quanbar }}
+<h4> Results of database searches: </h4>
+<table>
+    <tr>
+        <td> <strong> Student </strong> </td>
+        <td> <strong> Status </strong></td>
+    </tr>
+{% for student, status in results.items %}
+    <tr>
+        <td> {{ student }} </td>
+        {% if status.1 == 0 %}
+        <td style="color: orange"> {{ status.0 }} </td>
+        {% else %}
+        <td style="color: green">  {{ status.0 }} </td>
+        {% endif %}
+    <tr>
+{% endfor %}
+<table>
+
+<p> Pressing submit will add the students with <span style="color:green"> green  status </span>to the member database. </p>
 
 <form action="" method="post">{% csrf_token %}
 {% for field in form %}{{ field.as_hidden }}
