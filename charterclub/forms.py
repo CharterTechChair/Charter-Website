@@ -12,6 +12,8 @@ from datetime import date, timedelta
 from models import *
 from ldap_student_lookup import get_student_info
 
+from charterclub.models import Prospective
+
 DAYS = [("Monday", "Monday"),
         ("Tuesday", "Tuesday"),
         ("Wednesday", "Wednesday"),
@@ -21,9 +23,11 @@ DAYS = [("Monday", "Monday"),
         ("Sunday", "Sunday")]
 
 
+################################################################################
 # form for entering a new member into the database
-# takes a netid as input as uses ldap lookup to find corresponding
+# takes a netid as input as uses ldap lookup (?) to find corresponding
 # first name, last name, and graduation year.
+################################################################################
 class NewMemberForm(forms.ModelForm):
     class Meta:
         model = Member
@@ -42,9 +46,11 @@ class NewMemberForm(forms.ModelForm):
 
         return newMember
 
-
+################################################################################
+# NewOfficerForm
 # form to create a new officer: take an existing member and turn
 # them into an officer, adding their title
+################################################################################
 class NewOfficerForm(forms.ModelForm):
     class Meta:
         model = Officer
@@ -126,6 +132,52 @@ class MemberListForm(forms.Form):
     # Submit buttons
     helper = FormHelper()
     helper.add_input(Submit('submit', 'submit'))
+
+    ## --- User defined Methods -----
+
+    # Check if content has proper character seperated values
+    # def clean_content(self):
+    #     data = self.cleaned_data['content']
+    #     table = []
+
+    #     for row in data:
+    #         table.append([l.strip() for l in row.split(',')])
+        
+    #     # Check that every row can be split into 4 colums
+    #     for (i,row) in enumerate(table):
+    #         if not len(row) == 4:
+    #             raise form.ValidationError('Comma Error: Not enough columns in %s' % data[i])        
+    #         if not any(row):
+    #             raise form.ValidationError('Comma Error: Empty column in %s' % data[i])        
+    #         if not (row[2].isalnum()):
+    #             raise form.ValidationError('"%s" is not a valid netid' % row[2])
+
+    #     self.table = table
+    #     return data.strip()
+
+    # Tries to parse itself. 
+    # If successful, returns the results [was prospective, new member, existing member]
+    # If unsuccessful, raises an error
+    def parse_content(self):
+        results = {}
+        self.clean_content()
+
+        # Now try to do lookup for students
+        for row in self.table:
+            netid = row[2]
+            pquery_o = Prospective.objects.filter(netid=netid)
+            mquery_o = Member.objects.filter(netid=netid)
+
+            if query_o:
+                results[netid] = 'Was Prospective. Points: %s'  % (query_o[0].get_num_points())
+            elif mquery_o:
+                results[netid] = 'Member "%s" already exists in database' % mquery_o[0].__unicode__()
+            else:
+                results[netid] = 'Adding New Member'
+
+        return results
+
+        
 
     # def __init__(self, *args, **kwargs):
     #     super(MemberListForm, self).__init__(*args, **kwargs)

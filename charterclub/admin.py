@@ -76,7 +76,6 @@ class MemberAdmin(admin.ModelAdmin):
             if form.is_valid():
                 import pdb
                 pdb.set_trace()
-
                 print "yay, form is valid"
                 return HttpResponseRedirect(request.META["HTTP_REFERER"])
         else:
@@ -122,9 +121,9 @@ class MemberAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super(MemberAdmin, self).get_urls()
         my_urls = patterns("",
-            url(r"add-members/$", self.admin_site.admin_view(self.add_members)),
+            # url(r"add-members/$", self.admin_site.admin_view(self.add_members)),
             # url(r"add-members/confirmation/$", self.admin_site.admin_view(self.form_confirmation)),
-            (r'^add-members/confirmation/$', MemberListPreview(MemberListForm)),
+            (r'^add-members/$', MemberListPreview(MemberListForm)),
         )
 
         return my_urls + urls
