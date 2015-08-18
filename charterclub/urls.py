@@ -18,12 +18,10 @@ urlpatterns = patterns('',
         r'^#$',
         'charterclub.views.index',
         name='index'), 
-
     url(
         r'^index$',
         'charterclub.views.index',
         name='index'),
-
     url(r'^events',
         include('events.urls')),
 
@@ -89,9 +87,10 @@ urlpatterns = patterns('',
         'charterclub.views.hello', 
         name='hello'),
     url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
-    url(
-        r'^admin/', 
-        include(admin.site.urls)),
+    # Django Admin
+    url(r'^admin/',include(admin.site.urls)),
+    # Django Flatpages
+    url(r'^pages/', include('django.contrib.flatpages.urls')),
 )
 
 if settings.DEBUG == False:

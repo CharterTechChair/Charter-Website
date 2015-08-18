@@ -21,6 +21,7 @@ SECRET_KEY = '(mihe#rzn6$nxj0=ht()h==#315l7ojk@b5s#b_d)p6*6geyi6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
  
+
 # if this is true, get_username(request) will return testuser. use for
 # testing when CAS is not available
 CAS_DISABLED = False
@@ -30,9 +31,11 @@ TEMPLATE_DEBUG = True
 # TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), "templates").replace(
 #     "\\","/"),)
 
+# Needed for Django Flatpages
+SITE_ID = 1
+
+# For managing templates
 TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), "..", "templates").replace('\\', '/'),)
-
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -58,8 +61,11 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
+    'django.contrib.flatpages',
+    'django.contrib.formtools',
     'django.contrib.messages',
+    'django.contrib.sessions',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
     'jquery',
     'dajaxice',
@@ -70,7 +76,7 @@ INSTALLED_APPS = (
     'menus',
     'feedback',
     'django_bootstrap_calendar',
-    'django.contrib.formtools',
+    
 )
 
 MIDDLEWARE_CLASSES = (
@@ -81,6 +87,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     # required for CAS
     'django_cas.middleware.CASMiddleware',
     'django.middleware.doc.XViewMiddleware',
