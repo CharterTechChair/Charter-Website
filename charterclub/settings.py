@@ -133,6 +133,11 @@ EMAIL_HOST_USER = 'roryf@princeton.edu'
 EMAIL_HOST_PASSWORD = 'bjxslmlxjynwyfef'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+# FOR IMAGES
+ENV_PATH = os.path.abspath(os.path.dirname(__file__))
+MEDIA_ROOT = os.path.join(ENV_PATH, '..', 'media/')
+MEDIA_URL = '/media/'
+
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases

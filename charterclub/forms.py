@@ -11,7 +11,6 @@ from crispy_forms.bootstrap import (
 from datetime import date, timedelta
 
 from models import *
-from ldap_student_lookup import get_student_info
 
 from charterclub.models import Prospective
 
@@ -32,15 +31,10 @@ DAYS = [("Monday", "Monday"),
 class NewMemberForm(forms.ModelForm):
     class Meta:
         model = Member
-        fields = ['netid', 'allow_rsvp', 'house_account']
+        fields = ['first_name', 'last_name', 'netid', 'image', 'year', 'allow_rsvp', 'house_account']
 
     def save(self, commit=True):
         newMember = super(NewMemberForm, self).save(commit = False)
-        
-        student = get_student_info(newMember.netid)
-        newMember.first_name = student.first_name
-        newMember.last_name = student.last_name
-        newMember.year = student.year
         
         if commit:
             newMember.save()

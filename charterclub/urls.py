@@ -91,7 +91,9 @@ urlpatterns = patterns('',
     url(r'^admin/',include(admin.site.urls)),
     # Django Flatpages
     url(r'^pages/', include('django.contrib.flatpages.urls')),
-)
+
+    # For serving Media files
+) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG == False:
     urlpatterns += patterns('', url(r'',

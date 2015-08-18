@@ -87,6 +87,7 @@ class Member(Student):
     allow_rsvp = models.BooleanField(
         'Whether or not this member may attend events', default=True)
     house_account = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    image = models.ImageField(upload_to = 'member_images/', null=True, blank=True)
 
 
     def get_events(self):

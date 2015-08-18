@@ -14,7 +14,7 @@ from list_filter import CurrentMembershipListFilter
 
 # Form previews
 from charterclub.preview import MemberListPreview
-from charterclub.forms import MemberListForm
+from charterclub.forms import MemberListForm, NewMemberForm, EditOfficerForm, NewOfficerForm
 from django import forms
 # Unsure if we should implement this
 '''
@@ -43,7 +43,7 @@ class MemberAdmin(admin.ModelAdmin):
 
     def get_form(self, request, obj=None, **kwargs):
         if not obj:
-            return forms.NewMemberForm
+            return NewMemberForm
         else:
             pass
         return super(MemberAdmin, self).get_form(request, obj, **kwargs)
@@ -143,9 +143,9 @@ class OfficerAdmin(admin.ModelAdmin):
 
     def get_form(self, request, obj=None, **kwargs):
         if obj:
-            return forms.EditOfficerForm
+            return EditOfficerForm
         else:
-            return forms.NewOfficerForm
+            return NewOfficerForm
         return super(OfficerAdmin, self).get_form(request, obj, **kwargs)
 
     def get_readonly_fields(self, request, obj=None):
