@@ -8,8 +8,6 @@ from charterclub.models import Person
 from charterclub.models import Member
 from charterclub.models import Officer
 
-from charterclub.forms import MemberListForm
-
 from list_filter import CurrentMembershipListFilter
 
 # Form previews
@@ -32,7 +30,7 @@ admin.site.register(Person, PersonAdmin)
 class MemberAdmin(admin.ModelAdmin):
     # What gets shown, and how?
     list_display = ('__unicode__', 'netid', 'year', 'house_account', 'allow_rsvp')
-    list_editable = ('house_account', 'allow_rsvp')
+    list_editable = ('house_account', 'allow_rsvp',)
     ordering = ['-year', 'last_name', 'first_name']
 
     # How can we narrow what gets shown?
@@ -65,52 +63,6 @@ class MemberAdmin(admin.ModelAdmin):
                 obj.pk = None
                 existing[0].delete()
         obj.save()
-
-    # Adds a list of multiple members
-    def add_members(self, request):        
-        if request.method == 'POST':
-
-            form = MemberListForm(request.POST)
-            if form.is_valid():
-                print "yay, form is valid"
-                return HttpResponseRedirect(request.META["HTTP_REFERER"])
-        else:
-            form = MemberListForm()
-
-        # return HttpResponseRedirect(request.META["HTTP_REFERER"])
-        return render(request, 'admin/charterclub/member/add_member_list_form.html', {
-            'title': 'Add a list of members',
-            # 'entry': entry,
-            'opts': self.model._meta,
-            'form': form,
-            # 'root_path': self.admin_site.root_path,
-        })
-
-    # Confirms that each member is added or not
-    def form_confirmation(self, request):
-        labels = {'First Name', 'Last Name', 'NETID', 'House Account Balance', 'Status'}
-        table = [['Quan', 'Zhou', 'quanzhou', '$255.00', 'Ready to be Added']]
-        # Look at String
-
-        # Look up members in database
-        string = request.POST['content']
-        # Return results
-            # Prospective: old points
-            # Added as new student member
-            # Member already exists (show data)
-        # Note: once prospectives are added to the database, the number of points they had
-        #       will be lost
-        # Give user to the opportunity to ("update all", "only update new", "cancel")
-        return render(request, 'admin/charterclub/member/add_member_list_form_confirmation.html', {
-            'title': 'Add a list of members',
-            # 'entry': entry,
-            'opts': self.model._meta,
-            'label' : labels, 
-            'table' : table,
-            # 'root_path': self.admin_site.root_path,
-        })
-
-    
 
     # Adds the "add_members" to the url
     def get_urls(self):

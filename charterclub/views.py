@@ -6,6 +6,8 @@ from django.template.loader import get_template
 from django.conf import settings
 
 import datetime
+from datetime import date, timedelta
+
 from forms import *
 from events.models import *
 # import configuration
@@ -70,31 +72,45 @@ def index(request):
     return render(request, "index.html")
 
 
-# currently not really functional due to us having no solid way
-# of uploading member photographs. also should be rewritten
-# with more robust 
+########################################################################
+# Faceboard
+# 
+# Displays the current membership
+########################################################################
 @permissions.member   
 def faceboard(request):
-    def picsfromyear(year):
-        piclocation = "static/img/faceboard/"
-        pics = []
-        if not path.exists(piclocation + str(year)):
-           return
-        
-        for pic in listdir(piclocation + str(year)):
-           pics.append(str(year) + "/" + pic)
-        return pics
-              
-    year = datetime.date.today().year
-    seniorpics = picsfromyear(year)
-    juniorpics = picsfromyear(year + 1)
-    sophpics = picsfromyear(year + 2)
+    # rollover = June 3nd
+    senior_year = (date.today() - timedelta(days=153)).year + 1
 
-    return render(request, 'faceboard.html', {
-      'seniorpics': seniorpics,
-      'juniorpics': juniorpics,
-      'sophpics': sophpics,
-      'netid': permissions.get_username(request)
+    current_membership = Member.objects.filter(year__range=(senior_year, senior_year+2))
+
+    year_options = Member.get_membership_years()
+
+    return render(request, 'charterclub/faceboard.html', {
+      'title':   'Current Membership',
+      'year_options': reversed(year_options),
+      'display_membership' : current_membership,
+      'member':   Member.objects.filter(netid=permissions.get_username(request))[0]
+  })
+
+########################################################################
+# Faceboard_year
+# 
+# Displays the membership of a target year
+########################################################################
+
+@permissions.member
+def faceboard_year(request, year):
+    # rollover = June 3nd
+    members = Member.objects.filter(year=year)
+    
+    year_options = Member.get_membership_years()
+
+    return render(request, 'charterclub/faceboard.html', {
+      'title':   'Membership for the year %s' % year,
+      'year_options': reversed(year_options),
+      'display_membership' : members,
+      'member':   Member.objects.filter(netid=permissions.get_username(request))[0]
   })
 
 def history(request):
@@ -170,7 +186,7 @@ def profile(request):
 
   e = m.get_events()
 
-  return render(request, "profile.html", {
+  return render(request, "charterclub/profile.html", {
      'current_date': now,
      'error': '',
      'member': m,

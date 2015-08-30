@@ -6,8 +6,11 @@ from django.core.validators import RegexValidator
 
 import pdb
 # from events.models import Event
+from datetime import date, timedelta
+from django.core.exceptions import ValidationError
 
-
+# For analyzing Models
+from django.db.models import Min, Max
 ###########################################################################
 # a Person model
 # Basically an Abstract class containing a person's name
@@ -83,13 +86,27 @@ class Prospective(Student):
 # Member
 # A Student of Princeton
 ############################################################################
+# rollover = June 3nd
+senior_year = (date.today() - timedelta(days=153)).year + 1
+
 class Member(Student):
+    # Make sure that the image is not too big
+    def validate_image(fieldfile_obj):
+        # Note: this function is put up here so that validators=[func] can 
+        #       be called on it
+        filesize = fieldfile_obj.file.size
+        kilobyte_limit = 50
+        if filesize > kilobyte_limit*1024:
+            raise ValidationError("Max file size is %sKB. Sorry! This is to ensure that\
+             the site doesn't freeze when faceboard photos are loaded." % str(kilobyte_limit))
+
+    # ----- Fields associated with this Model ---
+    house_account = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    image = models.ImageField(upload_to = 'member_images/', null=True, blank=True, validators=[validate_image])
     allow_rsvp = models.BooleanField(
         'Whether or not this member may attend events', default=True)
-    house_account = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    image = models.ImageField(upload_to = 'member_images/', null=True, blank=True)
 
-
+    # Get the events associated with the member
     def get_events(self):
         ans = []
 
@@ -109,6 +126,7 @@ class Member(Student):
         else:
             Member.objects.create(**member_param)
 
+    # Promote the current member to an officer position
     def promote_to_officer(self, position):
         # Get the fields of the Student class
         fields = [f.get_attname() for f in Member._meta.fields]
@@ -121,6 +139,20 @@ class Member(Student):
         # Now re-insert as an officer
         Officer.objects.create(**officer_param)
         self.delete()
+
+    # Get the years in which membership spans over
+    @staticmethod
+    def get_membership_years():
+        years = []
+        minn = Member.objects.all().aggregate(Min('year'))['year__min']
+        maxx = Member.objects.all().aggregate(Max('year'))['year__max']
+
+        for y in range(minn, maxx+1):
+            if Member.objects.filter(year=y):
+                years.append(y)
+                
+        return years
+
 
     def __iter__(self):
         for m in self.all():

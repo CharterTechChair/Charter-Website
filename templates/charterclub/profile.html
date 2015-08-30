@@ -5,23 +5,14 @@
 
 {% block content %}
 
-   <div class="col-md-3">
-
-   </div>
-
-   <div class="col-md-6">
-    <h2> Welcome, {{ member.first_name }}! </h2>
-
-    <hr>
-       
- 
-    <h4>House account balance:</h4>
-    
-    ${{ member.house_account }}
-
-    <hr>
-
-    <h4>Upcoming events:</h4>
+<div class='col-md-10'> 
+  <h2> Welcome, {{ member.first_name }}! </h2>
+  <div class="col-md-6">
+      <hr>
+      <h4>House account balance:</h4>
+      ${{ member.house_account }}
+      <hr>
+      <h4>Upcoming events:</h4>
       <ul>
       {% for event,room, guest_s in events %}
         <li>
@@ -36,7 +27,14 @@
 
       {% endfor %} 
       </ul>
+  </div>
 
-   </div>
+  <div class="col-md-6">
+  <img src="{{ member.image.url }}" class="img-responsive .img-rounded" alt="Lookin' Good">
+  </div>
+</div>
+
+
+
 
 {% endblock %}    

@@ -31,12 +31,16 @@ urlpatterns = patterns('',
     url(r'^feedback',
         include('feedback.urls')),
 
-    url(r'^calendar/', 
+    url(r'^calendar', 
         include('django_bootstrap_calendar.urls')),
     url(
         r'^faceboard$',
         'charterclub.views.faceboard',
         name='faceboard'),
+    url(
+        r'^faceboard/([0-9]+)/$',
+        'charterclub.views.faceboard_year',
+        name='faceboard_year'),
     url(
         r'^profile$',
         'charterclub.views.profile',

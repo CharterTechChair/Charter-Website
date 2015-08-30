@@ -24,9 +24,9 @@ DAYS = [("Monday", "Monday"),
 
 
 ################################################################################
-# form for entering a new member into the database
-# takes a netid as input as uses ldap lookup (?) to find corresponding
-# first name, last name, and graduation year.
+# NewMemberForm
+# 
+# Form for entering a new member into the database
 ################################################################################
 class NewMemberForm(forms.ModelForm):
     class Meta:
@@ -35,84 +35,24 @@ class NewMemberForm(forms.ModelForm):
 
     def save(self, commit=True):
         newMember = super(NewMemberForm, self).save(commit = False)
-        
         if commit:
             newMember.save()
 
         return newMember
 
-################################################################################
-# NewOfficerForm
-# form to create a new officer: take an existing member and turn
-# them into an officer, adding their title
-################################################################################
-class NewOfficerForm(forms.ModelForm):
-    class Meta:
-        model = Officer
-        fields = ['position']
-        
-    member_choice = forms.ModelChoiceField(widget = forms.Select, queryset = Member.objects.all())             
+    def clean_image(self):
+        if self.cleaned_data['image']:
+            print "hello world"
+        return self.cleaned_data['']
 
-    def save(self, commit=True):
-        newOfficer = super(NewOfficerForm, self).save(commit = False)
-        member_choice = self.cleaned_data.get("member_choice", None)
-        newOfficer.first_name = member_choice.first_name
-        newOfficer.last_name = member_choice.last_name
-        newOfficer.netid = member_choice.netid
-        newOfficer.year = member_choice.year
-        newOfficer.house_account = member_choice.house_account
-        newOfficer.allow_rsvp = member_choice.allow_rsvp
-
-        if commit:
-            newOfficer.save()
-        
-        return newOfficer
-
-class EditOfficerForm(forms.ModelForm):
-    class Meta:
-        model = Officer
-        fields = ['position']
-
-year = (date.today() + timedelta(days=6*30)).year
-years = [year, year+1, year+2, year+3]
-
-YEARS = []
-
-for y in years:
-    YEARS.append((y, str(y)))
 
 ################################################################################
-# MailingListForm
-# To add sophomores based on the mailing list
-################################################################################
-class MailingListForm(forms.Form):
-    # Fields of this Form
-    netid = forms.CharField(max_length=10)
-    first_name = forms.CharField(max_length=30)
-    last_name = forms.CharField(max_length=30)
-    year = forms.ChoiceField(widget=forms.Select, choices=YEARS)
-
-    # Submit buttons
-    helper = FormHelper()   
-    helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
-
-    # Add sophomores based on the data collected
-    def add_soph(self):
-        if self.is_valid():
-            data = self.cleaned_data
-            
-            p = Prospective.objects.filter(netid=data['netid'])
-            if not p:
-                pnew = Prospective(netid=data['netid'],
-                                   first_name=data['first_name'],
-                                   last_name=data['last_name'],
-                                   year=data['year'],
-                                   events_attended=0)
-                pnew.save()
-
-################################################################################
-# For Django Admin
-# Form for uploading a list of members
+# MemberListForm
+# 
+# For Django Admin in URL: /admin/charterclub/member/add-members/
+# 
+# MemberListForm is a special form that will allow a list of members
+#       to be added to the database.
 ################################################################################
 class MemberListForm(forms.Form):
     placeholder = '''Quan, Zhou, quanzhou, 2015, 255.00
@@ -195,6 +135,76 @@ class MemberListForm(forms.Form):
                 m = Member(first_name=info[0], last_name=info[1], netid=netid,
                        year=info[3], house_account=info[4], allow_rsvp=True)
                 m.save()
+
+################################################################################
+# NewOfficerForm
+# form to create a new officer: take an existing member and turn
+# them into an officer, adding their title
+################################################################################
+class NewOfficerForm(forms.ModelForm):
+    class Meta:
+        model = Officer
+        fields = ['position']
+        
+    member_choice = forms.ModelChoiceField(widget = forms.Select, queryset = Member.objects.all())             
+
+    def save(self, commit=True):
+        newOfficer = super(NewOfficerForm, self).save(commit = False)
+        member_choice = self.cleaned_data.get("member_choice", None)
+        newOfficer.first_name = member_choice.first_name
+        newOfficer.last_name = member_choice.last_name
+        newOfficer.netid = member_choice.netid
+        newOfficer.year = member_choice.year
+        newOfficer.house_account = member_choice.house_account
+        newOfficer.allow_rsvp = member_choice.allow_rsvp
+
+        if commit:
+            newOfficer.save()
+        
+        return newOfficer
+
+class EditOfficerForm(forms.ModelForm):
+    class Meta:
+        model = Officer
+        fields = ['position']
+
+year = (date.today() + timedelta(days=6*30)).year
+years = [year, year+1, year+2, year+3]
+
+YEARS = []
+
+for y in years:
+    YEARS.append((y, str(y)))
+
+################################################################################
+# MailingListForm
+# To add sophomores based on the mailing list
+################################################################################
+class MailingListForm(forms.Form):
+    # Fields of this Form
+    netid = forms.CharField(max_length=10)
+    first_name = forms.CharField(max_length=30)
+    last_name = forms.CharField(max_length=30)
+    year = forms.ChoiceField(widget=forms.Select, choices=YEARS)
+
+    # Submit buttons
+    helper = FormHelper()   
+    helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
+
+    # Add sophomores based on the data collected
+    def add_soph(self):
+        if self.is_valid():
+            data = self.cleaned_data
+            
+            p = Prospective.objects.filter(netid=data['netid'])
+            if not p:
+                pnew = Prospective(netid=data['netid'],
+                                   first_name=data['first_name'],
+                                   last_name=data['last_name'],
+                                   year=data['year'],
+                                   events_attended=0)
+                pnew.save()
+
         
 
     # def __init__(self, *args, **kwargs):
