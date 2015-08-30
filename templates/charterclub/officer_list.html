@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+<container>
+    
+
+    <div class='col-md-12'>
+        <h2> Our Current Officers: </h2>
+
+        <hr>
+        {% for officer in officerlist %}
+        <div class = 'col-lg-3 col-md-3 col-sm-4 col-xs-6 thumb'>
+                {% if officer.image %}
+                    <img src="{{ officer.image.url }}" class='faceboard-photo'>
+                {% else %}
+                    <img src="{{STATIC_URL}}img/charter-logo-white.png" class='filler-photo'>
+                {% endif %}
+            <div style="text-align:center;">
+                <div>
+                    {{ officer.first_name }} {{officer.last_name}}
+                </div>
+
+                <div>
+                    <strong> {{ officer.position }} </strong>
+                </div>
+            </div>
+
+
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class='col-md-12'>
+            <h2> Contact Information </h2>
+
+            <hr>
+
+            {% for officer in officerlist %}
+               <div class="col-xs-12">
+                 <div class="col-xs-5 col-centered"> <strong> {{ officer.position }}: </strong> </div>
+                 <div class="col-xs-3 col-centered"> {{ officer.first_name }} {{ officer.last_name }} </div>
+                 <div class="col-xs-3 col-centered"> <i> {{ officer.netid }}@princeton.edu </i> </div>
+               </div>
+            {% endfor %}
+
+            <hr>
+        </div>
+
+    </container>
+
+{% endblock %}

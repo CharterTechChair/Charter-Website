@@ -14,33 +14,35 @@
 
 
     <div class='col-md-10'> 
-    <h2> View Faceboards for: </h2>
-    <div class="btn-group" role="group" aria-label="...">
+        <h2> View Faceboards for: </h2>
+        <div class="btn-group" role="group" aria-label="...">
 
-        <a href="/faceboard" class="btn btn-info" role="button"> Current Membership</a>
-        {% for year in year_options %}
+            <a href="/faceboard" class="btn btn-info" role="button"> Current Membership</a>
+            {% for year in year_options %}
 
-        <a href="/faceboard/{{year}}" class="btn btn-info" role="button"> {{year}} </a>
+            <a href="/faceboard/{{year}}" class="btn btn-info" role="button"> {{year}} </a>
 
-        {% endfor %}
-    </div>
+            {% endfor %}
+        </div>
 
         <h2> {{ title }} </h2>
         <hr>
         {% for member in display_membership %}
-        <div class = 'col-md-3 col-sm-6'>
+        <div class = 'col-lg-3 col-md-3 col-sm-4 col-xs-6 thumb col-centered'>
+            
                 {% if member.image %}
-                    <img src="{{ member.image.url }}" style="height:160px;">
+                    <img src="{{ member.image.url }}" class='faceboard-photo'>
                 {% else %}
-                    <img src="{{STATIC_URL}}img/charter-logo-white.png" style="height:120px; margin:20px;">
+                    <img src="{{STATIC_URL}}img/charter-logo-white.png" class='filler-photo'>
                 {% endif %}
+            
+
             <div style="text-align:center;">
                 {{ member.first_name }} {{member.last_name}}
             </div>
+
         </div>
         {% endfor %}
-    </div>
-    
-    
-<container>
+    </div>  
+</container>
 {% endblock %}

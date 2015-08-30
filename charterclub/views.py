@@ -129,7 +129,7 @@ def officer_list(request):
 
     olist = Officer.objects.all()
 
-    return render(request, 'officer_list.html', {
+    return render(request, 'charterclub/officer_list.html', {
      'current_date': now,
      'error': '',
      'netid': permissions.get_username(request),
