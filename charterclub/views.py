@@ -107,7 +107,7 @@ def faceboard_year(request, year):
     year_options = Member.get_membership_years()
 
     return render(request, 'charterclub/faceboard.html', {
-      'title':   'Membership for the year %s' % year,
+      'title':   'Class of %s' % year,
       'year_options': reversed(year_options),
       'display_membership' : members,
       'member':   Member.objects.filter(netid=permissions.get_username(request))[0]

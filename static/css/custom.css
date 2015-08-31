@@ -41,6 +41,13 @@
    margin-right: 10px;
 }
 
+.btn-inverse {
+  color: black;
+  background-color: transparent;
+  border-color: transparent;
+  background: #fff;
+}
+
 .btn-group .btn + .btn,
 .btn-group .btn + .btn-group,
 .btn-group .btn-group + .btn,
