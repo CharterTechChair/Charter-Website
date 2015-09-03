@@ -4,9 +4,8 @@ from django.conf.urls import patterns, include, url
 
 import forms
 
-from charterclub.models import Person
-from charterclub.models import Member
-from charterclub.models import Officer
+from charterclub.models import Person, Member, Officer, Prospective
+
 
 from list_filter import CurrentMembershipListFilter
 
@@ -115,8 +114,26 @@ class OfficerAdmin(admin.ModelAdmin):
                 existing[0].delete()
         obj.save()
 
+admin.site.register(Officer, OfficerAdmin)
 
+#################################################################################
+# altering officers from with the admin control panel.
+# on creating a new officer, you may choose a member and enter their title
+#################################################################################
+class ProspectiveAdmin(admin.ModelAdmin):
+    list_display = ['__unicode__', 'netid', 'events_attended', 'meals_attended']
+    list_editable = ['events_attended', 'meals_attended']
 
+    ordering = ['netid']
+    # What gets shown, and how?
+    # list_display = ('__unicode__',  'position', 'year',)
+    # list_editable = ('position',)
+    # ordering = ['position']
+
+    # What gets filtered/searched?
+    # search_fields = ['first_name', 'last_name', 'netid', 'year', 'position']
+
+admin.site.register(Prospective, ProspectiveAdmin)
 
 #################################################################################
 # Let's try to do some "fancy" Django Admin here for
@@ -139,4 +156,3 @@ from charterclub import permissions
 
 
 
-admin.site.register(Officer, OfficerAdmin)

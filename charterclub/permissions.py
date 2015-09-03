@@ -33,14 +33,11 @@ def member(func):
         return func(request, *args, **kwargs)
     return check_m
 
-# currently non-functional due to princeton-ldap not working on heroku
-# need to find some other way to determine sophomore status of
-# members, if this is indeed important
-def sophomore(func):
+def prospective(func):
     def check_s(request, *args, **kwargs):
-        if not check_sophomore(request):
-            return render(request, "permission_denied.html",
-                          {"required_permission": "sophomore"})
+        if not prospective(request):
+            return check_render(request, "permission_denied.html",
+                          {"required_permission": "prospective"})
         return func(request, *args, **kwargs)
     return check_s
 
@@ -86,28 +83,44 @@ def check_member(request):
     else:
         return True
 
-import datetime
-import ldap_student_lookup
-# check if the currently CAS logged-in user is a sophomore, returning
-# true if so and false otherwise. probably currently nonfunctional
-# due to princeton-ldap not working on heroku
-def check_sophomore(request):
+# check if the currently CAS logged-in user is a prospective, returning
+# true if so and false otherwise.
+def check_prospective(request):
     netid = get_username(request)
     if netid == "":
         return False
 
-    if len(ldap_student_lookup.ldap_lookup("netid=" + netid)) == 0:
-        return False
-    
-    student = ldap_student_lookup.get_student_info(netid)
+    user = Prospective.objects.filter(netid=netid)
 
-    # check that the student's graduation year indicates they are currently
-    # a sophomore. e.g. a student graduating in 2017 is a sophomore if we are
-    # currently in the latter half of 2014 or the beginning half of 2015.
-    today = datetime.date.today()
-    year = (today + datetime.timedelta(days = 6*30))
-    if student.year == (year + 2):
+    if len(user) == 0:
+        return False
+    else:
         return True
-    return False
+
+# import datetime
+# import ldap_student_lookup
+
+##### - The following code might be broken, so we're going to leave it out ####
+# check if the currently CAS logged-in user is a sophomore, returning
+# true if so and false otherwise. probably currently nonfunctional
+# due to princeton-ldap not working on heroku
+# def check_sophomore(request):
+#     netid = get_username(request)
+#     if netid == "":
+#         return False
+
+#     if len(ldap_student_lookup.ldap_lookup("netid=" + netid)) == 0:
+#         return False
+    
+#     student = ldap_student_lookup.get_student_info(netid)
+
+#     # check that the student's graduation year indicates they are currently
+#     # a sophomore. e.g. a student graduating in 2017 is a sophomore if we are
+#     # currently in the latter half of 2014 or the beginning half of 2015.
+#     today = datetime.date.today()
+#     year = (today + datetime.timedelta(days = 6*30))
+#     if student.year == (year + 2):
+#         return True
+#     return False
 
 

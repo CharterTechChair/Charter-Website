@@ -29,32 +29,29 @@ from ldap_student_lookup import get_student_info
 # this includes a representation of them as a student, member, and officer
 # if applicable
 def additional_context(request):
+    def dereference(query_a):
+        "Unwraps a query set"
+        if len(query_a):
+          return query_a[0]
+        else:
+          return None 
+
     netid = permissions.get_username(request)
     
-    o = Officer.objects.filter(netid=netid)
-    if len(o) > 0:
-        o = o[0]
-    else:
-        o = None
+    # Lookup people
+    o = dereference(Officer.objects.filter(netid=netid))
+    m = dereference(Member.objects.filter(netid=netid))
+    p = dereference(Prospective.objects.filter(netid=netid))
 
-    if not o:
-        m = Member.objects.filter(netid=netid)
-        if len(m) > 0:
-            m = m[0]
-        else:
-            m = None
-    else:
-        m = o
+    # Then return the results with the proper object pointers
+    if o:
+        return { "officer" : o, "member" : o.member, "student" : o.member.student, "prospective" : p}
+    if m:  
+        return { "officer" : o, "member" : m, "student" : m.student, "prospective" : p}
+    if p:
+        return { "officer" : o, "member" : m, "student" : s, "prospective" : p}
 
-    if not m:
-        if not netid == "":
-            s = get_student_info(netid)
-        else:
-            s = None
-    else:
-        s = m   
-    
-    return {"member" : m, "student" : s, "officer" : o}
+    return  { "officer" : None, "member" : None, "student" : None, "prospective" : None}
 
 # a replacement render function which passes some additional
 # user information to our template by wrapping the original
@@ -175,6 +172,7 @@ def hello(request):
      'm': m,
      'netid': permissions.get_username(request),
   })
+
 
 # allows a member to view their own user profile
 @permissions.member
