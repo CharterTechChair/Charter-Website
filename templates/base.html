@@ -58,9 +58,9 @@
 
               {% if prospective  %}
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Prospective Members</a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Prospective Members <i class="glyphicon glyphicon-chevron-down"></i></a>
                 <ul class="dropdown-menu">
-                  <li><a href="{%url 'prospective_profile' %}"> Profile! </a></li>
+                  <li><a href="{%url 'profile' %}"> Profile </a></li>
                   <li><a href="{%url 'mailinglist' %}">Mailing List</a></li>
                   <li><a href="{%url 'underconstruction' %}">Sophomore Meals</a></li>
                   <li><a href="{%url 'contactus' %}">Contact Us!</a></li>
@@ -70,9 +70,9 @@
 
               {% if member %}
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Members Only</a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Members Only <i class="glyphicon glyphicon-chevron-down"></i></a>
                 <ul class="dropdown-menu">
-                  <li><a href="{%url 'member_profile' %}">Profile</a></li>
+                  <li><a href="{%url 'profile' %}">Profile</a></li>
                   <li><a href="{%url 'feedback' %}">Anonymous Feedback</a></li>
                   <li><a href="{%url 'events' %}"> Events </a></li>
                   <li><a href="{%url 'faceboard' %}"> Faceboard </a></li>
@@ -107,11 +107,11 @@
                   <li class="loggedin"> Logged in as {{ student.first_name }} {{ student.last_name }}</li>
 
                   {% if member %}
-                      <li><a href="{%url 'member_profile' %}">Profile</a></li>
+                      <li><a href="{%url 'profile' %}">Profile</a></li>
                   {% endif %}
 
                   {% if prospective %}
-                      <li><a href="{%url 'prospective_profile' %}">Profile</a></li>
+                      <li><a href="{%url 'profile' %}">Profile</a></li>
                   {% endif %}
 
                   <li><a href="{%url 'logout' %}">Logout</a></li>

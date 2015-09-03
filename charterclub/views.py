@@ -100,7 +100,7 @@ def faceboard(request):
 def faceboard_year(request, year):
     # rollover = June 3nd
     members = Member.objects.filter(year=year)
-    
+
     year_options = Member.get_membership_years()
 
     return render(request, 'charterclub/faceboard.html', {
@@ -108,7 +108,7 @@ def faceboard_year(request, year):
       'year_options': reversed(year_options),
       'display_membership' : members,
       'member':   Member.objects.filter(netid=permissions.get_username(request))[0]
-  })
+    })
 
 def history(request):
    return render(request, "history.html")
@@ -162,91 +162,93 @@ def contactus(request):
 # greeting page
 @permissions.member
 def hello(request):
-  now = datetime.datetime.now().date()
-  
-  m = Member.objects.filter(netid=permissions.get_username(request))[0]
+    now = datetime.datetime.now().date()
+    
+    m = Member.objects.filter(netid=permissions.get_username(request))[0]
 
-  return render(request, "hello.html", {
-     'current_date': now,
-     'error': '',
-     'm': m,
-     'netid': permissions.get_username(request),
-  })
+    return render(request, "hello.html", {
+       'current_date': now,
+       'error': '',
+       'm': m,
+       'netid': permissions.get_username(request),
+    })
 
 
-# allows a member to view their own user profile
-@permissions.member
-def member_profile(request):
-  
-  now = datetime.datetime.now().date()
 
-  m = Member.objects.filter(netid=permissions.get_username(request))[0]
+# Allows a member or a prospective to view their page
+# DO NOT use the decorator permissions.member or permissions.prospective on this
+#    The logic in this function will verify this information
+def profile(request):
+    # check their permissions
+    netid_s = permissions.get_username(request)
 
-  e = m.get_events()
+    # Reject them if not valid netid
+    if not netid_s:
+      return render(request, "permission_denied.html",
+              {"required_permission": "member or prospective"}) 
 
-  return render(request, "charterclub/member_profile.html", {
-     'current_date': now,
-     'error': '',
-     'member': m,
-     'events': e,
-     'netid': permissions.get_username(request)
-  })
+    # Do lookups in the database
+    m_query = Member.objects.filter(netid=netid_s)
+    p_query = Prospective.objects.filter(netid=netid_s)
 
-# allows a member to view their own user profile
-@permissions.prospective
-def prospective_profile(request):
-  
-  now = datetime.datetime.now().date()
+    # Show members page 
+    if m_query:
+        return render(request, "charterclub/member_profile.html", {
+            'error': '',
+            'member': m_query[0],
+            # 'events': e,
+            'netid': permissions.get_username(request)
+        })
 
-  p = Prospective.objects.filter(netid=permissions.get_username(request))[0]
+    # Show prospective page
+    if p_query:
+              return render(request, "charterclub/prospective_profile.html", {
+            'error': '',
+            'member': p_query[0],
+            # 'events': e,
+            'netid': permissions.get_username(request)
+        })
 
-  # e = p.get_events()
-
-  return render(request, "charterclub/prospective_profile.html", {
-     'current_date': now,
-     'error': '',
-     'prospective': p,
-     # 'events': e,
-     'netid': permissions.get_username(request)
-  })
+    return render(request, "permission_denied.html",
+                  {"required_permission": "member or prospective"})
 
 def mailinglist(request):
-  if request.method == 'POST':
-    form = MailingListForm(request.POST)
-    if form.is_valid():
-      form.add_soph()
+    if request.method == 'POST':
+      form = MailingListForm(request.POST)
+      if form.is_valid():
+        form.add_soph()
 
-      return HttpResponseRedirect('contactus')
-        
-  else:
-    form = MailingListForm()
+        return HttpResponseRedirect('contactus')
+          
+    else:
+      form = MailingListForm()
 
 
-  return render(request, 'mailinglist.html', {
-     'form': form,
-     'error': '',
-     'netid': permissions.get_username(request),
-   })  
+    return render(request, 'mailinglist.html', {
+       'form': form,
+       'error': '',
+       'netid': permissions.get_username(request),
+     })  
 
 # view the list of people who have signed up for our mailing list.
 # should probably implement an actual listserv of some description
 # at some point
 @permissions.officer
 def mailinglist_view(request):
-  plist = Prospective.objects.all()
+    plist = Prospective.objects.all()
 
-  return render(request, "mailinglist_view.html", {
-     'error': '',
-     'plist': plist,
-     'netid': permissions.get_username(request)
-  })
+    return render(request, "mailinglist_view.html", {
+       'error': '',
+       'plist': plist,
+       'netid': permissions.get_username(request)
+    })
 
 def permission_denied(request):
     return render(request, "permission_denied.html")
 
 def underconstruction(request):
-  return render(request, "underconstruction.html", {
-  })
+    return render(request, "underconstruction.html", {
+    })
 
 def error404(request):
     return render(request, "404.html")

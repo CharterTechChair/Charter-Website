@@ -42,13 +42,9 @@ urlpatterns = patterns('',
         'charterclub.views.faceboard_year',
         name='faceboard_year'),
     url(
-        r'^member_profile$',
-        'charterclub.views.member_profile',
-        name='member_profile'),
-    url(
-        r'^prospective_profile$',
-        'charterclub.views.prospective_profile',
-        name='prospective_profile'),
+        r'^profile$',
+        'charterclub.views.profile',
+        name='profile'),
     url(
         r'^history$',
         'charterclub.views.history',
