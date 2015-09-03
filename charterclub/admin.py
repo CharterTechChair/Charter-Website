@@ -13,6 +13,7 @@ from list_filter import CurrentMembershipListFilter
 from charterclub.preview import MemberListPreview
 from charterclub.forms import MemberListForm, NewMemberForm, EditOfficerForm, NewOfficerForm
 from django import forms
+
 # Unsure if we should implement this
 '''
 class PersonAdmin(admin.ModelAdmin):
@@ -73,8 +74,6 @@ class MemberAdmin(admin.ModelAdmin):
         )
 
         return my_urls + urls
-
-
 
 admin.site.register(Member, MemberAdmin)
 
