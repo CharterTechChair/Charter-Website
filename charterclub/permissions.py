@@ -42,6 +42,7 @@ def prospective(func):
     return check_s
 
 from django.conf import settings
+
 # get the username of the currently CAS logged-in user.
 # if there is no currently logged-in user, return an empty string
 # if the application is in debug mode, assume that CAS is non-functional,

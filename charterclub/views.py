@@ -176,7 +176,7 @@ def hello(request):
 
 # allows a member to view their own user profile
 @permissions.member
-def profile(request):
+def member_profile(request):
   
   now = datetime.datetime.now().date()
 
@@ -184,11 +184,29 @@ def profile(request):
 
   e = m.get_events()
 
-  return render(request, "charterclub/profile.html", {
+  return render(request, "charterclub/member_profile.html", {
      'current_date': now,
      'error': '',
      'member': m,
      'events': e,
+     'netid': permissions.get_username(request)
+  })
+
+# allows a member to view their own user profile
+@permissions.prospective
+def prospective_profile(request):
+  
+  now = datetime.datetime.now().date()
+
+  p = Prospective.objects.filter(netid=permissions.get_username(request))[0]
+
+  # e = p.get_events()
+
+  return render(request, "charterclub/prospective_profile.html", {
+     'current_date': now,
+     'error': '',
+     'prospective': p,
+     # 'events': e,
      'netid': permissions.get_username(request)
   })
 

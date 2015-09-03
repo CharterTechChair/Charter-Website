@@ -6,12 +6,12 @@
 {% block content %}
 
 <div class='col-md-10'> 
-  <h2> Welcome, {{ member.first_name }}! </h2>
+  <h2> Welcome, {{ prospective.first_name }}! </h2>
+  <p> This is the landing page. From this page, you can view the number of points you have, the events you have attended, and our upcoming recruitment events. </p>
   <div class="col-md-6">
       <hr>
-      <h4>House account balance:</h4>
-      ${{ member.house_account }}
-      <hr>
+      
+
       <h4>Upcoming events:</h4>
       <ul>
       {% for event,room, guest_s in events %}
@@ -29,9 +29,9 @@
       </ul>
   </div>
 
-  <div class="col-md-6">
-  <img src="{{ member.image.url }}" class="img-responsive .img-rounded" alt="Lookin' Good">
-  </div>
+  <!-- <div class="col-md-6">
+  <img src="{{ prospective.image.url }}" class="img-responsive .img-rounded" alt="Lookin' Good">
+  </div> -->
 </div>
 
 

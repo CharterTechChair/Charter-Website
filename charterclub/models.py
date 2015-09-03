@@ -71,8 +71,6 @@ class Prospective(Student):
         fields = [f.get_attname() for f in Prospective._meta.fields]
         bk_lst = ['id', 'events_attended', 'meals_attended']
         fields = [f for f in fields if ('_id' not in f and f not in bk_lst)]
-        import pdb
-        pdb.set_trace()
 
         # Create the parameters for an officer
         member_param = {f:getattr(self, f) for f in fields}
