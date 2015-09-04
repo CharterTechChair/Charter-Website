@@ -11,7 +11,7 @@ class MealAdmin(admin.ModelAdmin):
 
 
     list_display = ['__unicode__', 'name', 'sophomore_limit', 'description', 'special_note']
-    list_editable = ['name', 'sophomore_limit', ]
+    list_editable = ['sophomore_limit', ]
     ordering = ['-day']
     # list_editable = ['sophomore_limit', 'description_s', 'special_note']
 

@@ -6,7 +6,7 @@ from django.utils import timezone
 
 import datetime
 
-# Create your views here.
+# Displays the weekly menu for this week
 @permissions.member
 def weekly_menu(request):
     # Find the relevant days
@@ -32,8 +32,7 @@ def weekly_menu(request):
 
     return render(request, 'kitchen/weekly_menu.html', {
         'meals_week' : meals_iter,
-      # 'title':   'Class of %s' % year,
-      # 'year_options': reversed(year_options),
-      # 'display_membership' : members,
-      # 'member':   Member.objects.filter(netid=permissions.get_username(request))[0]
     })
+
+# Uses a calender widget to sign up for meals
+

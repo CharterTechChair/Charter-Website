@@ -22,12 +22,12 @@
                         <p> <strong> Lunch </strong></p>
                             
                         
-                        <p> {{ lunch.name }} </p>
+                        <p> {% if lunch.name %} {{ lunch.name }} {% endif %}</p>
                     </div>
 
                     <div class="col-xs-9 menu-text">
                         <strong> Entrees: </strong> 
-                        <p> {{ lunch.description }} </p>
+                        <p> {{ lunch.description |linebreaksbr }} </p>
 
                         <strong> Grill: </strong> 
                         <p> {{ lunch.grill }} </p>
@@ -45,12 +45,12 @@
                     <div class="col-xs-3 menu-type">
                         <p> <strong> Dinner </strong></p>
 
-                        <p> {{ dinner.name }} </p>
+                        <p> {% if dinner.name %} {{ dinner.name }} {% endif %}</p>
                     </div>
 
                     <div class="col-xs-9 menu-text">
                         <strong> Entrees: </strong> 
-                        <p> {{ dinner.description }} </p>
+                        <p> {{ dinner.description |linebreaksbr}} </p>
 
                         <strong> Plated Option: </strong> 
                         <p> {{ dinner.grill }} </p>
@@ -59,7 +59,7 @@
                         <p> {{ dinner.salad }} </p>
                         
                         {% if dinner.special_note %}
-                        <strong style="font-size:0.75em;"> *{{ lunch.special_note }} </strong>
+                        <strong style="font-size:0.75em;"> *{{ dinner.special_note }} </strong>
                         {% endif %}                    
                     </div>
              </div>

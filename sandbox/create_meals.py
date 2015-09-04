@@ -1,0 +1,75 @@
+from kitchen.models import Meal
+from django.utils import timezone
+import datetime
+
+monday = (timezone.now() + datetime.timedelta(days=-timezone.now().weekday(), weeks=0)).date()
+week = [monday + datetime.timedelta(days=i) for i in range(0,7)]
+
+
+lunch_descriptions = [
+"Chicken Parmigiana\nBoneless, skinless chicken breast breaded and baked with cheese and a light marinara sauce",
+"Stuffed Chicken Medallions\nBoneless chicken breast stuffed with spinach and cheese, baked then topped with a light béchamel sauce",
+"Chicken Marsala\nBoneless chicken breast sautéed with mushrooms, Marsala wine, diced tomatoes and olives",
+"Tuna Ahi Salad with Wasabi Sauce",
+"Charbroiled Tri-Tip\nMarinated in a blend of spices, charbroiled and served “London Broil” style",
+"Oriental Chicken or Beef Stir Fry\nBoneless chicken OR sirloin steak stir-fried with peppers, onions, carrots, sesame seeds and tossed with a teriyaki glaze",
+"Stuffed Sole\nGrilled and stuffed with shrimp and Dungeness crab and topped with melted cheese and a light lemon butter sauce",]
+
+grill_options = [
+'American Angus Hamburgers',
+'Avacado Wrap with Chicken',
+'4-Meat Chili',
+"Ahi-Ahi-Wahi Burger",
+'Chicken Thai Curry Wrap',
+'Big Boy Burger with A1 Steak Sauce',
+'Pesto and Italian Meat Panini',
+'Nutella Crepe | Turkey and Peach Jam Crepe']
+
+dinner_descriptions = [
+"Penne a la Vodka\nBuffalo Chicken Wings with Ranch & Blue Cheese Sauce",
+"Braised Short Ribs with Red Wine Mustard Sauce\nRed Bliss Mashed Potato",
+"Roast Salmon and Tilapia\nGarlic Parsley Crust | Tomatoes | Shallots | Capers",
+"California Rolls, Avacado Rolls, Shrimp Sashimi, Tuna Salad"
+"Herb Roasted Chicken\nOlive Oil | Rosemary | Sage | Parsley",
+"Twice Cooked Beef Short Ribs\nAsian Chili Sauce | Soy Glaze | Ginger | Scallions | White Sesame Seeds",
+"Baked Ziti\nCream Spinach Sauce | Parmesan Cheese",
+"Butter Basted Roasted Turkey\nHomemade Gravy | Cranberry Orange Sauce",
+]
+
+plated_options = ['Baked Chicken with Rice and Beans',
+"Baked Macaroni and Cheese\nCheddar | Monterey Jack Cheese | Crispy Herb Breading",
+"Oven Roasted Salmon & Tilapia\nGarlic Parsley Crust | Tomatoes | Shallots | Capers"]
+
+salads = ['Apple, Cherry, Pecan & Roasted Feta Salad',
+'Cumin Scented Carrot Salad',
+'Summer Squash Salad',
+'Roasted Beet Salad',
+'Farro Salad',
+'Fingerling Potato Salad',
+'Fava Beans and Pomegranate',
+'Artichoke and Piquillo Salad',]
+
+meals = []
+for i in range(0,7):
+    a = Meal(day=week[i], sophomore_limit = 20, description=lunch_descriptions[i], meals='Lunch', salad=salads[i], grill=grill_options[i])
+    b = Meal(day=week[i], sophomore_limit = 25, description=dinner_descriptions[i], meals='Dinner', salad=salads[i])
+
+    a.save()
+    b.save()
+
+    meals.append((a,b))
+
+meals[2][1].plated_option = plated_options[0]
+meals[4][1].plated_option = plated_options[1]
+meals[6][1].plated_option = plated_options[2]
+
+
+meals[3][1].sophomore_limit = 0
+meals[3][1].special_note = "Members only dinner"
+meals[3][1].name = "Sushi Pub Night"
+
+
+for m in meals:
+    m[0].save()
+    m[1].save()
+

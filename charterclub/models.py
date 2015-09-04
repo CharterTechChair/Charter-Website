@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.db import models
 from django.contrib.auth.models import User
 from django.contrib import admin
@@ -11,6 +12,8 @@ from django.core.exceptions import ValidationError
 
 # For analyzing Models
 from django.db.models import Min, Max
+
+from kitchen.models import Meal
 ###########################################################################
 # a Person model
 # Basically an Abstract class containing a person's name
@@ -51,15 +54,28 @@ class Student(Person):
     #     self.first_name = member.first_name
     #     self.last_name = member.last_name
 
+
+def limit_meals_attended_choices():
+    #June 3rd is the turnover date
+    start_year = (timezone.now() - timedelta(days=153)).year
+
+    start_date = "%s-08-11" % start_year
+    end_date = "%s-08-11" % (start_year + 1)
+
+    return {'sophomore_limit__gt': 20,
+            'day__range': [start_date, end_date]
+    }
+
 ###########################################################################
 # Prospective model
 # A person who is thinking about joining Charter
-############################################################################
+############################################################################    
 class Prospective(Student):
     events_attended = models.IntegerField(
         'Number of events attended')
-    meals_attended = models.IntegerField(
-        'Number of meals attended')
+    meals_attended = models.ManyToManyField(Meal, 
+                    limit_choices_to=limit_meals_attended_choices,
+                    null=True)
 
 
     # meals = make another model for meals signups? use date fields?
@@ -80,6 +96,7 @@ class Prospective(Student):
         # self.delete() #Keep the old Prospective
         Member.objects.create(**member_param)
 
+
 ###########################################################################
 # Member
 # A Student of Princeton
@@ -87,17 +104,18 @@ class Prospective(Student):
 # rollover = June 3nd
 senior_year = (date.today() - timedelta(days=153)).year + 1
 
-class Member(Student):
-    # Make sure that the image is not too big
-    def validate_image(fieldfile_obj):
-        # Note: this function is put up here so that validators=[func] can 
-        #       be called on it
-        filesize = fieldfile_obj.file.size
-        kilobyte_limit = 50
-        if filesize > kilobyte_limit*1024:
-            raise ValidationError("Max file size is %sKB. Sorry! This is to ensure that\
-             the site doesn't freeze when faceboard photos are loaded." % str(kilobyte_limit))
+# Make sure that the image is not too big
+def validate_image(fieldfile_obj):
+    # Note: this function is put up here so that validators=[func] can 
+    #       be called on it
+    filesize = fieldfile_obj.file.size
+    kilobyte_limit = 50
+    if filesize > kilobyte_limit*1024:
+        raise ValidationError("Max file size is %sKB. Sorry! This is to ensure that\
+         the site doesn't freeze when faceboard photos are loaded." % str(kilobyte_limit))
 
+# Member object begins here
+class Member(Student):
     # ----- Fields associated with this Model ---
     house_account = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     image = models.ImageField(upload_to = 'member_images/', null=True, blank=True, validators=[validate_image])

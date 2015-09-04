@@ -120,8 +120,8 @@ admin.site.register(Officer, OfficerAdmin)
 # on creating a new officer, you may choose a member and enter their title
 #################################################################################
 class ProspectiveAdmin(admin.ModelAdmin):
-    list_display = ['__unicode__', 'netid', 'events_attended', 'meals_attended']
-    list_editable = ['events_attended', 'meals_attended']
+    list_display = ['__unicode__', 'netid']
+    # list_editable = ['events_attended', 'meals_attended']
 
     ordering = ['netid']
     # What gets shown, and how?
