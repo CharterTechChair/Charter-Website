@@ -1,7 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from django.conf import settings
-from django.conf.urls.static import static
+
 
 admin.autodiscover()
 
@@ -11,26 +10,28 @@ urlpatterns = patterns('',
         'events.views.events_list', 
         name='events'),
     url(
-        r'^/signup/(.+)/([0-9]{4}-[0-9]{2}-[0-9]{2})',
+        r'^signup/(.+)/([0-9]{4}-[0-9]{2}-[0-9]{2})',
         'events.views.events_entry',
         name='event_entry'),
 
     url(
-        r'^/view/(.+)/([0-9]{4}-[0-9]{2}-[0-9]{2})',
+        r'^view/(.+)/([0-9]{4}-[0-9]{2}-[0-9]{2})',
         'events.views.events_view', 
         name='events_view'),
     url(
-        r'^/unrsvp/(.+)/([0-9]{4}-[0-9]{2}-[0-9]{2})',
+        r'^unrsvp/(.+)/([0-9]{4}-[0-9]{2}-[0-9]{2})',
         'events.views.events_unrsvp', 
         name='events_unrsvp'),
     url(
-        r'^/create$', 
+        r'^create$', 
         'events.views.events_create', 
         name='events_create'),
     url(
-        r'^/thanks_create$',
+        r'^thanks_create$',
         'events.views.thanks_create',
         name='thanks_create'),
 )
 
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# from django.conf import settings
+# from django.conf.urls.static import static
+# urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

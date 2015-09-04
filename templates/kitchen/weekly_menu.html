@@ -1,0 +1,117 @@
+<!-- will be a working Faceboard. eventually. -->
+
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+<container>
+    <h2> Weekly Menu </h2>
+    <hr>
+
+    <div class="col-xs-11 col-centered">
+
+        <!-- Day here -->
+
+        {% for name, day, lunch, dinner in meals_week %}
+        <div class='col-sm-12 menu-day'>
+            <h3> {{ name }} </h3>
+            
+             <div class="col-md-6 menu-meal">
+                    <div class="col-xs-3 menu-type">
+                        <p> <strong> Lunch </strong></p>
+                            
+                        
+                        <p> {{ lunch.name }} </p>
+                    </div>
+
+                    <div class="col-xs-9 menu-text">
+                        <strong> Entrees: </strong> 
+                        <p> {{ lunch.description }} </p>
+
+                        <strong> Grill: </strong> 
+                        <p> {{ lunch.grill }} </p>
+
+                        <strong> Salad: </strong> 
+                        <p> {{ lunch.salad }} </p>
+                        
+                        {% if lunch.special_note %}
+                        <strong style="font-size:0.75em;"> *{{ lunch.special_note }} </strong>
+                        {% endif %}
+                    </div>
+             </div>
+
+             <div class="col-md-6 menu-meal">
+                    <div class="col-xs-3 menu-type">
+                        <p> <strong> Dinner </strong></p>
+
+                        <p> {{ dinner.name }} </p>
+                    </div>
+
+                    <div class="col-xs-9 menu-text">
+                        <strong> Entrees: </strong> 
+                        <p> {{ dinner.description }} </p>
+
+                        <strong> Plated Option: </strong> 
+                        <p> {{ dinner.grill }} </p>
+
+                        <strong> Salad: </strong> 
+                        <p> {{ dinner.salad }} </p>
+                        
+                        {% if dinner.special_note %}
+                        <strong style="font-size:0.75em;"> *{{ lunch.special_note }} </strong>
+                        {% endif %}                    
+                    </div>
+             </div>
+            <!-- Food block here for Lunch -->
+          <!--  <div class="col-sm-6 menu-meal">
+                    
+                <div class="col-xs-3 menu-type">
+                    <strong> Lunch  </strong> 
+                    {{lunch.name}}
+                </div>
+
+                <div class="col-xs-9 menu-text"> 
+                    <strong> Entrees: </strong> 
+                    <p> {{ lunch.description }} </p>
+
+                    <strong> Grill: </strong> 
+                    <p> {{ lunch.grill }} </p>
+
+                    <strong> Salad: </strong> 
+                    <p> {{ lunch.salad }} </p>
+                    
+                    {% if lunch.special_note %}
+                    <strong style="font-size:0.75em;"> *{{ lunch.special_note }} </strong>
+                    {% endif %}
+                </div>
+            </div>  -->
+            
+            <!-- Food block here for Lunch -->
+            <!-- <div class="col-sm-6 menu-meal">
+
+                <div class="col-xs-3 menu-type">
+                    <strong> Dinner  </strong> 
+                    {{day.meal.name}}
+                </div>
+
+                <div class="col-xs-9 menu-text"> 
+                    <strong> Entrees: </strong> 
+                    <p> {{ dinner.description }} </p>
+
+                    <strong> Plated Option: </strong> 
+                    <p> {{ dinner.grill }} </p>
+
+                    <strong> Salad: </strong> 
+                    <p> {{ dinner.salad }} </p>
+                    
+                    {% if dinner.special_note %}
+                    <strong style="font-size:0.75em;"> *{{ lunch.special_note }} </strong>
+                    {% endif %}
+                </div>
+            </div> -->
+        </div>
+        {% endfor %}
+    </div>
+</container>
+{% endblock %}

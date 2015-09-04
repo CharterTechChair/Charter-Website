@@ -92,3 +92,32 @@
 .navbar-nav .open .dropdown-menu {
   background-color: rgba(255,255,255,0.8);
 }
+
+
+
+.menu-day {
+  margin: 5px;
+}
+
+.menu-meal {
+  font-size: 0.80em;
+  min-height: 180px;
+}
+
+.menu-type{
+  
+  min-height: 180px;
+  padding-top: 70px;
+}
+
+.menu-text{
+  border-style: solid;
+  border-color: #fff;
+  border-width:1px;
+  min-height: 180px;
+  padding-top: 5px;
+}
+
+.menu-text > p {
+  margin-left: 5px;
+}

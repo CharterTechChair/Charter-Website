@@ -7,14 +7,14 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sophomore_meals', '0004_auto_20150903_1853'),
+        ('kitchen', '0001_initial'),
     ]
 
     operations = [
-        migrations.AlterField(
+        migrations.AddField(
             model_name='meal',
-            name='meals',
-            field=models.CharField(max_length=10, choices=[(b'Lunch', b'Lunch'), (b'Dinner', b'Dinner')]),
+            name='name',
+            field=models.CharField(help_text=b'Optional Name', max_length=10, null=True, blank=True),
             preserve_default=True,
         ),
     ]

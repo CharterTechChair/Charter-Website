@@ -75,7 +75,7 @@ INSTALLED_APPS = (
     'events',
     'menus',
     'feedback',
-    'sophomore_meals',
+    'kitchen',
     'django_bootstrap_calendar',
     
 )

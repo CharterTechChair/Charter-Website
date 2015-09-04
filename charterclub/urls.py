@@ -22,10 +22,10 @@ urlpatterns = patterns('',
         r'^index$',
         'charterclub.views.index',
         name='index'),
-    url(r'^events',
+    url(r'^events/',
         include('events.urls')),
 
-    url(r'^menus',
+    url(r'^menus/',
         include('menus.urls')),
 
     url(r'^feedback',
@@ -33,6 +33,10 @@ urlpatterns = patterns('',
 
     url(r'^calendar', 
         include('django_bootstrap_calendar.urls')),
+
+    url(r'^kitchen/',
+        include('kitchen.urls')),
+
     url(
         r'^faceboard$',
         'charterclub.views.faceboard',
