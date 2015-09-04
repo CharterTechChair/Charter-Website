@@ -13,11 +13,10 @@ def weekly_menu(request):
     today = timezone.now()
     monday = (today + datetime.timedelta(days=-today.weekday(), weeks=0)).date()
     week = [monday + datetime.timedelta(days=i) for i in range(0,7)]
-    week_s = ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')
     
     meals_iter = []
     # Find the proper meals
-    for name, day in zip(week_s, week):
+    for day in week:
         lunch = Meal.objects.filter(day=day, meals="Lunch")
         dinner = Meal.objects.filter(day=day, meals="Dinner")
 
@@ -27,6 +26,8 @@ def weekly_menu(request):
         if dinner:
             dinner = dinner[0]
 
+        name = day.strftime("%a %m/%d")
+        
         meals_iter.append((name, day, lunch, dinner))
 
     return render(request, 'kitchen/weekly_menu.html', {
