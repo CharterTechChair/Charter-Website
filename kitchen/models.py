@@ -8,7 +8,7 @@ class Meal(models.Model):
     # Fields of this object
     day             = models.DateField()
     meals           = models.CharField(max_length=10, choices=meal_choices)
-    allow_sophomore = models.BooleanField(default=False)
+    sophomore_limit  = models.IntegerField(default=0, help_text="Put '0' to not allow sophomores")
     name            = models.CharField(max_length=100, blank=True, null=True, help_text="Optional Name")
     
     description    = models.TextField(max_length=1000, help_text="What are we eating today?")
