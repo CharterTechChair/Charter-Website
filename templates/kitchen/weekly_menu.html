@@ -13,32 +13,59 @@
 
         <!-- Day here -->
 
-        {% for name, day, lunch, dinner in meals_week %}
+        {% for name, day, brunch, lunch, dinner in meals_week %}
         <div class='col-sm-12 menu-day'>
             <h3> {{ name }} </h3>
             
              <div class="col-md-6 menu-meal">
-                    <div class="col-xs-3 menu-type">
-                        <p> <strong> Lunch </strong></p>
+
+                    {% if brunch %}
+                        <div class="col-xs-3 menu-type">
+                            <p> <strong> Brunch </strong></p>
+                                
                             
-                        
-                        <p> {% if lunch.name %} {{ lunch.name }} {% endif %}</p>
-                    </div>
+                            <p> {% if brunch.name %} {{ brunch.name }} {% endif %}</p>
+                        </div>
 
-                    <div class="col-xs-9 menu-text">
-                        <strong> Entrees: </strong> 
-                        <p> {{ lunch.description |linebreaksbr }} </p>
+                        <div class="col-xs-9 menu-text">
+                            <strong> Entrees: </strong> 
+                            <p> {{ brunch.description |linebreaksbr }} </p>
 
-                        <strong> Grill: </strong> 
-                        <p> {{ lunch.grill }} </p>
+                            <strong> Grill: </strong> 
+                            <p> {{ brunch.grill }} </p>
 
-                        <strong> Salad: </strong> 
-                        <p> {{ lunch.salad }} </p>
-                        
-                        {% if lunch.special_note %}
-                        <strong style="font-size:0.75em;"> *{{ lunch.special_note }} </strong>
-                        {% endif %}
-                    </div>
+                             <strong> Omlette: </strong> 
+                            <p> {{ brunch.omlette }} </p>
+                            
+                            {% if brunch.special_note %}
+                            <strong style="font-size:0.75em;"> *{{ lunch.special_note }} </strong>
+                            {% endif %}
+                        </div>
+
+                    {% else %}
+                        <div class="col-xs-3 menu-type">
+                            <p> <strong> Lunch </strong></p>
+                                
+                            
+                            <p> {% if lunch.name %} {{ lunch.name }} {% endif %}</p>
+                        </div>
+
+                        <div class="col-xs-9 menu-text">
+                            <strong> Entrees: </strong> 
+                            <p> {{ lunch.description |linebreaksbr }} </p>
+
+                            <strong> Grill: </strong> 
+                            <p> {{ lunch.grill }} </p>
+
+                            <strong> Salad: </strong> 
+                            <p> {{ lunch.salad }} </p>
+                            
+                            {% if lunch.special_note %}
+                            <strong style="font-size:0.75em;"> *{{ lunch.special_note }} </strong>
+                            {% endif %}
+                        </div>
+
+                    {% endif %}
              </div>
 
              <div class="col-md-6 menu-meal">

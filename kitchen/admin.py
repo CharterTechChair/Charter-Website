@@ -1,11 +1,14 @@
 from django.contrib import admin
-from kitchen.models import Meal
+from kitchen.models import Meal, Brunch, Lunch, Dinner
 
 # Register your models here.
 class MealAdmin(admin.ModelAdmin):
+    class Meta:
+        abstract = True
+
     fieldsets = [
-        ('Meal Information',          {'fields': ['name', 'day', 'meals', 'sophomore_limit']}),
-        ('Meal Display Information', {'fields': ['description', 'grill', 'plated_option', 'salad']}),
+        ('Meal Information',          {'fields': ['name', 'day', 'sophomore_limit']}),
+        ('Meal Display Information', {'fields': ['description',]}),
         ('Other',                    {'fields': ['special_note']}),
     ]
 
@@ -13,6 +16,22 @@ class MealAdmin(admin.ModelAdmin):
     list_display = ['__unicode__', 'name', 'sophomore_limit', 'description', 'special_note']
     list_editable = ['sophomore_limit', ]
     ordering = ['-day']
-    # list_editable = ['sophomore_limit', 'description_s', 'special_note']
 
-admin.site.register(Meal, MealAdmin)
+
+class BrunchAdmin(MealAdmin):
+    pass
+admin.site.register(Brunch, BrunchAdmin)
+
+
+class LunchAdmin(MealAdmin):
+    pass
+
+admin.site.register(Lunch, LunchAdmin)
+
+
+class DinnerAdmin(MealAdmin):
+    pass
+admin.site.register(Dinner, DinnerAdmin)
+
+
+

@@ -10,6 +10,11 @@ urlpatterns = patterns('',
         r'^weekly_menu$', 
         'kitchen.views.weekly_menu', 
         name='weekly_menu'),
+    url(
+        r'^meal_signup$', 
+        'kitchen.views.meal_signup', 
+        name='meal_signup'),
+    
 )
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

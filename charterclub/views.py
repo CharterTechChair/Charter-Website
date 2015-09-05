@@ -191,6 +191,15 @@ def profile(request):
     m_query = Member.objects.filter(netid=netid_s)
     p_query = Prospective.objects.filter(netid=netid_s)
 
+    # Show prospective page
+    if p_query:
+              return render(request, "charterclub/prospective_profile.html", {
+            'error': '',
+            'member': p_query[0],
+            # 'events': e,
+            'netid': permissions.get_username(request)
+        })
+              
     # Show members page 
     if m_query:
         return render(request, "charterclub/member_profile.html", {
@@ -200,14 +209,6 @@ def profile(request):
             'netid': permissions.get_username(request)
         })
 
-    # Show prospective page
-    if p_query:
-              return render(request, "charterclub/prospective_profile.html", {
-            'error': '',
-            'member': p_query[0],
-            # 'events': e,
-            'netid': permissions.get_username(request)
-        })
 
     return render(request, "permission_denied.html",
                   {"required_permission": "member or prospective"})

@@ -8,10 +8,10 @@ week = [monday + datetime.timedelta(days=i) for i in range(0,7)]
 
 lunch_descriptions = [
 "Chicken Parmigiana\nBoneless, skinless chicken breast breaded and baked with cheese and a light marinara sauce",
-"Stuffed Chicken Medallions\nBoneless chicken breast stuffed with spinach and cheese, baked then topped with a light béchamel sauce",
-"Chicken Marsala\nBoneless chicken breast sautéed with mushrooms, Marsala wine, diced tomatoes and olives",
+"Stuffed Chicken Medallions\nBoneless chicken breast stuffed with spinach and cheese, baked then topped with a light bechamel sauce",
+"Chicken Marsala\nBoneless chicken breast sauteed with mushrooms, Marsala wine, diced tomatoes and olives",
 "Tuna Ahi Salad with Wasabi Sauce",
-"Charbroiled Tri-Tip\nMarinated in a blend of spices, charbroiled and served “London Broil” style",
+"Charbroiled Tri-ip\nMarinated in a blend of spices, charbroiled and served 'London Broil' style",
 "Oriental Chicken or Beef Stir Fry\nBoneless chicken OR sirloin steak stir-fried with peppers, onions, carrots, sesame seeds and tossed with a teriyaki glaze",
 "Stuffed Sole\nGrilled and stuffed with shrimp and Dungeness crab and topped with melted cheese and a light lemon butter sauce",]
 
@@ -29,7 +29,7 @@ dinner_descriptions = [
 "Penne a la Vodka\nBuffalo Chicken Wings with Ranch & Blue Cheese Sauce",
 "Braised Short Ribs with Red Wine Mustard Sauce\nRed Bliss Mashed Potato",
 "Roast Salmon and Tilapia\nGarlic Parsley Crust | Tomatoes | Shallots | Capers",
-"California Rolls, Avacado Rolls, Shrimp Sashimi, Tuna Salad"
+"California Rolls, Avacado Rolls, Shrimp Sashimi, Tuna Salad",
 "Herb Roasted Chicken\nOlive Oil | Rosemary | Sage | Parsley",
 "Twice Cooked Beef Short Ribs\nAsian Chili Sauce | Soy Glaze | Ginger | Scallions | White Sesame Seeds",
 "Baked Ziti\nCream Spinach Sauce | Parmesan Cheese",
@@ -59,15 +59,23 @@ for i in range(0,7):
 
     meals.append((a,b))
 
+# Add the plated options
 meals[2][1].plated_option = plated_options[0]
 meals[4][1].plated_option = plated_options[1]
 meals[6][1].plated_option = plated_options[2]
 
 
+# Do some special stuff
 meals[3][1].sophomore_limit = 0
 meals[3][1].special_note = "Members only dinner"
 meals[3][1].name = "Sushi Pub Night"
+meals[6][0].name = "sophomore Brunch"
 
+for i in range(5,7):
+    meals[i][0].meals="Brunch"
+
+meals[5][0].omlette = "Mexican Omlette with chili"
+meals[5][0].omlette = "Feta Cheese with Ham Omlette"
 
 for m in meals:
     m[0].save()

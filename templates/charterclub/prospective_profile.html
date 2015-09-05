@@ -8,9 +8,41 @@
 <div class='col-md-10'> 
   <h2> Welcome, {{ prospective.first_name }}! </h2>
   <p> This is the landing page. From this page, you can view the number of points you have, the events you have attended, and our upcoming recruitment events. </p>
+  
+  <div class="col-md-12">
+    <h3> Sophomore Meals </h3>
+    <div class="col-sm-6">
+        <h4> Upcoming </h4>
+        <hr>
+
+        {% for meal in prospective.get_upcoming_meals %}
+          <div> 
+              <h5> {{ meal }}  {{ meal.name }} </h5>
+              <p style="margin-left:8px"> 
+                {{ meal.description | linebreaksbr}} 
+              </p>
+          </div>
+        {% endfor %}
+    </div>
+
+    <div class="col-sm-6">
+        <h4> Completed </h4>
+        <hr>
+
+        {% for meal in prospective.meals_attended.all %}
+            <div> 
+              <h5> {{ meal }}  {{ meal.name }} </h5>
+              <p style="margin-left:8px"> 
+                {{ meal.description | linebreaksbr}} 
+              </p>
+            </div>
+        {% endfor %}
+    </div>
+
+  </div>
+<!-- 
   <div class="col-md-6">
       <hr>
-      
 
       <h4>Upcoming events:</h4>
       <ul>
@@ -28,7 +60,7 @@
       {% endfor %} 
       </ul>
   </div>
-
+ -->
   <!-- <div class="col-md-6">
   <img src="{{ prospective.image.url }}" class="img-responsive .img-rounded" alt="Lookin' Good">
   </div> -->

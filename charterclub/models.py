@@ -62,10 +62,20 @@ def limit_meals_attended_choices():
     start_date = "%s-08-11" % start_year
     end_date = "%s-08-11" % (start_year + 1)
 
-    return {'sophomore_limit__gt': 20,
+    return {'sophomore_limit__gt': 0,
             'day__range': [start_date, end_date]
     }
 
+def limit_meals_signed_up():
+    #June 3rd is the turnover date
+    start_year = (timezone.now() - timedelta(days=153)).year
+
+    start_date = "%s-08-11" % start_year
+    end_date = "%s-08-11" % (start_year + 1)
+
+    return {'sophomore_limit__gt': 0,
+            'day__range': [start_date, end_date]
+    }
 ###########################################################################
 # Prospective model
 # A person who is thinking about joining Charter
@@ -75,12 +85,18 @@ class Prospective(Student):
         'Number of events attended')
     meals_attended = models.ManyToManyField(Meal, 
                     limit_choices_to=limit_meals_attended_choices,
-                    null=True)
-
+                    blank=True, related_name="meals_attended")
+    meals_signed_up = models.ManyToManyField(Meal, 
+                    limit_choices_to=limit_meals_signed_up,
+                    blank=True, related_name="meals_signed_up")
 
     # meals = make another model for meals signups? use date fields?
     def get_num_points(self):
         return self.events_attended
+
+    # Get upcoming meals
+    def get_upcoming_meals(self):
+        return self.meals_signed_up.filter(day__gte=timezone.now())
 
     # Promote a Prospective to a Member
     def promote_to_member(self, house_account):

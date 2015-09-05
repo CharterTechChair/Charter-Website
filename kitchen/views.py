@@ -1,6 +1,8 @@
 from charterclub.views import render
 import charterclub.permissions as permissions
 
+from charterclub.models import Prospective
+
 from kitchen.models import Meal
 from django.utils import timezone
 
@@ -17,6 +19,7 @@ def weekly_menu(request):
     meals_iter = []
     # Find the proper meals
     for day in week:
+        brunch = Meal.objects.filter(day=day, meals="Brunch") 
         lunch = Meal.objects.filter(day=day, meals="Lunch")
         dinner = Meal.objects.filter(day=day, meals="Dinner")
 
@@ -25,14 +28,27 @@ def weekly_menu(request):
             lunch = lunch[0]
         if dinner:
             dinner = dinner[0]
+        if brunch:
+            brunch = brunch[0]
 
         name = day.strftime("%a %m/%d")
         
-        meals_iter.append((name, day, lunch, dinner))
+        # Prevent both brunch and lunch from showing up, which screws up formatting
+        if brunch:
+            lunch = None        
+        meals_iter.append((name, day, brunch, lunch, dinner))
 
     return render(request, 'kitchen/weekly_menu.html', {
         'meals_week' : meals_iter,
     })
 
 # Uses a calender widget to sign up for meals
+@permissions.prospective
+def meal_signup(request):
+    netid = permissions.get_username(request)
+    prospective = Prospective.objects.filter(netid=netid)[0]
 
+    return render(request, 'kitchen/meal_signup.html', 
+        {
+            "prospective" : prospective,
+        })
