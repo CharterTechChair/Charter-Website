@@ -26,6 +26,8 @@
       <link href="{% static "css/custom.css" %}" rel="stylesheet">
 
       {% endblock %}
+
+
    </head>
 
    <body>
@@ -170,5 +172,10 @@
       {% bootstrap_calendar_js language='template' %}
       {% bootstrap_calendar_init language='template' %}
     {% endblock javascript %}
+
+
+    {% block js-bottom %} {% endblock js-bottom %}  
+
+
    </body>
 </html>

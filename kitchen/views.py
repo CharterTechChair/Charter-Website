@@ -3,7 +3,9 @@ import charterclub.permissions as permissions
 
 from charterclub.models import Prospective
 
-from kitchen.models import Meal
+from kitchen.models import Meal, Brunch, Lunch, Dinner
+from kitchen.forms import MealSignupForm
+
 from django.utils import timezone
 
 import datetime
@@ -17,11 +19,12 @@ def weekly_menu(request):
     week = [monday + datetime.timedelta(days=i) for i in range(0,7)]
     
     meals_iter = []
+
     # Find the proper meals
     for day in week:
-        brunch = Meal.objects.filter(day=day, meals="Brunch") 
-        lunch = Meal.objects.filter(day=day, meals="Lunch")
-        dinner = Meal.objects.filter(day=day, meals="Dinner")
+        brunch = Brunch.objects.filter(day=day) 
+        lunch = Lunch.objects.filter(day=day)
+        dinner = Dinner.objects.filter(day=day)
 
         # Dereference the hits
         if lunch:
@@ -48,7 +51,28 @@ def meal_signup(request):
     netid = permissions.get_username(request)
     prospective = Prospective.objects.filter(netid=netid)[0]
 
+    # Give them a form to fill out
+    if request.method == 'POST':
+        form = MealSignupForm(request.POST)
+        if form.is_valid():
+            form.add_soph()
+    else:
+        form = MealSignupForm()
+
+    dates_allowed = ['2015-09-05']
+
+    # Look at the meals in the future
+    available_meals =  Meal.objects.filter(day__gte=timezone.now())
+    available_days = sorted(set([m.day for m in available_meals]))
+    slots_taken = [len(m.meals_attended.all()) for m in available_meals]
+    limit = [m.sophomore_limit for m in available_meals]
+
+    #Now pass these values to the javascript function in the template
+    dates_allowed = [d.strftime("%Y-%m-%d") for d in available_days]
+
     return render(request, 'kitchen/meal_signup.html', 
         {
             "prospective" : prospective,
+            'form': form,
+            'dates_allowed' : dates_allowed,
         })

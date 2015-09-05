@@ -2,10 +2,116 @@
 
 {% extends "base.html" %}
 {% load staticfiles %}
-
+{% load crispy_forms_tags %}
 {% block content %}
 
 <container>
-    Hello {{ prospective.first_name }}
+    <h3> Hello {{ prospective.first_name }}. Sign up for meals here! </h3>
+    
+    <hr>
+    <p> You are currently signed up for the following meals: </p>
+    <ul>
+         {% for meal in prospective.get_upcoming_meals %}
+          <li> 
+              <h5> {{ meal }}  {{ meal.name }} </h5>
+              <p style="margin-left:8px"> 
+                {{ meal.description | linebreaksbr}} 
+              </p>
+          </li>
+        {% endfor %}
+    </ul>
+    
+    <div style="max-width:180px;">
+        {% crispy form %}
+    </div>
+
+
+    <!-- Information about recruitment starts here -->
+    <hr>
+    <h4> Why does Charter offer Sophomore meals? </h4>
+
+    <p> Sophomore meals are a special privilege given to sophomores that allow them to dine with members in Charter twice every month. This is a great opportunity to get a feeling for the club and to meet our wonderful members. Each meal is worth one point each (for a maximum of two points per month). </p>
+
+
+    <h4> The Perks of Sophomore meals </h4>
+    <ul>
+        <li> We're the only club to allow sophomores to sign up for (almost) any meal they'd like to try at Charter.  </li>
+        <li> You gain one point for each meal (equivalent to an event). </li>
+        <li> You get to sign up for meals with your friends, and eat with members!</li>
+        <li> Charter food is the best. </li>
+    </ul>
+    
+    <h4> Due to Space Constraints: </h4>
+    <ul> 
+        <li> Sophomores are limited two meals a month </li>
+        <li> Sophomore meals close the night before the day of the meal.  </li>
+        <li> Tuesdays and Thursdays are members only pub nights. Sorry, no sophomores! </li>
+        <li> Sophomore meals begin in the late fall and end in January.  </li>
+    </ul>
+
+     <img src="{{STATIC_URL}}img/food-picture.jpg" style="border: 0" align="middle" width="40%" >
+
+
 </container>
+
+
 {% endblock %}
+
+
+{% block js-bottom %} 
+
+
+<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/themes/ui-lightness/jquery-ui.css" rel="stylesheet"/>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.js"></script>
+<script>
+
+
+$(function() {
+var dates_allowed = {
+
+
+          {% for date in dates_allowed %}
+          '{{ date }}' : 1, 
+          {% endfor %}
+    };
+
+    $('.datepicker').datepicker({
+        // these aren't necessary, but if you happen to know them, why not
+
+                // called for every date before it is displayed
+        beforeShowDay: function(date) {
+
+            // prepend values lower than 10 with 0
+            function addZero(no) {
+                if (no < 10){
+                  return "0" + no;
+                }  else {
+                  return no; 
+                }
+
+            }
+
+            var date_str = [
+                addZero(date.getFullYear()),
+                addZero(date.getMonth() + 1),
+                addZero(date.getDate())      
+            ].join('-');
+
+            console.log(date_str);
+
+            console.log(dates_allowed[date_str])
+            if (dates_allowed[date_str]) {
+                return [true, 'good_date', 'Lunch = 20/20'];
+            } else {
+                return [false, 'bad_date', 'This date is NOT selectable'];
+            }
+        }
+    });
+
+  });
+
+</script>
+</script>
+{% endblock %}
+

@@ -1,4 +1,4 @@
-from kitchen.models import Meal
+from kitchen.models import *
 from django.utils import timezone
 import datetime
 
@@ -49,15 +49,27 @@ salads = ['Apple, Cherry, Pecan & Roasted Feta Salad',
 'Fava Beans and Pomegranate',
 'Artichoke and Piquillo Salad',]
 
+
+omlette = ['Feta Cheese and Ham Omlette', 'Ranchero Omlette with Chili']
 meals = []
-for i in range(0,7):
-    a = Meal(day=week[i], sophomore_limit = 20, description=lunch_descriptions[i], meals='Lunch', salad=salads[i], grill=grill_options[i])
-    b = Meal(day=week[i], sophomore_limit = 25, description=dinner_descriptions[i], meals='Dinner', salad=salads[i])
+for i in range(0,5):
+    a = Lunch(day=week[i], sophomore_limit = 20, description=lunch_descriptions[i], salad=salads[i], grill_special=grill_options[i])
+    b = Dinner(day=week[i], sophomore_limit = 20, description=dinner_descriptions[i], salad=salads[i])
 
     a.save()
     b.save()
 
     meals.append((a,b))
+
+for i in range(5,7):
+    a = Brunch(day=week[i], sophomore_limit = 20, description=lunch_descriptions[i], omlette=omlette[i-5], grill_special=grill_options[i])
+    b = Dinner(day=week[i], sophomore_limit = 20, description=dinner_descriptions[i], salad=salads[i])
+
+    a.save()
+    b.save()
+
+    meals.append((a,b))
+
 
 # Add the plated options
 meals[2][1].plated_option = plated_options[0]
@@ -73,9 +85,6 @@ meals[6][0].name = "sophomore Brunch"
 
 for i in range(5,7):
     meals[i][0].meals="Brunch"
-
-meals[5][0].omlette = "Mexican Omlette with chili"
-meals[5][0].omlette = "Feta Cheese with Ham Omlette"
 
 for m in meals:
     m[0].save()

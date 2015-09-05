@@ -32,13 +32,13 @@
                             <p> {{ brunch.description |linebreaksbr }} </p>
 
                             <strong> Grill: </strong> 
-                            <p> {{ brunch.grill }} </p>
+                            <p> {{ brunch.grill_special }} </p>
 
                              <strong> Omlette: </strong> 
                             <p> {{ brunch.omlette }} </p>
                             
                             {% if brunch.special_note %}
-                            <strong style="font-size:0.75em;"> *{{ lunch.special_note }} </strong>
+                            <strong style="font-size:0.75em;"> *{{ brunch.special_note }} </strong>
                             {% endif %}
                         </div>
 
@@ -55,7 +55,7 @@
                             <p> {{ lunch.description |linebreaksbr }} </p>
 
                             <strong> Grill: </strong> 
-                            <p> {{ lunch.grill }} </p>
+                            <p> {{ lunch.grill_special }} </p>
 
                             <strong> Salad: </strong> 
                             <p> {{ lunch.salad }} </p>
@@ -80,7 +80,7 @@
                         <p> {{ dinner.description |linebreaksbr}} </p>
 
                         <strong> Plated Option: </strong> 
-                        <p> {{ dinner.grill }} </p>
+                        <p> {{ dinner.grill_special }} </p>
 
                         <strong> Salad: </strong> 
                         <p> {{ dinner.salad }} </p>
