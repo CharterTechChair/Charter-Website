@@ -11,7 +11,6 @@ from django.utils import timezone
 import datetime
 
 # Displays the weekly menu for this week
-@permissions.member
 def weekly_menu(request):
     # Find the relevant days
     today = timezone.now()
