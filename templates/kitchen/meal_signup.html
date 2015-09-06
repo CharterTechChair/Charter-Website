@@ -68,13 +68,21 @@
 
 
 $(function() {
-var dates_allowed = {
+    var dates_allowed = {
 
 
-          {% for date in dates_allowed %}
-          '{{ date }}' : 1, 
-          {% endfor %}
+              {% for date in dates_allowed %}
+              '{{ date }}' : 1, 
+              {% endfor %}
     };
+
+    var hover_text = {
+        {% for key, value in hover_text.iteritems %}
+            '{{key}}' : '{{value|escape}}',
+        {% endfor %}
+    }
+
+    console.log(hover_text)
 
     $('.datepicker').datepicker({
         // these aren't necessary, but if you happen to know them, why not
@@ -98,13 +106,15 @@ var dates_allowed = {
                 addZero(date.getDate())      
             ].join('-');
 
-            console.log(date_str);
+            if (hover_text[date_str]) {
+                if (dates_allowed[date_str]) {
+                    return [true, 'good_date', hover_text[date_str]];
+                } else {
+                    return [false, 'good_date', hover_text[date_str]];
+                }
 
-            console.log(dates_allowed[date_str])
-            if (dates_allowed[date_str]) {
-                return [true, 'good_date', 'Lunch = 20/20'];
             } else {
-                return [false, 'bad_date', 'This date is NOT selectable'];
+                return [false, 'bad_date', 'This date hasn\'t been updated yet'];
             }
         }
     });

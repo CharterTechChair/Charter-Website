@@ -59,20 +59,41 @@ def meal_signup(request):
     else:
         form = MealSignupForm()
 
-    dates_allowed = ['2015-09-05']
+    
+
 
     # Look at the meals in the future
-    available_meals =  Meal.objects.filter(day__gte=timezone.now())
-    available_days = sorted(set([m.day for m in available_meals]))
-    slots_taken = [len(m.meals_attended.all()) for m in available_meals]
-    limit = [m.sophomore_limit for m in available_meals]
+    future_meals =  Meal.objects.filter(day__gte=timezone.now())
+    future_dates = sorted(set([m.day for m in future_meals]))
+ 
+    # Figure out which ones are available
+    available_dates = []
+    calendar_date_to_text = {}
+    for d in future_dates:
+        m_a =  [m.cast() for m in Meal.objects.filter(day=d)]
 
-    #Now pass these values to the javascript function in the template
-    dates_allowed = [d.strftime("%Y-%m-%d") for d in available_days]
+        hover_text = []
 
+        for m in m_a:
+            # i.e. Brunch: 20/30
+            name = m.__class__.__name__
+            num_attending = len(m.meals_attended.all())
+            num_limit = m.sophomore_limit
+            hover_text.append("%s: %s/%s" % (name, num_attending, num_limit))
+            
+            if num_attending < num_limit:
+                available_dates.append(d)
+
+        calendar_date_to_text[d.strftime("%Y-%m-%d")] = ",".join(hover_text)
+        
+    # Which days can the choose on the calender picker?
+    dates_allowed = sorted(set([d.strftime("%Y-%m-%d") for d in available_dates]))
+
+        
     return render(request, 'kitchen/meal_signup.html', 
         {
             "prospective" : prospective,
             'form': form,
             'dates_allowed' : dates_allowed,
+            'hover_text' : calendar_date_to_text,
         })
