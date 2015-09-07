@@ -5,154 +5,175 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <link rel="shortcut icon" type="image/png" href="{{STATIC_URL}}/img/simpleLogo.png"/>
-   
-   <head>
-      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-      <meta charset="utf-8">
-      <title>Princeton Charter Club</title>
-      <meta name="generator" content="Bootply" />
-      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="shortcut icon" type="image/png" href="{{STATIC_URL}}/img/simpleLogo.png"/>
 
-      {% block css %}
-      <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
-      <link href="{% static "css/font-awesome.min.css" %}" rel="stylesheet">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <title>Princeton Charter Club</title>
+  <meta name="generator" content="Bootply" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  {% block css %}
+  <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
+  <link href="{% static "css/font-awesome.min.css" %}" rel="stylesheet">
       <!--[if lt IE 9]>
          <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-      <![endif]-->
-      <link href="{% static "css/styles.css" %}" rel="stylesheet">
-      {% bootstrap_calendar_css %}
+         <![endif]-->
+         <link href="{% static "css/styles.css" %}" rel="stylesheet">
+         {% bootstrap_calendar_css %}
 
-      <link href="{% static "css/custom.css" %}" rel="stylesheet">
+         <link href="{% static "css/custom.css" %}" rel="stylesheet">
 
-      {% endblock %}
+         {% endblock %}
 
 
-   </head>
+       </head>
 
-   <body>
+       <body>
 
-    <!-- navbar -->
-    <nav class="navbar navbar-static">
-       <div class="container">
-        <div class="navbar-header">
 
-          <a class="navbar-brand" href="{%url 'index' %}"><span class="glyphicon glyphicon-home"></span></a>
-          <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="glyphicon glyphicon-chevron-down"></span>
-          </a>
-        </div>
+        <nav class="navbar navbar-default">
+          <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="{%url 'index' %}"><span class="glyphicon glyphicon-home"></span></a>
+            </div>
 
-          <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">  
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">About</a>
-                <ul class="dropdown-menu">
-                  <li><a href="{%url 'history' %}">History</a></li>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav">
+                  {% comment %} Change the appearance of nav-bar for different people {% endcomment%}
+                  {% if student %}
+
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">About <span class="caret"></span></a>
+                      <ul class="dropdown-menu">
+                        <li><a href="{%url 'history' %}">History</a></li>
+                        <li><a href="{%url 'song' %}">Song</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="{%url 'constitution' %}">Constitution</a></li>
+                      </ul>
+                    </li>
+
+
+                    {% if prospective %}
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Prospective <span class="caret"></span></a>
+                      <ul class="dropdown-menu">
+                        
+                        <li><a href="{%url 'profile' %}"> Profile </a></li>
+                        <li><a href="{%url 'mailinglist' %}">Mailing List</a></li>
+                        <li><a href="{%url 'meal_signup' %}">Sophomore Meals</a></li>
+                        <li><a href="{%url 'contactus' %}">Contact Us!</a></li>
+                      
+                      </ul>
+                    </li>
+                    {% endif %}
+
+                    {% if member %}
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Member <span class="caret"></span></a>
+                      <ul class="dropdown-menu">
+                        <li><a href="{%url 'profile' %}">Profile</a></li>
+                        <li><a href="{%url 'feedback' %}">Anonymous Feedback</a></li>
+                        <li><a href="{%url 'events' %}"> Events </a></li>
+                        <li><a href="{%url 'faceboard' %}"> Faceboard </a></li>
+                        <li><a href="{%url 'officer_list' %}"> Officers </a></li>
+                      </ul>
+                    </li>
+                    {% endif %}
+                    
+                    {% if officer %}
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Officer <span class="caret"></span></a>
+                      <ul class="dropdown-menu">
+                        <li><a href="{%url 'events_create' %}">Create/Edit an Event</a></li>
+                        <li><a href="{%url 'add' %}">Update Calendar</a></li>
+                        <li><a href="{%url 'menu_input' %}">Change Menu</a></li>
+                        <li><a href="{%url 'mailinglist_view' %}">Sophomore Mailing List</a></li>
+                        <li><a href="{%url 'admin:index' %}">Admin Control Panel</a></li>
+                      </ul>
+                    </li>
+                    {% endif %}
+                  {% else %}
+                  {% comment %} Navbar links for the public {% endcomment %}
+                  <li><a href="{%url 'history' %}">History</a></li></li>
                   <li><a href="{%url 'song' %}">Song</a></li>
                   <li><a href="{%url 'constitution' %}">Constitution</a></li>
-                </ul>
-              </li>
 
-              <li><a href="{%url 'weekly_menu' %}">Menu</a></li>
-              
-              <!-- <li><a href="{%url 'calendar' %}">Calendar</a></li> -->
 
-              {% if prospective  %}
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Prospective Members <i class="glyphicon glyphicon-chevron-down"></i></a>
-                <ul class="dropdown-menu">
-                  <li><a href="{%url 'profile' %}"> Profile </a></li>
-                  <li><a href="{%url 'mailinglist' %}">Mailing List</a></li>
-                  <li><a href="{%url 'meal_signup' %}">Sophomore Meals</a></li>
-                  <li><a href="{%url 'contactus' %}">Contact Us!</a></li>
-                </ul>
-              </li>
-              {% endif %}
 
-              {% if member %}
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Members Only <i class="glyphicon glyphicon-chevron-down"></i></a>
-                <ul class="dropdown-menu">
-                  <li><a href="{%url 'profile' %}">Profile</a></li>
-                  <li><a href="{%url 'feedback' %}">Anonymous Feedback</a></li>
-                  <li><a href="{%url 'events' %}"> Events </a></li>
-                  <li><a href="{%url 'faceboard' %}"> Faceboard </a></li>
-                  <li><a href="{%url 'officer_list' %}"> Officers </a></li>
-                </ul>
-              </li>
-              {% endif %}
+                {% endif %}
 
-              {% if officer %}
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Officers Only</a>
-                <ul class="dropdown-menu">
-                  <li><a href="{%url 'events_create' %}">Create/Edit an Event</a></li>
-                  <li><a href="{%url 'add' %}">Update Calendar</a></li>
-                  <li><a href="{%url 'menu_input' %}">Change Menu</a></li>
-                  <li><a href="{%url 'mailinglist_view' %}">Sophomore Mailing List</a></li>
-                  <li><a href="{%url 'admin:index' %}">Admin Control Panel</a></li>
-                </ul>
-              </li>
-              {% endif %}
-            </ul>
+              </ul> <!-- nav navbar-nav -->
 
-            <!-- Login/logout links -->
-            <ul class="nav navbar-right navbar-nav">
-              {% if not student %}
-              <li><a href="{%url 'login' %}">Login</a></li>
-              {% else %}
-              <li class="dropdown">
-                <!-- need to check on this url call -->
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <i class="glyphicon glyphicon-chevron-down"></i></a>
-                <ul class="dropdown-menu">
-                  <li class="loggedin"> Logged in as {{ student.first_name }} {{ student.last_name }}</li>
 
-                  {% if member %}
-                      <li><a href="{%url 'profile' %}">Profile</a></li>
-                  {% endif %}
 
-                  {% if prospective %}
-                      <li><a href="{%url 'profile' %}">Profile</a></li>
-                  {% endif %}
 
-                  <li><a href="{%url 'logout' %}">Logout</a></li>
-                </ul>
-              </li>
-              {% endif %}
-            </ul>
 
-          </div>
-        </div>
+              <ul class="nav navbar-right navbar-nav">
+                {% if not student %}
+                <li><a href="{%url 'login' %}">Login</a></li>
+                {% else %}
+                <li class="dropdown">
+                  <!-- need to check on this url call -->
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <i class="glyphicon glyphicon-chevron-down"></i></a>
+                  <ul class="dropdown-menu">
+                    <li class="loggedin"> Logged in as {{ student.first_name }} {{ student.last_name }}</li>
 
-    </nav><!-- /.navbar -->
+                    {% if member %}
+                    <li><a href="{%url 'profile' %}">Profile</a></li>
+                    {% endif %}
 
-    <!-- Begin Body -->
-    <div class="container">
+                    {% if prospective %}
+                    <li><a href="{%url 'profile' %}">Profile</a></li>
+                    {% endif %}
 
-      <div id="outer-background-container" data-default-background-img="{{STATIC_URL}}img/oldcharter.jpg" style="background-image:url({{STATIC_URL}}img/oldcharter.jpg);"></div>
-      
+                    <li><a href="{%url 'logout' %}">Logout</a></li>
+                  </ul>
+                </li>
+                {% endif %}
+              </ul>
+            </div><!-- /.navbar-collapse -->
+          </div><!-- /.container-fluid -->
+          </container>
+        </nav>
 
-      <div class="background-image-overlay"></div>
 
-       <div class="no-gutter row">
-          <div class="col-md-12" id="content">
-            <div class="panel panel-transparent">
-              <div class="panel-body">
-                
-               {% block content %}{% endblock %}
-             
-              </div>
-            </div>
-          </div> 
+
+        <!-- Begin Body -->
+        <div class="container">
+
+          <div id="outer-background-container" data-default-background-img="{{STATIC_URL}}img/oldcharter.jpg" style="background-image:url({{STATIC_URL}}img/oldcharter.jpg);"></div>
+
+
+          <div class="background-image-overlay"></div>
+
+          <div class="no-gutter row">
+            <div class="col-md-12" id="content">
+              <div class="panel panel-transparent">
+                <div class="panel-body">
+
+                 {% block content %}{% endblock %}
+
+               </div>
+             </div>
+           </div> 
+         </div>
+
        </div>
 
-    </div>
-
-    <!-- credit where credit is due -->
-    <footer>
-      <div class="container">
-       <div class="row">
+       <!-- credit where credit is due -->
+       <footer>
+        <div class="container">
+         <div class="row">
           <div class="col-md-6 text-left">
             <h5> Built by R. Fitzpatrick '16, J. Whitton '16, Q. Zhou '15</h5>
           </div>
@@ -164,18 +185,18 @@
     </footer>
 
 
-   <!-- script references -->
-   {% block javascript %}
-      <script src="{% static "js/jquery-2.1.3.min.js" %}"></script>
-      <script src="{% static "js/bootstrap.min.js" %}"></script>
-      <script src="{% static "js/scripts.js" %}"></script>
-      {% bootstrap_calendar_js language='template' %}
-      {% bootstrap_calendar_init language='template' %}
+    <!-- script references -->
+    {% block javascript %}
+    <script src="{% static "js/jquery-2.1.3.min.js" %}"></script>
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <script src="{% static "js/scripts.js" %}"></script>
+    {% bootstrap_calendar_js language='template' %}
+    {% bootstrap_calendar_init language='template' %}
     {% endblock javascript %}
 
 
     {% block js-bottom %} {% endblock js-bottom %}  
 
 
-   </body>
-</html>
+  </body>
+  </html>

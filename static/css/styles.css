@@ -190,8 +190,23 @@ h3.highlight  {
   	opacity:.9;
 }
 
-.navbar-brand {
+.navbar-default .navbar-brand {
 	color:#fff;
+}
+
+
+.navbar-nav .open .dropdown-menu {
+  background-color: rgba(255,255,255,0.8);
+}
+
+
+.navbar-default .navbar-nav>li>a {
+  color: #fff;
+}
+
+.navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>li>a:focus {
+  color: #fff;
+  background-color: rgba(180,0,0,1.0)
 }
 
 .accordion-group {
