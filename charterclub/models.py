@@ -76,6 +76,7 @@ def limit_meals_signed_up():
     return {'sophomore_limit__gt': 0,
             'day__range': [start_date, end_date]
     }
+    
 ###########################################################################
 # Prospective model
 # A person who is thinking about joining Charter
