@@ -1,5 +1,9 @@
 # This is to be copy and pasted into the shell
 from charterclub.models import *
+import os
+os.sys.path.append('..')
+
+from django.core.files import File
 
 # Insert Members
 member_list = [("Jean-Carlos", "Arenas", "jarenas", 2016),
@@ -103,6 +107,20 @@ member_list = [("Jean-Carlos", "Arenas", "jarenas", 2016),
 for row in member_list:
     Member(first_name=row[0], last_name=row[1], netid=row[2], year=row[3], house_account=255.00,
            ).save()
+
+# Insert member images - NOTE. MUST HAVE THE MEMBER IMAGES SAVED IN '/media/member_images/<netid>'
+# you ALSO need to be the project root directory
+for row in member_list:
+    try:
+        netid = row[2]
+        url = 'media/member_images/%s.jpg' % netid
+        image = File(open(url))
+
+        m_o = Member.objects.filter(netid=netid)[0]
+        m_o.image.save(url, image)
+        m_o.save()
+    except:
+        pass "Could not find an image for member: %s %s" % (row[0], row[1])
 
 
 # Officers Here
