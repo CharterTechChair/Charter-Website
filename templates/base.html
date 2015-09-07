@@ -50,15 +50,22 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav">
                   {% comment %} Change the appearance of nav-bar for different people {% endcomment%}
-                  {% if student %}
-
+                  {% if not student %}
+                    {% comment %} Navbar links for the public {% endcomment %}
+                    <li><a href="{%url 'history' %}">History</a></li></li>
+                    <li><a href="{%url 'song' %}">Song</a></li>
+                    <li><a href="{%url 'constitution' %}">Constitution</a></li>
+                    <li><a href="{%url 'faceboard' %}"> Membership </a></li>
+                    <li><a href="{%url 'officer_list' %}"> Officers </a></li>
+                  {% else %}
                     <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">About <span class="caret"></span></a>
                       <ul class="dropdown-menu">
                         <li><a href="{%url 'history' %}">History</a></li>
                         <li><a href="{%url 'song' %}">Song</a></li>
-                        <li role="separator" class="divider"></li>
                         <li><a href="{%url 'constitution' %}">Constitution</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="{%url 'faceboard' %}"> Faceboard </a></li>
                       </ul>
                     </li>
 
@@ -101,16 +108,8 @@
                         <li><a href="{%url 'admin:index' %}">Admin Control Panel</a></li>
                       </ul>
                     </li>
-                    {% endif %}
-                  {% else %}
-                  {% comment %} Navbar links for the public {% endcomment %}
-                  <li><a href="{%url 'history' %}">History</a></li></li>
-                  <li><a href="{%url 'song' %}">Song</a></li>
-                  <li><a href="{%url 'constitution' %}">Constitution</a></li>
-
-
-
-                {% endif %}
+                  {% endif %}
+                {% endif %} 
 
               </ul> <!-- nav navbar-nav -->
 
@@ -128,14 +127,10 @@
                   <ul class="dropdown-menu">
                     <li class="loggedin"> Logged in as {{ student.first_name }} {{ student.last_name }}</li>
 
-                    {% if member %}
+                    {% if member or prospective %}
                     <li><a href="{%url 'profile' %}">Profile</a></li>
                     {% endif %}
-
-                    {% if prospective %}
-                    <li><a href="{%url 'profile' %}">Profile</a></li>
-                    {% endif %}
-
+                    
                     <li><a href="{%url 'logout' %}">Logout</a></li>
                   </ul>
                 </li>

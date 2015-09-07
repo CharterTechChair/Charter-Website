@@ -74,7 +74,6 @@ def index(request):
 # 
 # Displays the current membership
 ########################################################################
-@permissions.member   
 def faceboard(request):
     # rollover = June 3nd
     senior_year = (date.today() - timedelta(days=153)).year + 1
@@ -87,7 +86,6 @@ def faceboard(request):
       'title':   'Current Membership',
       'year_options': reversed(year_options),
       'display_membership' : current_membership,
-      'member':   Member.objects.filter(netid=permissions.get_username(request))[0]
   })
 
 ########################################################################
@@ -95,8 +93,6 @@ def faceboard(request):
 # 
 # Displays the membership of a target year
 ########################################################################
-
-@permissions.member
 def faceboard_year(request, year):
     # rollover = June 3nd
     members = Member.objects.filter(year=year)
@@ -107,9 +103,13 @@ def faceboard_year(request, year):
       'title':   'Class of %s' % year,
       'year_options': reversed(year_options),
       'display_membership' : members,
-      'member':   Member.objects.filter(netid=permissions.get_username(request))[0]
     })
 
+########################################################################
+# Some easy one-age requests
+# 
+# Displays the membership of a target year
+########################################################################
 def history(request):
    return render(request, "history.html")
 
@@ -120,17 +120,14 @@ def constitution(request):
    return render(request, "constitution.html")
 
 # allow user to view list of current officer corps.
-@permissions.member 
 def officer_list(request):
-    now = datetime.datetime.now().date()
-
     olist = Officer.objects.all()
 
+    # president = Officer.
+
     return render(request, 'charterclub/officer_list.html', {
-     'current_date': now,
      'error': '',
-     'netid': permissions.get_username(request),
-     'officerlist': olist ,
+     'officer_list' : olist,
     }) 
 
 def contactus(request):

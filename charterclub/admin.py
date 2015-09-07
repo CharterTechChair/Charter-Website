@@ -83,8 +83,8 @@ admin.site.register(Member, MemberAdmin)
 #################################################################################
 class OfficerAdmin(admin.ModelAdmin):
     # What gets shown, and how?
-    list_display = ('__unicode__',  'position', 'year',)
-    list_editable = ('position',)
+    list_display = ('__unicode__',  'position', 'year', 'is_active')
+    list_editable = ('position', 'is_active')
     ordering = ['position']
 
     # What gets filtered/searched?

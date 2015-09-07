@@ -168,6 +168,7 @@ class Member(Student):
         # Create the parameters for an officer
         officer_param = {f:getattr(self, f) for f in fields}
         officer_param['position'] = position
+        officer_param['is_active'] = True
 
         # Now re-insert as an officer
         Officer.objects.create(**officer_param)
@@ -195,6 +196,7 @@ import events.models
 
 class Officer(Member):
     position = models.CharField('Position/title', max_length=100)
+    is_active = models.BooleanField('Current Officer', default=True, max_length=100)
 
 # THIS WILL GET MOVED TO A CAL APP EVENTUALLY
 class SocialEvent(models.Model):
