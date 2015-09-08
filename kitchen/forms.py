@@ -15,13 +15,23 @@ from functools import partial
 ###################################################
 
 class MealSignupForm(forms.Form):
-    date = forms.DateField(widget=forms.TextInput(attrs=
+    date = forms.DateField(help_text="Choose a date", required=True,
+                           widget=forms.TextInput(attrs=
                                 {
                                     'class':'datepicker'
-                                }), help_text="Choose a date")
+                                }))    
+    meal_type = forms.ChoiceField(required=True, help_text="Choose one type of meal", 
+                                choices = (('Brunch', 'Brunch'),
+                                           ('Lunch',  'Lunch'),
+                                           ('Dinner', 'Dinner')))
+
     # Submit buttons
     helper = FormHelper()   
     helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
 
     def add_soph(self):
         print "hello world from add_soph"
+
+    def clean_date(self):
+        print "clean date"
+        return self.cleaned_data['date']

@@ -58,9 +58,6 @@ def meal_signup(request):
     else:
         form = MealSignupForm()
 
-    
-
-
     # Look at the meals in the future
     future_meals =  Meal.objects.filter(day__gte=timezone.now())
     future_dates = sorted(set([m.day for m in future_meals]))
