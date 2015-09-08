@@ -52,11 +52,11 @@ def meal_signup(request):
 
     # Give them a form to fill out
     if request.method == 'POST':
-        form = MealSignupForm(request.POST)
+        form = MealSignupForm(request.POST, prospective=prospective)
         if form.is_valid():
-            form.add_soph()
+            form.add_prospective(prospective)
     else:
-        form = MealSignupForm()
+        form = MealSignupForm(prospective=prospective)
 
     # Look at the meals in the future
     future_meals =  Meal.objects.filter(day__gte=timezone.now())
@@ -65,19 +65,16 @@ def meal_signup(request):
     # Figure out which ones are available
     available_dates = []
     calendar_date_to_text = {}
+
     for d in future_dates:
         m_a =  [m.cast() for m in Meal.objects.filter(day=d)]
 
         hover_text = []
 
         for m in m_a:
-            # i.e. Brunch: 20/30
-            name = m.__class__.__name__
-            num_attending = len(m.meals_attended.all())
-            num_limit = m.sophomore_limit
-            hover_text.append("%s: %s/%s" % (name, num_attending, num_limit))
+            hover_text.append("%s: %s" % ( m.__class__.__name__, m.sophomore_limit_text()))
             
-            if num_attending < num_limit:
+            if m.num_of_sophomores() < m.sophomore_limit:
                 available_dates.append(d)
 
         calendar_date_to_text[d.strftime("%Y-%m-%d")] = ",".join(hover_text)
@@ -93,3 +90,36 @@ def meal_signup(request):
             'dates_allowed' : dates_allowed,
             'hover_text' : calendar_date_to_text,
         })
+
+from django.core.exceptions import FieldError
+from django.http import HttpResponse
+from datetime import date
+import json
+
+def meal_info(request, month, day, year):
+    '''
+        Returns the information about a meal via a get request
+    '''
+
+    try:
+        d = date(int(year), int(month), int(day))
+    except:
+        raise FieldError('Invalid Fields for /year/month/date in GET URL')
+    
+    brunch = Brunch.objects.filter(day=d) 
+    lunch = Lunch.objects.filter(day=d)
+    dinner = Dinner.objects.filter(day=d)
+
+    data = {}
+    string_s = ['brunch', 'lunch', 'dinner']
+    meals_qa = [brunch, lunch, dinner]
+
+    for string, meal_q in zip(string_s, meals_qa):
+        if not meal_q:
+            data[string] = (-1, -1)
+        else:
+            num_attending = len(meal_q[0].meals_attended.all())
+            num_limit = meal_q[0].sophomore_limit
+
+            data[string] = (num_attending, num_limit)
+    return HttpResponse(json.dumps(data), content_type="application/json")

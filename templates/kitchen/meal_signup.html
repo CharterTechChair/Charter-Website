@@ -82,8 +82,6 @@ $(function() {
         {% endfor %}
     }
 
-    console.log(hover_text)
-
     $('.datepicker').datepicker({
         // these aren't necessary, but if you happen to know them, why not
 
@@ -116,12 +114,47 @@ $(function() {
             } else {
                 return [false, 'bad_date', 'This date hasn\'t been updated yet'];
             }
+        },
+
+        onSelect: function(dateText, inst) {
+            var date = $(this).val();
+            var time = $('#time').val();
+            
+
+            var url = "http://localhost:8000/kitchen/meal_info/" + date;
+            var data_s = msg = $.ajax({type: "GET", url: url, async: false}).responseText;
+            var data_js = $.parseJSON(data_s)
+
+            // update the options
+            $('select option:contains("Brunch")').text("Brunch " + data_js['brunch'][0] 
+                                                                + "/" + data_js['brunch'][1])
+            $('select option:contains("Lunch")').text("Lunch " + data_js['lunch'][0] 
+                                                                + "/" + data_js['lunch'][1])
+            $('select option:contains("Dinner")').text("Dinner " + data_js['dinner'][0] 
+                                                                + "/" + data_js['dinner'][1])
+
+            // Now remove the ones that are not allowed
+            if (data_js['brunch'][0] === -1) {
+                $('select option:contains("Brunch")').remove()
+            }
+
+            if (data_js['lunch'][0] === -1) {
+                $('select option:contains("Lunch")').remove()
+            }
+
+            if (data_js['dinner'][0] === -1) {
+                $('select option:contains("Dinner")').remove()
+            }
+            
+            // $.getJSON("http://localhost:8000/kitchen/meal_info/{0}/{1}/{2}".format)
+            // $("#start").val(date + time.toString(' HH:mm').toString());
+
         }
     });
+    
 
   });
 
-</script>
 </script>
 {% endblock %}
 

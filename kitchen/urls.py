@@ -14,6 +14,10 @@ urlpatterns = patterns('',
         r'^meal_signup$', 
         'kitchen.views.meal_signup', 
         name='meal_signup'),
+    url(
+        r'^meal_info/([0-9]{1,2})/([0-9]{1,2})/([0-9]{4})$', 
+        'kitchen.views.meal_info', 
+        name='meal_info'),
     
 )
 

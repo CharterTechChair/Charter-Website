@@ -6,6 +6,8 @@ from django import forms
 from django.core.validators import RegexValidator
 
 import pdb
+from collections import Counter
+
 # from events.models import Event
 from datetime import date, timedelta
 from django.core.exceptions import ValidationError
@@ -14,6 +16,7 @@ from django.core.exceptions import ValidationError
 from django.db.models import Min, Max
 
 from kitchen.models import Meal
+
 ###########################################################################
 # a Person model
 # Basically an Abstract class containing a person's name
@@ -55,6 +58,11 @@ class Student(Person):
     #     self.last_name = member.last_name
 
 
+###########################################################################
+# Prospective model
+# A person who is thinking about joining Charter
+############################################################################  
+
 def limit_meals_attended_choices():
     #June 3rd is the turnover date
     start_year = (timezone.now() - timedelta(days=153)).year
@@ -76,11 +84,8 @@ def limit_meals_signed_up():
     return {'sophomore_limit__gt': 0,
             'day__range': [start_date, end_date]
     }
-    
-###########################################################################
-# Prospective model
-# A person who is thinking about joining Charter
-############################################################################    
+
+
 class Prospective(Student):
     events_attended = models.IntegerField(
         'Number of events attended')
@@ -90,6 +95,8 @@ class Prospective(Student):
     meals_signed_up = models.ManyToManyField(Meal, 
                     limit_choices_to=limit_meals_signed_up,
                     blank=True, related_name="meals_signed_up")
+
+    monthly_meal_limit = 3
 
     # meals = make another model for meals signups? use date fields?
     def get_num_points(self):
@@ -113,6 +120,17 @@ class Prospective(Student):
         # self.delete() #Keep the old Prospective
         Member.objects.create(**member_param)
 
+    #CHECK if montly meal limit has been exceeded
+    def will_exceed_meal_limit(self, next_meal):
+        total_meals = self.meals_attended.all() | self.meals_signed_up.all()
+        group =  ["%s-%s" % (m.day.month, m.day.year) for m in total_meals]
+
+        group.append("%s-%s" % (next_meal.day.month, next_meal.day.year))
+
+        freq = Counter(group)
+        print freq
+        if  any(f > Prospective.monthly_meal_limit for f in freq.itervalues()):
+            return True        
 
 ###########################################################################
 # Member

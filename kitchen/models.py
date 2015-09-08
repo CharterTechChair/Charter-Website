@@ -43,14 +43,31 @@ class Meal(InheritanceCastModel):
         return "%s %s" % (self.day.strftime("%m/%d/%y %a"), self.display_name)
 
 
-    # def html(self):
-    #     '''
-    #         Returns the meal, formatted as div.
-    #     '''
+    def num_of_sophomores(self):
+        '''
+            Number of sophomores eating here
+        '''
+        return len(self.meals_attended.all() | self.meals_signed_up.all())
 
-    #     return '''
-    #         <div> %s 
-    #     '''
+    def is_full(self):
+        '''
+            Checks if the meal has filled the sophomore limit
+        '''
+
+        if self.num_of_sophomores() >= self.sophomore_limit:
+            return True
+        else:
+            return False
+
+    def sophomore_limit_text(self):
+        '''
+            Returns the display text
+        '''
+
+        return "%s/%s" % (self.num_of_sophomores(), self.sophomore_limit)
+
+
+
 class Brunch(Meal):
     display_name = "Brunch"
     grill_special = models.CharField(max_length=1000, blank=True, help_text="Optional")
