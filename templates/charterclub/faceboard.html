@@ -24,9 +24,9 @@
         <div class = 'col-lg-3 col-md-3 col-sm-4 col-xs-6 thumb col-centered'>
             
                 {% if member.image %}
-                    <img src="{{ member.image.url }}" class='faceboard-photo'>
+                <div class='faceboard-photo' style="background-image: url({{member.image.url}});"> </div>
                 {% else %}
-                    <img src="{{STATIC_URL}}img/charter-logo-white.png" class='filler-photo'>
+                <div class='faceboard-filler' style="background-image: url({{STATIC_URL}}img/charter-logo-white.png);"> </div>
                 {% endif %}
             
 
