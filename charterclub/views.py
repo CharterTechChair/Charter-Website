@@ -123,11 +123,16 @@ def constitution(request):
 def officer_list(request):
     olist = Officer.objects.all()
 
-    # president = Officer.
+    query_s = Officer.objects.filter(is_active=True).order_by('order')
+    top6 = query_s[:6]
+    officer_rest = query_s[6:]
+
+
 
     return render(request, 'charterclub/officer_list.html', {
      'error': '',
-     'officer_list' : olist,
+     'top6' : top6,
+     'officer_rest' : officer_rest
     }) 
 
 def contactus(request):

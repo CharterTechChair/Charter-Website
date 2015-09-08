@@ -1,0 +1,129 @@
+/*For overriding bootstrap stuff*/
+.center {
+     float: none;
+     margin-left: auto;
+     margin-right: auto;
+}
+
+.cal-day-today {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+.cal-day-today span[data-cal-date] {
+  color: #fff;
+}
+
+.event-info {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.cal-day-holiday span[data-cal-date] {
+  color: #fff;
+}
+
+.minimal-button {
+  background: transparent;
+  color:#fff;
+  margin: 10px;
+}
+
+.rsvp-text {
+  color:#aaa;
+}
+
+.event-row {
+  margin: 20px;
+}
+.web-link{
+  color :#C6852A;
+}
+
+.btn-warning, .btn-warning.active, .btn, .btn-primary {
+  color: #fff;
+  background-color: #fff;
+  border-color: #fff;
+  background: transparent;
+}
+
+.btn-right {
+   margin-right: 10px;
+}
+
+.btn-inverse {
+  color: black;
+  background-color: transparent;
+  border-color: transparent;
+  background: #fff;
+}
+
+.btn-group .btn + .btn,
+.btn-group .btn + .btn-group,
+.btn-group .btn-group + .btn,
+.btn-group .btn-group + .btn-group {
+  margin-left: -1px;
+  margin-bottom: 10px;
+
+}
+
+#cal-slide-content {
+  background-image: url("../img/skinny.png");
+}
+
+#cal-week-box {
+  border: 1px solid #e1e1e1;
+  border-right: 0px;
+  border-radius: 5px 0 0 5px;
+  background-color: rgba(255, 255, 255, 0.3);
+  text-align: right;
+}
+
+.faceboard-thumbnail {
+  text-align: center;
+}
+.faceboard-photo {
+  height:180px; 
+  padding:5px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto
+}
+
+.filler-photo {
+  height:180px; 
+  padding:15px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto
+}
+
+
+.thumb {
+    margin-bottom: 30px;
+}
+
+
+.menu-day {
+  margin: 5px;
+}
+
+.menu-meal {
+  font-size: 0.80em;
+  min-height: 180px;
+}
+
+.menu-type{
+  
+  min-height: 180px;
+  padding-top: 70px;
+}
+
+.menu-text{
+  border-style: solid;
+  border-color: #fff;
+  border-width:1px;
+  min-height: 180px;
+  padding-top: 5px;
+}
+
+.menu-text > p {
+  margin-left: 5px;
+}

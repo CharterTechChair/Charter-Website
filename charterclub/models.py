@@ -160,7 +160,7 @@ class Member(Student):
             Member.objects.create(**member_param)
 
     # Promote the current member to an officer position
-    def promote_to_officer(self, position):
+    def promote_to_officer(self, position, order=99):
         # Get the fields of the Student class
         fields = [f.get_attname() for f in Member._meta.fields]
         fields = [f for f in fields if ('_id' not in f and f !='id')]
@@ -169,6 +169,7 @@ class Member(Student):
         officer_param = {f:getattr(self, f) for f in fields}
         officer_param['position'] = position
         officer_param['is_active'] = True
+        officer_param['order'] = order
 
         # Now re-insert as an officer
         Officer.objects.create(**officer_param)
@@ -197,6 +198,7 @@ import events.models
 class Officer(Member):
     position = models.CharField('Position/title', max_length=100)
     is_active = models.BooleanField('Current Officer', default=True, max_length=100)
+    order = models.IntegerField('Order of Appearance on Officer Page', max_length=100)
 
 # THIS WILL GET MOVED TO A CAL APP EVENTUALLY
 class SocialEvent(models.Model):

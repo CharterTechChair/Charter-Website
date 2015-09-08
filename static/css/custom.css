@@ -69,26 +69,50 @@
   text-align: right;
 }
 
-.faceboard-photo {
-  height:180px; 
-  padding:5px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto
+.faceboard-row {
+  margin: 0 auto;
+  max-width: 900px;
+  min-width: 450px;
 }
 
-.filler-photo {
-  height:180px; 
-  padding:15px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto
+.faceboard-title{
+  position:relative;
+  min-height:5em;
+}
+
+.faceboard-content{
+  position:absolute;
+  bottom:0.1em;
+  width:100%;
+  font-size: 1.2em;
+  font-weight: 400;
+
+}
+
+.faceboard-thumbnail {
+  text-align: center;
+}
+
+.faceboard-image-div {
+}
+
+.faceboard-photo {
+  height: 280px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.faceboard-filler {
+  height: 280px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
 .thumb {
     margin-bottom: 30px;
 }
-
 
 .menu-day {
   margin: 5px;

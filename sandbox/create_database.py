@@ -120,35 +120,36 @@ for row in member_list:
         m_o.image.save(url, image)
         m_o.save()
     except:
-        pass "Could not find an image for member: %s %s" % (row[0], row[1])
+        print "Could not find an image for member: %s %s" % (row[0], row[1])
 
 
 # Officers Here
-officer_list = {'jarenas': 'President',
-'roryf' : 'Vice President',
-'rad3': 'Treasurer',
-'ddore': 'Social Chair',
-'msabbott' : 'Kitchen Manager',
-'cat3': 'Kitchen Manager',
-'kblair': 'House Manager',
-'ecblum': 'Liquid Assets',
-'moluo': 'Liquid Assets',
-'shirleyz': 'Liquid Assets',
-'hannahgm': 'Communications Chair',
-'dennisds': 'Events Chair',
-'dzirkel': 'Events Chair',
-'dschen' : 'Community Service Chair / Sustainability Chair',
-'ljkelly': 'Community Service Chair / Sustainability Chair',
-'erictp': 'Intramurals Chair',
-'curtislb': 'Games Chair',
-'yinaba': 'Games Chair',
-'quanzhou': 'Webmaster',
-'jwhitton': 'Webmaster'}
+officer_list = {'jarenas': ('President', 1),
+                'roryf' : ( 'Vice President', 2),
+                'rad3': ('Treasurer', 3),
+                'ddore': ('Social Chair', 4),
+                'msabbott' : ('Kitchen Manager', 5),
+                'cat3': ('Kitchen Manager', 5),
+                'kblair': ('House Manager', 6),
+                'ecblum': ('Liquid Assets', 7),
+                'moluo': ('Liquid Assets', 7),
+                'shirleyz': ('Liquid Assets', 7),
+                'hannahgm': ('Communications Chair', 8),
+                'dennisds': ('Events Chair', 8),
+                'dzirkel': ('Events Chair', 8),
+                'dschen' : ('Community Service Chair / Sustainability Chair', 9),
+                'ljkelly': ('Community Service Chair / Sustainability Chair', 9),
+                'erictp': ('Intramurals Chair', 10),
+                'curtislb': ('Games Chair', 11),
+                'yinaba': ('Games Chair', 11),
+                'quanzhou': ('Webmaster', 12),
+                'jwhitton': ('Webmaster',12),
+               }
 
 
-for officer,position in officer_list.iteritems():
+for officer, (position, order) in officer_list.iteritems():
     m = Member.objects.filter(netid=officer)[0]
-    m.promote_to_officer(position)
+    m.promote_to_officer(position, order=order)
 
 # Now for some prospectives
 Prospective(first_name='Julia', last_name='Who', netid='jkhu', year='2017', events_attended=0).save()
