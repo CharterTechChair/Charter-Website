@@ -9,27 +9,27 @@ urlpatterns = patterns('',
         r'^$', 
         'events.views.events_list', 
         name='events'),
-    url(
-        r'^signup/(.+)/([0-9]{4}-[0-9]{2}-[0-9]{2})',
-        'events.views.events_entry',
-        name='event_entry'),
+#     url(
+#         r'^signup/(.+)/([0-9]{4}-[0-9]{2}-[0-9]{2})',
+#         'events.views.events_entry',
+#         name='event_entry'),
 
-    url(
-        r'^view/(.+)/([0-9]{4}-[0-9]{2}-[0-9]{2})',
-        'events.views.events_view', 
-        name='events_view'),
-    url(
-        r'^unrsvp/(.+)/([0-9]{4}-[0-9]{2}-[0-9]{2})',
-        'events.views.events_unrsvp', 
-        name='events_unrsvp'),
-    url(
-        r'^create$', 
-        'events.views.events_create', 
-        name='events_create'),
-    url(
-        r'^thanks_create$',
-        'events.views.thanks_create',
-        name='thanks_create'),
+#     url(
+#         r'^view/(.+)/([0-9]{4}-[0-9]{2}-[0-9]{2})',
+#         'events.views.events_view', 
+#         name='events_view'),
+#     url(
+#         r'^unrsvp/(.+)/([0-9]{4}-[0-9]{2}-[0-9]{2})',
+#         'events.views.events_unrsvp', 
+#         name='events_unrsvp'),
+#     url(
+#         r'^create$', 
+#         'events.views.events_create', 
+#         name='events_create'),
+#     url(
+#         r'^thanks_create$',
+#         'events.views.thanks_create',
+#         name='thanks_create'),
 )
 
 # from django.conf import settings

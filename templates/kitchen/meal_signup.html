@@ -9,9 +9,9 @@
     <h3> Hello {{ prospective.first_name }}. Sign up for meals here! </h3>
     
     <hr>
-    <p> You are currently signed up for the following meals: </p>
+    <p> You have signed up for the following meals for this month: </p>
     <ul>
-         {% for meal in prospective.get_upcoming_meals %}
+         {% for meal in prospective_this_month_meals %}
           <li> 
               <h5> {{ meal }}  {{ meal.name }} </h5>
               <p style="margin-left:8px"> 
@@ -21,14 +21,18 @@
         {% endfor %}
     </ul>
     
-    <div style="max-width:180px;">
+    <hr>
+
+    <h4> Signup Form </h4>
+    <p> You can see our full menu <a href="{%url 'weekly_menu' %}">here</a>. Hover your mouse over the date to see how many people have signed up for that meal.</p>
+    <div style="max-width:250px; margin:10px;">
         {% crispy form %}
     </div>
 
 
     <!-- Information about recruitment starts here -->
     <hr>
-    <h4> Why does Charter offer Sophomore meals? </h4>
+    <h3> Information on Sophmore Meals</h3>
 
     <p> Sophomore meals are a special privilege given to sophomores that allow them to dine with members in Charter twice every month. This is a great opportunity to get a feeling for the club and to meet our wonderful members. Each meal is worth one point each (for a maximum of two points per month). </p>
 

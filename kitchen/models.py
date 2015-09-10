@@ -72,15 +72,18 @@ class Brunch(Meal):
     display_name = "Brunch"
     grill_special = models.CharField(max_length=1000, blank=True, help_text="Optional")
     omlette = models.CharField(max_length=1000, blank=True, help_text="Optional")
-
-
+Brunch._meta.get_field('day').unqiue = True
 
 class Lunch(Meal):
     display_name = "Lunch"
     grill_special = models.CharField(max_length=1000, blank=True, help_text="Optionals")
     salad          =  models.CharField(max_length=1000, blank=True, help_text="Optional")
+Lunch._meta.get_field('day').unqiue = True
 
 class Dinner(Meal):
     display_name = "Dinner"
     plated_option = models.CharField(max_length=1000, blank=True, help_text="Optional")
     salad         =  models.CharField(max_length=1000, blank=True, help_text="Optional")
+Dinner._meta.get_field('day').unqiue = True
+
+    

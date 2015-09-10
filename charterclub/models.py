@@ -17,6 +17,8 @@ from django.db.models import Min, Max
 
 from kitchen.models import Meal
 
+
+
 ###########################################################################
 # a Person model
 # Basically an Abstract class containing a person's name
@@ -50,6 +52,10 @@ class Student(Person):
     netid = models.CharField('Princeton Net ID', max_length=100, validators=[alphanumeric])
     year = models.IntegerField('Graduation Year')
 
+    # Calculate the senior year
+    @staticmethod
+    def get_senior_year():
+        return (timezone.now() - timedelta(days=153)).year + 1
     # def __init__(self, member):
     #     self.pk = member.pk
     #     self.netid = member.netid
@@ -136,9 +142,6 @@ class Prospective(Student):
 # Member
 # A Student of Princeton
 ############################################################################
-# rollover = June 3nd
-senior_year = (date.today() - timedelta(days=153)).year + 1
-
 # Make sure that the image is not too big
 def validate_image(fieldfile_obj):
     # Note: this function is put up here so that validators=[func] can 

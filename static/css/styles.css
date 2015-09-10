@@ -22,6 +22,9 @@ header {
   /*background: url(../img/charter.png) no-repeat center center;*/
 }
 
+a {
+  text-decoration: underline;
+}
 /* only apply sticky columns on wider screens */
 @media (min-width: 1200px) {
   #sidebar {
@@ -126,9 +129,8 @@ h1,h2,h3,h4 {
   font-family: 'Open Sans',Arial,Helvetica,Sans-Serif;
 }
 
-a,a:hover {
+a, a:hover {
 	color:#fff;
-  	text-decoration:none;
 }
 
 .highlight-bk {
@@ -170,6 +172,9 @@ h3.highlight  {
   border-style: none;
 }
 
+.navbar a {
+  text-decoration:none;
+}
 
 .navbar {
   background-color:rgba(180,0,0,0.7);

@@ -82,13 +82,21 @@ def meal_signup(request):
     # Which days can the choose on the calender picker?
     dates_allowed = sorted(set([d.strftime("%Y-%m-%d") for d in available_dates]))
 
-        
+    #Get the meals that they ate this month
+    now = timezone.now()
+    prospective_this_month_meals = prospective.meals_signed_up.filter(day__gte=now) \
+                                   | prospective.meals_attended.filter(day__month=now.month)     \
+                                   | prospective.meals_signed_up.filter(day__month=now.month)
+
+    now = timezone.now()
     return render(request, 'kitchen/meal_signup.html', 
         {
             "prospective" : prospective,
             'form': form,
             'dates_allowed' : dates_allowed,
             'hover_text' : calendar_date_to_text,
+            'now': now,
+            'prospective_this_month_meals' : prospective_this_month_meals, 
         })
 
 from django.core.exceptions import FieldError
