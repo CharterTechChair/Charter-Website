@@ -31,8 +31,9 @@ class Entry(models.Model):
                             blank=True,
                             validators=[JSON_validator])
 
-    room = models.ForeignKey('Room', related_name="entry_room_association")
     event = models.ForeignKey('Event', related_name="entry_event_association")
+    room = models.ForeignKey('Room', related_name="entry_room_association")
+    
 
     def __unicode__(self):
         return "<%s, %s>" % (self.student, self.guests)

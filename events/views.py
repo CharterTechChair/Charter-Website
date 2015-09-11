@@ -67,6 +67,7 @@ def events_signup(request, name, id):
 
     return render(request, 'events/events_signup.html', {
       'form' : form,
+      'event' : e,
     })  
 
 # from events.models import Event, Room

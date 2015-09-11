@@ -3,8 +3,45 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    Hello world
+    
+    <h3> RSVP for {{ event.title }} </h3>
+    <p> Time: {{ event.time|time:"g:iA"}} </p>
+    {% if event.guest_limit > 0 and member %}
+        <p>Guest limit: {{ event.guest_limit}} </p>
+    {% endif %}
 
-{% crispy form %}
+    <hr>
+    
+    <container>
+    <div class="row">
+        <div class="col-sm-6">
+        <h4> Event Form </h4>
+        <br>
+        {% crispy form %}
+        </div>
+
+        <div class="col-sm-6">
+            <h4> See where people are sitting: </h4>
+
+            {% for room in event.event_room.all %}
+            <div> 
+                <ul> {{ room }} 
+                    {% for entry in room.entry_room_association.all %}
+                    <li> 
+                        <div class="col-xs-12"> 
+                            {{ entry.member }}
+                        </div>
+                        <div class="col-xs-12">
+                            {{ entry.guests }} 
+                        </div>
+                     </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    </container>
+
     
 {% endblock %}
