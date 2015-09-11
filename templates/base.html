@@ -49,72 +49,66 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav">
-                  {% comment %} Change the appearance of nav-bar for different people {% endcomment%}
-                  {% if not student %}
-                    {% comment %} Navbar links for the public {% endcomment %}
-                    <li><a href="{%url 'history' %}">History</a></li></li>
-                    <li><a href="{%url 'song' %}">Song</a></li>
-                    <li><a href="{%url 'constitution' %}">Constitution</a></li>
-                    <li><a href="{%url 'faceboard' %}"> Membership </a></li>
-                    <li><a href="{%url 'weekly_menu' %}"> Menu </a></li>
-                    <li><a href="{%url 'officer_list' %}"> Officers </a></li>
-
-                  {% else %}
+                  {% comment %} Navbar for Everyone {% endcomment%}
                     <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">About <span class="caret"></span></a>
                       <ul class="dropdown-menu">
                         <li><a href="{%url 'history' %}">History</a></li>
                         <li><a href="{%url 'song' %}">Song</a></li>
                         <li><a href="{%url 'constitution' %}">Constitution</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="{%url 'weekly_menu' %}"> Weekly Menu </a></li>
-                        <li><a href="{%url 'faceboard' %}"> Faceboard </a></li>
-                        <li><a href="{%url 'officer_list' %}"> Officers </a></li>
-
-                      </ul>
+<!--                         <li role="separator" class="divider"></li>
+ -->                      </ul>
                     </li>
 
-
-                    {% if prospective %}
                     <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Prospective <span class="caret"></span></a>
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">People <span class="caret"></span></a>
                       <ul class="dropdown-menu">
-                        
-                        <li><a href="{%url 'profile' %}"> Profile </a></li>
-                        <li><a href="{%url 'mailinglist' %}">Mailing List</a></li>
-                        <li><a href="{%url 'meal_signup' %}">Sophomore Meals</a></li>
-                        <li><a href="{%url 'contactus' %}">Contact Us!</a></li>
+                        <li><a href="{%url 'faceboard' %}"> Faceboard </a></li>
+                        <li><a href="{%url 'officer_list' %}"> Officers </a></li>
+                     </ul>
+                    </li>
+
+                    <li><a href="{%url 'weekly_menu' %}"> Menu </a></li>
+                    <li><a href="{%url 'events_list' %}"> Events </a></li>
+
+
+                  {% if prospective %}
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Prospective <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
                       
-                      </ul>
-                    </li>
-                    {% endif %}
-
-                    {% if member %}
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Member <span class="caret"></span></a>
-                      <ul class="dropdown-menu">
-                        <li><a href="{%url 'profile' %}">Profile</a></li>
-                        <li><a href="{%url 'feedback' %}">Anonymous Feedback</a></li>
-                        <li><a href="{%url 'events' %}"> Events </a></li>
-                        <li><a href="{%url 'faceboard' %}"> Faceboard </a></li>
-                        <li><a href="{%url 'officer_list' %}"> Officers </a></li>
-                      </ul>
-                    </li>
-                    {% endif %}
+                      <li><a href="{%url 'profile' %}"> Profile </a></li>
+                      <li><a href="{%url 'mailinglist' %}">Mailing List</a></li>
+                      <li><a href="{%url 'meal_signup' %}">Sophomore Meals</a></li>
+                      <li><a href="{%url 'contactus' %}">Contact Us!</a></li>
                     
-                    {% if officer %}
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Officer <span class="caret"></span></a>
-                      <ul class="dropdown-menu">
-                        <li><a href="{%url 'events_create' %}">Create/Edit an Event</a></li>
-                        <li><a href="{%url 'add' %}">Update Calendar</a></li>
-                        <li><a href="{%url 'menu_input' %}">Change Menu</a></li>
-                        <li><a href="{%url 'mailinglist_view' %}">Sophomore Mailing List</a></li>
-                        <li><a href="{%url 'admin:index' %}">Admin Control Panel</a></li>
-                      </ul>
-                    </li>
+                    </ul>
+                  </li>
                   {% endif %}
-                {% endif %} 
+
+                  {% if member %}
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Member <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="{%url 'profile' %}">Profile</a></li>
+                      <li><a href="{%url 'feedback' %}">Anonymous Feedback</a></li>
+                      <li><a href="{%url 'faceboard' %}"> Faceboard </a></li>
+                      <li><a href="{%url 'officer_list' %}"> Officers </a></li>
+                    </ul>
+                  </li>
+                  {% endif %}
+                  
+                  {% if officer %}
+                  <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Officer <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="{%url 'add' %}">Update Calendar</a></li>
+                      <li><a href="{%url 'menu_input' %}">Change Menu</a></li>
+                      <li><a href="{%url 'mailinglist_view' %}">Sophomore Mailing List</a></li>
+                      <li><a href="{%url 'admin:index' %}">Admin Control Panel</a></li>
+                    </ul>
+                  </li>
+                {% endif %}
 
               </ul> <!-- nav navbar-nav -->
 

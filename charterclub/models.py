@@ -56,6 +56,8 @@ class Student(Person):
     @staticmethod
     def get_senior_year():
         return (timezone.now() - timedelta(days=153)).year + 1
+
+
     # def __init__(self, member):
     #     self.pk = member.pk
     #     self.netid = member.netid

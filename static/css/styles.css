@@ -162,6 +162,10 @@ h3.highlight  {
   	border-bottom:2px solid #c6852a;
 }
 
+a.btn {
+    text-decoration: none;
+}
+
 
 .loggedin {
   padding-left:20px;

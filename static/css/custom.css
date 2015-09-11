@@ -5,9 +5,7 @@
   color: #fff;
 }
 
-.event-info {
-  background-color: rgba(255, 255, 255, 0.3);
-}
+
 
 .cal-day-holiday span[data-cal-date] {
   color: #fff;
@@ -23,8 +21,38 @@
   color:#aaa;
 }
 
+.event-info {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
 .event-row {
   margin: 20px;
+}
+
+.event-listing li {
+  margin-bottom: 20px;
+}
+
+.event-listing h1, h2, h3, h4, h5 {
+  margin: 0 0 5px;
+}
+
+.event-listing h3 {
+  margin: 0 0 10px;
+  margin-bottom: 20px;
+}
+.event-listing p {
+  margin: 0 0 5px;
+}
+
+div.event-image {
+  height: 150px;
+  margin: 15px;
+  border: 1px solid #fff;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
 }
 .web-link{
   color :#C6852A;

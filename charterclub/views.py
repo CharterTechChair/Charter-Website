@@ -25,40 +25,13 @@ import permissions
 from ldap_student_lookup import get_student_info
 
 
-# build context data concerning the user associated with request
-# this includes a representation of them as a student, member, and officer
-# if applicable
-def additional_context(request):
-    def dereference(query_a):
-        "Unwraps a query set"
-        if len(query_a):
-          return query_a[0]
-        else:
-          return None 
-
-    netid = permissions.get_username(request)
-    
-    # Lookup people
-    o = dereference(Officer.objects.filter(netid=netid))
-    m = dereference(Member.objects.filter(netid=netid))
-    p = dereference(Prospective.objects.filter(netid=netid))
-
-    # Then return the results with the proper object pointers
-    if o:
-        return { "officer" : o, "member" : o.member, "student" : o.member.student, "prospective" : p}
-    if m:  
-        return { "officer" : o, "member" : m, "student" : m.student, "prospective" : p}
-    if p:
-        return { "officer" : o, "member" : m, "student" : s, "prospective" : p}
-
-    return  { "officer" : None, "member" : None, "student" : None, "prospective" : None}
 
 # a replacement render function which passes some additional
 # user information to our template by wrapping the original
 # render function. specifically, it passes information about the
 # student/member/officer status of the user.
 def render(request, template_name, context=None, *args, **kwargs):
-    add_context = additional_context(request)
+    add_context = permissions.additional_context(request)
     if context:
         add_context.update(context)
 
@@ -126,8 +99,6 @@ def officer_list(request):
     query_s = Officer.objects.filter(is_active=True).order_by('order')
     top6 = query_s[:6]
     officer_rest = query_s[6:]
-
-
 
     return render(request, 'charterclub/officer_list.html', {
      'error': '',

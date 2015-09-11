@@ -8,7 +8,6 @@ class RoomInline(admin.TabularInline):
     extra = 1
 
 class EntryInline(admin.TabularInline):
-    description = "hello"
     model = Entry
     extra = 1
 

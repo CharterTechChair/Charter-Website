@@ -21,30 +21,40 @@ def JSON_validator(arg):
 
 # Defines a relationship from a room to member
 class Entry(models.Model):
-    member = models.ForeignKey('charterclub.Member', 
+    student = models.ForeignKey('charterclub.Student', 
             limit_choices_to={'year__gte' : Student.get_senior_year(), 
-                              'year__lte' : Student.get_senior_year() + 2})
+                              'year__lte' : Student.get_senior_year() + 2,},
+                              related_name='event_student_association',
+                              related_query_name="student",)
     guests  = models.CharField(default="[]",
                             max_length=1000,
                             blank=True,
                             validators=[JSON_validator])
 
-    room = models.ForeignKey('Room', related_name="entry_association")
-    event = models.ForeignKey('Event', related_name="entry_association")
+    room = models.ForeignKey('Room', related_name="entry_room_association")
+    event = models.ForeignKey('Event', related_name="entry_event_association")
 
     def __unicode__(self):
-        return "<%s, %s>" % (self.member, self.guest)
+        return "<%s, %s>" % (self.student, self.guests)
 
     class Meta:
-        ordering = ("member",)
+        ordering = ("student",)
+
+    # def num_attending(self):
+    #     ans = 0
+    #     if student:
+    #         ans += 1
+    #     else:
+    #         try:
+    #             guests_0 = json.loads(self.)
 
 class Room(models.Model):
     name = models.CharField(max_length=255, help_text="Where is the Event Held?")
     limit = models.IntegerField()
-    event = models.ForeignKey('Event')
+    event = models.ForeignKey('Event', related_name="event_room")
 
     def __unicode__(self):
-        return "%s, %s/%s" % (self.name, len(self.entry_association.all()), self.limit)
+        return "%s, %s" % (self.name, self.limit)
 
 
 # # Defines an instance of a room with a name, max capacity, members, and their relationships
@@ -137,17 +147,27 @@ class Room(models.Model):
 
 # An event contains instances of rooms
 DEFAULT_TIME = time(hour=17, minute=0, second=0)
+# Make sure that the image is not too big
+def validate_image(fieldfile_obj):
+    # Note: this function is put up here so that validators=[func] can 
+    #       be called on it
+    filesize = fieldfile_obj.file.size
+    kilobyte_limit = 1024
+    if filesize > kilobyte_limit*1024:
+        raise ValidationError("Max file size is %sKB. If the filesize is too big, the page will be very slow to laod for people with bad connections." % str(kilobyte_limit))
+
+
 class Event(models.Model):
     title = models.CharField("Title",
                             help_text="Name of the Event", 
                             max_length=255)
     snippet = models.TextField("Description", 
-                                help_text="To be displayed on the website. (Optional).",
-                                blank=True)
+                                help_text="To be displayed on the website. (Optional).",)
     image   =  models.ImageField(help_text="To be displayed on the website. (Optional).",
                                 upload_to = 'event_images/', 
                                  null=True, 
                                  blank=True,
+                                 validators=[validate_image],
                                  )
     is_points_event = models.BooleanField("Is Point Event:", 
                                            help_text="Do Prospectives who attend get points?",
@@ -172,6 +192,29 @@ class Event(models.Model):
     sophomore_signup_start = models.DateField(default=now, blank=True)
     junior_signup_start    = models.DateField(default=now, blank=True)
     senior_signup_start    = models.DateField(default=now, blank=True)
+
+    def get_signup_url(self):
+        '''
+            return the url for signup
+        '''
+        url =  'events/signup'
+        url += "/%s/%s" % (self.title, self.id)
+        return urllib.quote(url)
+
+    def has_student(self, student):
+        '''
+            Checks if the member/prospective/officer is part of the event
+        '''
+
+        query = Entry.objects.filter(student__netid=student.netid, event__id=self.id)
+
+        if query:
+            return True
+        return False
+
+
+
+
 
     # Filled with rooms
     # rooms = models.ManyToManyField('Room', related_name="event_to_room_assignment")
@@ -220,11 +263,6 @@ class Event(models.Model):
     #         data['rooms'].append(r.to_JSON())
 
     #     return data
-
-    # def get_signup_url(self):
-    #     url =  'events/signup'
-    #     url += "/%s/%s" % (self.title, self.date.isoformat()[:10])
-    #     return urllib.quote(url)
 
 
     # def get_unrsvp_url(self):

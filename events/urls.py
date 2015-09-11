@@ -8,9 +8,15 @@ urlpatterns = patterns('',
     url(
         r'^$', 
         'events.views.events_list', 
-        name='events'),
+        name='events_list'),
+
+    url(
+        r'^signup/(.+)/([0-9]+)',
+        'events.views.events_signup', 
+        name='events_signup'),
+
 #     url(
-#         r'^signup/(.+)/([0-9]{4}-[0-9]{2}-[0-9]{2})',
+#         
 #         'events.views.events_entry',
 #         name='event_entry'),
 

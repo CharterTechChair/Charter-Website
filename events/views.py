@@ -4,12 +4,70 @@ import datetime, urllib, pdb
 from django.shortcuts import redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.dateparse import parse_date
+from django.utils import timezone
 
 from charterclub.models import *
 from charterclub.forms import *
 from charterclub.views import render
 import charterclub
 import charterclub.permissions as permissions
+
+from events.models import Event
+from events.forms import EventEntryForm
+
+
+def events_list(request):
+    '''
+        Show the upcoming events
+    '''
+
+    now = timezone.now()
+
+    # Show upcoming events for the semester
+    year = Student.get_senior_year()
+    begin_date = now - timedelta(weeks=52)
+    
+    future_events = Event.objects.filter(date__gte=now).order_by("-date")
+    past_events = Event.objects.filter(date__gte=begin_date, date__lte=now).order_by("-date")
+
+
+    # If there is a login, setup the proper page for him
+    student = permissions.get_student(request)
+
+    future_events_q = [e.has_student(student) for e in future_events]
+    past_events_q     = [e.has_student(student) for e in past_events]
+
+    return render(request, 'events/events_list.html', {
+      'error': '',
+      'netid': permissions.get_username(request),
+      'future_events': zip(future_events, future_events_q),
+      'past_events' : zip(past_events, past_events_q),
+    })  
+
+
+def events_signup(request, name, id):
+    '''
+        Based on the login, sign the person up for an event
+    '''
+    e = Event.objects.filter(id=id)
+
+    # If we don't find the event then send them the error message
+    if not e:  
+        subject = 'No Signups Available'
+        body = "Looks like there are no upcoming events with signups at the moment."
+        return render(request, 'standard_message.html', {
+                'subject' : subject,
+                'body'    : body,
+        })
+    else:
+        e = e[0]
+
+    # If we find the event, then send them the form
+    form = EventEntryForm(event=e, netid=permissions.get_username(request))
+
+    return render(request, 'events/events_signup.html', {
+      'form' : form,
+    })  
 
 # from events.models import Event, Room
 # from events.forms import EventEntryForm, EventCreateForm, EventChoiceForm, EventEditForm
@@ -140,32 +198,6 @@ import charterclub.permissions as permissions
 #      # 'netid': permissions.get_username(request),
 #    })  
 
-# @permissions.member
-# def events_list(request):
-#     events = Event.objects.order_by('date_and_time')
-#     member = Member.objects.filter(netid=permissions.get_username(request))[0]
-
-#     has_rsvp = [e.has_member(member) for  e in events]
-#     event_msg = []
-#     for event, rsvp in zip(events, has_rsvp):
-#         if rsvp:
-#             room    =  event.get_room_of_member(member)
-#             listing =  room.get_seating(member)
-
-#             msg = "You" 
-#             if listing.guest:
-#                 msg += ' and your guest "%s"' % (listing.guest)
-#             msg +=  " are in the %s." % room
-#         else:
-#             msg = "You have not RSVP'd for this event."
-
-#         event_msg.append(msg)     
-
-#     return render(request, 'events/events_list.html', {
-#       'error': '',
-#       'netid': permissions.get_username(request),
-#       'events_info': zip(events, has_rsvp, event_msg) ,
-#     })  
  
 # @permissions.officer
 # def thanks_create(request):

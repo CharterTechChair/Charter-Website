@@ -4,6 +4,7 @@ from models import Officer
 from models import Member
 from models import Student
 
+from charterclub.models import Prospective, Member, Officer
 # the following are decorator functions that indicate permissions required
 # to view a page.
 
@@ -55,6 +56,52 @@ def get_username(request):
             return ""
         else:
             return request.user.username
+
+
+def additional_context(request):
+    '''
+        Does a search of the database and returns the results
+    '''
+    def dereference(query_a):
+        "Unwraps a query set"
+        if len(query_a):
+          return query_a[0]
+        else:
+          return None 
+
+    netid = get_username(request)
+    
+    # Lookup people
+    o = dereference(Officer.objects.filter(netid=netid))
+    m = dereference(Member.objects.filter(netid=netid))
+    p = dereference(Prospective.objects.filter(netid=netid))
+
+    # Then return the results with the proper object pointers
+    if o:
+        return { "officer" : o, "member" : o.member, "student" : o.member.student, "prospective" : p}
+    if m:  
+        return { "officer" : o, "member" : m, "student" : m.student, "prospective" : p}
+    if p:
+        return { "officer" : o, "member" : m, "student" : s, "prospective" : p}
+
+    return  { "officer" : None, "member" : None, "student" : None, "prospective" : None}
+
+def get_student(request):
+    '''
+        Checks the login and takes the highest priority one
+    '''
+
+    query = additional_context(request)
+
+    if query['prospective']:
+        return query['prospective']
+    if query['officer']:
+        return query['officer']
+    if query['member']:
+        return query['member']
+    if query['student']:
+        return query['student']
+    return None
 
 # check if the currently CAS logged-in user is an officer, returning
 # true if so and false otherwise.
