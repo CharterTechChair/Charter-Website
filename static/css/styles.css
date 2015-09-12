@@ -10,6 +10,12 @@
   margin-left: 0;
   margin-right: 0;
 }
+
+.div-image {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover; 
+}
 .navbar-form input, .form-inline input {
 	width:auto;
 }

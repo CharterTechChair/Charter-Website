@@ -22,6 +22,7 @@ urlpatterns = patterns('',
         r'^index$',
         'charterclub.views.index',
         name='index'),
+    
     url(r'^events/',
         include('events.urls')),
 
@@ -41,6 +42,10 @@ urlpatterns = patterns('',
         r'^faceboard$',
         'charterclub.views.faceboard',
         name='faceboard'),
+    url(
+        r'^catering$',
+        'charterclub.views.catering',
+        name='catering'),
     url(
         r'^faceboard/([0-9]+)/$',
         'charterclub.views.faceboard_year',

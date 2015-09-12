@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+    <h3> Catering </h3>
+    <hr> 
+    <p> The club house can be rented for catering celebrations such as weddings, receptions, and formal dinners. These services are not only widely used by school and student organizations but also for departments, alumnus, and non-princeton affiliates.  </p>
+
+    <div class='div-image' style="background-image: url({{STATIC_URL}}img/catering.jpg); height:300px; margin: 20px;">    
+    </div>
+    <p> For more information, please contact our club manager 
+        {% if manager %}
+        , {{ manager.first_name }} {{ manager.last_name }},
+        {% endif %} at charter@princeton.edu
+    </p>
+
+
+    
+{% endblock %}

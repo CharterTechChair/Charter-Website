@@ -83,17 +83,32 @@ def faceboard_year(request, year):
 # 
 # Displays the membership of a target year
 ########################################################################
+
+
 def history(request):
-   return render(request, "history.html")
+    return render(request, "charterclub/pages/history.html")
 
 def song(request):
-   return render(request, "song.html")
+    return render(request, "charterclub/pages/song.html")
 
 def constitution(request):
-   return render(request, "constitution.html")
+    return render(request, "charterclub/pages/constitution.html")
+
+def catering(request):
+    manager = Staff.objects.all().order_by('order')
+
+    if manager:
+        manager = manager[0]
+    else:
+        manager = None
+
+    return render(request, "charterclub/pages/catering.html", {
+          'manager' : manager,
+      })
 
 # allow user to view list of current officer corps.
 def officer_list(request):
+
     olist = Officer.objects.all()
 
     query_s = Officer.objects.filter(is_active=True).order_by('order')
