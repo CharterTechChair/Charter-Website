@@ -44,17 +44,18 @@ def events_list(request):
       'past_events' : zip(past_events, past_events_q),
     })  
 
-
+@permissions.student
 def events_signup(request, name, id):
     '''
         Based on the login, sign the person up for an event
     '''
     e = Event.objects.filter(id=id)
+    s = permissions.get_student(request)
 
     # If we don't find the event then send them the error message
     if not e:  
-        subject = 'No Signups Available'
-        body = "Looks like there are no upcoming events with signups at the moment."
+        subject = 'The signup for this event %s is not available' % urllib.unquote(name)
+        body = "Check back with us."
         return render(request, 'standard_message.html', {
                 'subject' : subject,
                 'body'    : body,
@@ -63,11 +64,24 @@ def events_signup(request, name, id):
         e = e[0]
 
     # If we find the event, then send them the form
-    form = EventEntryForm(event=e, netid=permissions.get_username(request))
+    if request.method == 'POST':
+        form = EventEntryForm(request.POST, event=e, student=s)
 
+        if form.is_valid():
+            form.execute_form_information()
+        else:
+            print "form is not valid alsdfjlksdjflksdjf"
+    else:
+        form = EventEntryForm(event=e,student=s)
+
+    rsvp_entries = e.which_entries(s)
+    rsvp_guests = e.get_guests(s)
     return render(request, 'events/events_signup.html', {
       'form' : form,
       'event' : e,
+      'rsvp_entries': rsvp_entries,
+      'rsvp_guests': rsvp_guests,
+
     })  
 
 # from events.models import Event, Room

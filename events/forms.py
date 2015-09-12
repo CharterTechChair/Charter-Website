@@ -1,5 +1,7 @@
 import re, random, pdb
+from copy import deepcopy
 
+from collections import OrderedDict
 from django import forms
 from django.shortcuts import redirect
 from django.forms.extras.widgets import SelectDateWidget
@@ -11,10 +13,119 @@ from crispy_forms.bootstrap import (
     PrependedText, PrependedAppendedText, FormActions)
 
 # For some models 
-from events.models import Event, Room
-from charterclub.models import Member
+from events.models import Event, Room, Entry
+
+from charterclub.models import Member, Student
 from datetime import date, timedelta, datetime
 
+
+
+class EventEntryForm(forms.Form):
+    '''
+        A form that will create an event entry.
+    '''
+
+    # Submit buttons
+    helper = FormHelper()   
+    helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
+
+    # Fields that do change from Event to Event
+    def __init__(self, *args, **kwargs):
+        self.event = kwargs.pop('event')
+        self.student = kwargs.pop('student')
+
+
+        super(EventEntryForm, self).__init__(*args, **kwargs)
+
+        choices = [('yes', 'Yes, I will be coming to "%s"' % (self.event.title)), 
+                   ('no', "No, I want to delete my rsvp from this event.")]
+
+             
+        self.fields['is_attending'] = forms.ChoiceField(label="Are you attending?", choices=choices)
+        self.fields['room_choice']= forms.ModelChoiceField(required=True,
+                                                          widget = forms.Select,
+                                                          queryset = self.event.event_room.all(), )
+        # Allow guest option if there is one
+        if self.event.guest_limit != 0:
+            self.fields['guest_first_name'] = forms.CharField(required=False, 
+                                                              help_text="Leave blank if you're not bringing a guest")
+            self.fields['guest_last_name'] = forms.CharField(required=False,
+                                                              help_text="You can resubmit this form to bring more guests.")
+
+    def clean(self):
+        '''
+            Check if there is space for the person to be in the room
+        '''
+
+        room = self.cleaned_data['room_choice']
+
+        if self.cleaned_data['is_attending'] == 'no':
+            raise forms.ValidationError("Use the 'delete' button at the top to remove your rsvp.")
+
+        # Check the guest limit
+        if self.cleaned_data['guest_first_name'] or self.cleaned_data['guest_last_name']:
+
+            fname = self.cleaned_data.get('guest_first_name') or ''
+            lname = self.cleaned_data.get('guest_last_name') or ''
+            self.guest_name = ("%s %s" % (fname, lname)).strip()
+            guests = self.event.get_guests(self.student)
+
+            if len(guests) > self.event.guest_limit:
+                raise forms.ValidationError("The guest limit is %s. You already have '%s' as your guests" % (self.event.guest_limit, guests))
+        else:
+            self.guest_name = ""
+
+        
+        # Check if there is another entry like it in the database
+        query = self.event.entry_event_association.filter(room=room, student__netid=self.student.netid, guest=self.guest_name)
+
+        if query:
+            raise forms.ValidationError("We already got this submission. Check the 'Where people are sitting section'. Else, enter new data." )
+
+        # Now check for overflow by putting the entry in
+        entry = Entry(room=room, student=self.student, guest=self.guest_name, event=self.event)
+        self.entry = entry
+        entry.save()
+
+
+        # Then check if the room has overflowed
+        if room.num_people() > room.limit:
+            entry.delete()
+            raise forms.ValidationError("Sorry! %s cannot take more people (%s)" % (room, entry))
+        
+        # else, keep going
+        entry.delete()
+
+
+        return self.cleaned_data
+
+    def execute_form_information(self):
+        '''
+            After form is valid, make the entry
+        '''
+        if self.is_valid():
+            # Take care of room swaps
+            query = self.event.entry_event_association.filter(student__netid=self.student.netid)
+            if query:
+                for q in query:
+                    q.room = self.cleaned_data['room_choice']
+                    q.save()
+
+            # If there is still something new to be added, then add it
+            query = self.event.entry_event_association.filter(student__netid=self.student.netid, guest=self.guest_name)
+            if not query:
+                self.entry.save()
+                
+
+            # Finally delete queries with members but no guests.
+            query = self.event.entry_event_association.filter(student__netid=self.student.netid, guest='')
+            if query:
+                for q in query:
+                    q.delete()
+
+
+
+    
 
 # class EventCreateForm(forms.ModelForm):
 #     class Meta:
@@ -212,41 +323,4 @@ from datetime import date, timedelta, datetime
 #     helper = FormHelper()   
 #     helper.add_input(Submit('add', 'submit', css_class='btn-primary'))
 
-
-class EventEntryForm(forms.Form):
-    '''
-        A form that will create an event entry 
-    '''
-
-    # Submit buttons
-    helper = FormHelper()   
-    helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
-
-    # Fields that do change from Event to Event
-    def __init__(self, *args, **kwargs):
-        self.event = kwargs.pop('event')
-        self.netid = kwargs.pop('netid')
-        super(EventEntryForm, self).__init__(*args, **kwargs)
-
-        choices = [('yes', 'Yes, I will be coming to "%s"' % (self.event.title)), 
-                   ('no', "No, I want to rsvp from this event.")]
-
-        self.fields['is_attending'] = forms.ChoiceField(choices=choices)
-        self.fields['room_choice']= forms.ModelChoiceField(widget = forms.Select, queryset = self.event.event_room.all())
-         
-
-    def clean_room_choice(self):
-        room = self.cleaned_data['room_choice']
-        num_add = 0
-
-        member = Member.objects.filter(netid=self.netid)[0]
-        if not room.has_member(member):
-            num_add += 1
-        if self.cleaned_data['guest_first_name'] or self.cleaned_data['guest_last_name']:
-            num_add += 1
-        
-        num_people = room.get_num_of_people()
-        if (num_people + num_add > room.max_capacity):
-            raise forms.ValidationError("Sorry! This room is beyond capacity (%s/%s) and cannot take %s more people" % (num_people, room.max_capacity, num_add))
-        return room
 

@@ -5,39 +5,60 @@
 {% block content %}
     
     <h3> RSVP for {{ event.title }} </h3>
-    <p> Time: {{ event.time|time:"g:iA"}} </p>
-    {% if event.guest_limit > 0 and member %}
-        <p>Guest limit: {{ event.guest_limit}} </p>
+    <p> Time: {{ event.time|time:"g:iA"}} 
+     {% if event.guest_limit > 0 and member %}
+        | Guest limit: {{rsvp_guests|length}}/{{ event.guest_limit}}
     {% endif %}
-
+    </p>
+   
+    
+    
+    <h5> RSVP's that you are involved in: </h5>
+    {% if rsvp_entries %}
+        {% for entry in rsvp_entries %}
+        <p style="margin:5px"> 
+                {% if entry.guest %}
+                    Member: {{entry.student}} with guest: {{entry.guest | title}} in room {{entry.room}}.
+                {% else %}
+                    Member: {{entry.student}} in room {{entry.room}}.
+                {% endif %}
+        <p>
+        {% endfor %}
+    {% else %}
+        <p> You have not signed up for this event yet! </p>
+    {% endif %}
+    
     <hr>
     
     <container>
     <div class="row">
         <div class="col-sm-6">
-        <h4> Event Form </h4>
-        <br>
-        {% crispy form %}
+            <h3> Event Form </h3>
+            <br>
+            {% crispy form %}
         </div>
 
         <div class="col-sm-6">
-            <h4> See where people are sitting: </h4>
-
+            <h3> See where people are sitting: </h3>
+            <br>
             {% for room in event.event_room.all %}
-            <div> 
-                <ul> {{ room }} 
+            <div class="seating-section">
+                <h4> {{ room }}  </h4>
+
+                <table class="table">
+                    <tr> 
+                        <td><strong> Member </strong> </td>
+                        <td><strong> Guest </strong></td>
+                    </tr>
+
                     {% for entry in room.entry_room_association.all %}
-                    <li> 
-                        <div class="col-xs-12"> 
-                            {{ entry.member }}
-                        </div>
-                        <div class="col-xs-12">
-                            {{ entry.guests }} 
-                        </div>
-                     </li>
+                    <tr> 
+                        <td> {{ entry.student }}</td>
+                        <td> {{ entry.guest|title}} </td>
+                    </tr>
                     {% endfor %}
-                </ul>
-            </div>
+                </table>
+            </div> <!-- seating-section -->
             {% endfor %}
         </div>
     </div>

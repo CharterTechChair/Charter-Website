@@ -1,4 +1,4 @@
-import urllib, datetime, json
+import urllib, datetime,  re
 from django.utils import timezone
 
 from django.db import models
@@ -26,20 +26,16 @@ class Entry(models.Model):
                               'year__lte' : Student.get_senior_year() + 2,},
                               related_name='event_student_association',
                               related_query_name="student",)
-    guests  = models.CharField(default="[]",
-                            max_length=1000,
-                            blank=True,
-                            validators=[JSON_validator])
+    guest  = models.CharField(max_length=1000, blank=True,)
 
     event = models.ForeignKey('Event', related_name="entry_event_association")
     room = models.ForeignKey('Room', related_name="entry_room_association")
-    
-
-    def __unicode__(self):
-        return "<%s, %s>" % (self.student, self.guests)
 
     class Meta:
-        ordering = ("student",)
+            ordering = ("student",)
+
+    def __unicode__(self):
+        return "<%s, %s>" % (self.student, self.guest)
 
     # def num_attending(self):
     #     ans = 0
@@ -55,8 +51,42 @@ class Room(models.Model):
     event = models.ForeignKey('Event', related_name="event_room")
 
     def __unicode__(self):
-        return "%s, %s" % (self.name, self.limit)
+        return "%s %s/%s" % (self.name, self.num_people(), self.limit)
 
+    def num_people(self):
+        '''
+            This method of counting unique names technically does break if 
+            two people have the same name,but that is very rare.
+        '''
+        names = set()
+        # Count the unique names
+        for entry in self.entry_room_association.all():
+            s = entry.student
+            s_name = "%s %s" % (s.first_name, s.last_name)
+            g_name = entry.guest
+            
+            # clean the names
+            s_name_c = re.sub(r'\W+^\s', '', s_name).lower().strip()
+            g_name_c = re.sub(r'\W+^\s', '', g_name).lower().strip()
+
+            if s_name_c:
+                names.add(s_name_c)
+            if g_name_c:
+                names.add(g_name_c)
+
+        return len(names)
+
+
+        
+    def which_entries(self, student):
+        '''
+            Get all the entries that this person is a part of.
+        '''
+
+        entry_q = self.entry_room_association.filter(student__netid=student.netid)
+        guest_q = self.entry_room_association.filter(guest__icontains=student.first_name)\
+                                              .filter(guest__icontains=student.last_name)
+        return entry_q | guest_q
 
 # # Defines an instance of a room with a name, max capacity, members, and their relationships
 # class Room(models.Model):
@@ -204,19 +234,32 @@ class Event(models.Model):
 
     def has_student(self, student):
         '''
-            Checks if the member/prospective/officer is part of the event
+            Checks if the member/prospective/officer is part of the event by
+            checking the room that they're in.
         '''
 
-        query = Entry.objects.filter(student__netid=student.netid, event__id=self.id)
-
-        if query:
+        if self.which_entries(student):
             return True
         return False
 
+    def which_entries(self, student):
+        '''
+            Get all the entries that this person is a part of.
+        '''
 
+        entry_q = self.entry_event_association.filter(student__netid=student.netid)
+        guest_q = self.entry_event_association.filter(guest__icontains=student.first_name)\
+                                              .filter(guest__icontains=student.last_name)
+        return entry_q | guest_q
 
+    def get_guests(self, student):
+        '''
+            get the number of guests that a student has
+        '''
 
+        return [entry.guest.strip() for entry in self.entry_event_association.filter(student__netid=student.netid) if entry.guest.strip()]
 
+            
     # Filled with rooms
     # rooms = models.ManyToManyField('Room', related_name="event_to_room_assignment")
 

@@ -26,6 +26,15 @@ def officer(func):
         return func(request, *args, **kwargs)
     return check_o
 
+def student(func):
+    def check_o(request, *args, **kwargs):
+        if not check_student(request):
+            return render(request, "permission_denied.html",
+                          {"required_permission": "student"})
+        return func(request, *args, **kwargs)
+    return check_o
+
+
 def member(func):
     def check_m(request, *args, **kwargs):
         if not check_member(request):
@@ -139,6 +148,20 @@ def check_prospective(request):
         return False
 
     user = Prospective.objects.filter(netid=netid)
+
+    if len(user) == 0:
+        return False
+    else:
+        return True
+
+# check if the currently CAS logged-in user is a member, returning
+# true if so and false otherwise.
+def check_student(request):
+    netid = get_username(request)
+    if netid == "":
+        return False
+
+    user = Student.objects.filter(netid=netid)
 
     if len(user) == 0:
         return False
