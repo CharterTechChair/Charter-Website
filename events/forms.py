@@ -110,18 +110,21 @@ class EventEntryForm(forms.Form):
                 for q in query:
                     q.room = self.cleaned_data['room_choice']
                     q.save()
-
-            # If there is still something new to be added, then add it
+            
+            # Check if there is something new to be added
             query = self.event.entry_event_association.filter(student__netid=self.student.netid, guest=self.guest_name)
             if not query:
                 self.entry.save()
-                
 
-            # Finally delete queries with members but no guests.
-            query = self.event.entry_event_association.filter(student__netid=self.student.netid, guest='')
-            if query:
-                for q in query:
+
+            # If we already ahve queries with guests, cleanup queries with members but no guests.
+            query_withguest = self.event.entry_event_association.filter(student__netid=self.student.netid).exclude(guest='')
+            query_noguest = self.event.entry_event_association.filter(student__netid=self.student.netid, guest='')
+
+            if query_withguest:
+                for q in query_noguest:
                     q.delete()
+
 
 
 
