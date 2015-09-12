@@ -101,9 +101,23 @@ def officer_list(request):
     officer_rest = query_s[6:]
 
     return render(request, 'charterclub/officer_list.html', {
-     'error': '',
+       'title' : 'Our Undergraduate Officers',
+       'top6' : top6,
+       'officer_rest' : officer_rest
+    }) 
+
+# allow user to view list of current officer corps.
+def staff_list(request):
+    olist = Staff.objects.all()
+
+    query_s = Staff.objects.filter().order_by('order')
+    top6 = query_s[:6]
+    staff_rest = query_s[6:]
+
+    return render(request, 'charterclub/officer_list.html', {
+     'title' : 'Our Staff',
      'top6' : top6,
-     'officer_rest' : officer_rest
+     'officer_rest' : staff_rest
     }) 
 
 def contactus(request):
@@ -126,7 +140,6 @@ def contactus(request):
 
     return render(request, 'contactus.html', {
      'current_date': now,
-     'error': '',
      'netid': permissions.get_username(request),
      'prez': prez,
      'vp': vp,
@@ -141,7 +154,6 @@ def hello(request):
 
     return render(request, "hello.html", {
        'current_date': now,
-       'error': '',
        'm': m,
        'netid': permissions.get_username(request),
     })
@@ -167,7 +179,6 @@ def profile(request):
     # Show prospective page
     if p_query:
               return render(request, "charterclub/prospective_profile.html", {
-            'error': '',
             'member': p_query[0],
             # 'events': e,
             'netid': permissions.get_username(request)
@@ -176,7 +187,6 @@ def profile(request):
     # Show members page 
     if m_query:
         return render(request, "charterclub/member_profile.html", {
-            'error': '',
             'member': m_query[0],
             # 'events': e,
             'netid': permissions.get_username(request)
@@ -200,7 +210,6 @@ def mailinglist(request):
 
     return render(request, 'mailinglist.html', {
        'form': form,
-       'error': '',
        'netid': permissions.get_username(request),
      })  
 
@@ -212,7 +221,6 @@ def mailinglist_view(request):
     plist = Prospective.objects.all()
 
     return render(request, "mailinglist_view.html", {
-       'error': '',
        'plist': plist,
        'netid': permissions.get_username(request)
     })

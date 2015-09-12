@@ -100,7 +100,6 @@ div.event-image {
 .faceboard-row {
   margin: 0 auto;
   max-width: 900px;
-  min-width: 450px;
 }
 
 .faceboard-title{
@@ -122,6 +121,7 @@ div.event-image {
 }
 
 .faceboard-image-div {
+  
 }
 
 .faceboard-photo {

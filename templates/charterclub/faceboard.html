@@ -7,6 +7,7 @@
 
 <container>
     <div class='col-md-10'> 
+        {% if year_options %}
         <h2> View Faceboards for: </h2>
         <div class="btn-group" role="group" aria-label="...">
 
@@ -17,7 +18,7 @@
 
             {% endfor %}
         </div>
-
+        {% endif %}
         <h2> {{ title }} </h2>
         <hr>
         {% for member in display_membership %}

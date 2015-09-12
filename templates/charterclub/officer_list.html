@@ -3,14 +3,14 @@
 
 {% block content %}
     
-<div class="container">
+
     <div class="row">
-        <h2> Our Undergraduate Officers </h2>
+        <h2> {{ title }} </h2>
         <hr>
     </div>
     <div class="row faceboard-row">
         {% for officer in top6 %}
-        <div class="col-sm-4 col-xs-6 faceboard-thumbnail"> 
+        <div class="col-sm-4 col-xs-12 faceboard-thumbnail"> 
             <div class="faceboard-title">
                 <div class="faceboard-content"> 
                     {{ officer.position }}
@@ -36,7 +36,7 @@
     <hr>
     <div class="row faceboard-row">
         {% for officer in officer_rest %}
-        <div class="col-sm-4 col-xs-6 faceboard-thumbnail"> 
+        <div class="col-sm-4 col-xs-12 faceboard-thumbnail"> 
             <div class="faceboard-title">
                 <div class="faceboard-content"> 
                     {{ officer.position }}

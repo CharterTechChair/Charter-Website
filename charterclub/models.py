@@ -42,6 +42,8 @@ class Person(models.Model):
 ############################################################################  
 class Staff(Person):
     position = models.CharField('Staff\'s position/title', max_length=100)
+    order = models.IntegerField('Order of Appearance on Staff Page',blank=True)
+
     
 ###########################################################################
 # Student model
@@ -221,7 +223,7 @@ import events.models
 class Officer(Member):
     position = models.CharField('Position/title', max_length=100)
     is_active = models.BooleanField('Current Officer', default=True, max_length=100)
-    order = models.IntegerField('Order of Appearance on Officer Page', max_length=100)
+    order = models.IntegerField('Order of Appearance on Officer Page', blank=True)
 
 # THIS WILL GET MOVED TO A CAL APP EVENTUALLY
 class SocialEvent(models.Model):

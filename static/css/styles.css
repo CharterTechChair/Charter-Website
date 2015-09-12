@@ -6,7 +6,10 @@
    #f6be26 (246,190,38)
    #c6852a (198,133,42)
    #8f5c23 (143,92,35) */
-
+.row {
+  margin-left: 0;
+  margin-right: 0;
+}
 .navbar-form input, .form-inline input {
 	width:auto;
 }

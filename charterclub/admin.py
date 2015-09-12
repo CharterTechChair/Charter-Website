@@ -4,7 +4,7 @@ from django.conf.urls import patterns, include, url
 
 import forms
 
-from charterclub.models import Person, Member, Officer, Prospective
+from charterclub.models import Person, Member, Officer, Prospective, Staff
 
 
 from list_filter import CurrentMembershipListFilter
@@ -115,6 +115,21 @@ class OfficerAdmin(admin.ModelAdmin):
 
 admin.site.register(Officer, OfficerAdmin)
 
+
+
+#################################################################################
+# altering staff with the admin contorl panel
+#################################################################################
+class StaffAdmin(admin.ModelAdmin):
+    # What gets shown, and how?
+    list_display = ('__unicode__',  'position', 'order')
+    list_editable = ('position', 'order')
+    ordering = ['order', 'position']
+
+    # What gets filtered/searched?
+    search_fields = ['first_name', 'last_name', 'position']
+admin.site.register(Staff, StaffAdmin)
+
 #################################################################################
 # altering officers from with the admin control panel.
 # on creating a new officer, you may choose a member and enter their title
@@ -122,6 +137,7 @@ admin.site.register(Officer, OfficerAdmin)
 class ProspectiveAdmin(admin.ModelAdmin):
     list_display = ['__unicode__', 'netid']
     # list_editable = ['events_attended', 'meals_attended']
+    search_fields = ['first_name', 'last_name', 'netid', 'year']
 
     ordering = ['netid']
     # What gets shown, and how?
