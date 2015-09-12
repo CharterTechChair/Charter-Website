@@ -21,68 +21,19 @@ from django.shortcuts import get_object_or_404, render_to_response
 
 from models import *
 import permissions
+from permissions import render
 
 from ldap_student_lookup import get_student_info
 
 
-
-# a replacement render function which passes some additional
-# user information to our template by wrapping the original
-# render function. specifically, it passes information about the
-# student/member/officer status of the user.
-def render(request, template_name, context=None, *args, **kwargs):
-    add_context = permissions.additional_context(request)
-    if context:
-        add_context.update(context)
-
-    return django.shortcuts.render(request, template_name, add_context,
-                                   *args, **kwargs)
-
-def index(request):
-    return render(request, "index.html")
-
-
-########################################################################
-# Faceboard
-# 
-# Displays the current membership
-########################################################################
-def faceboard(request):
-    # rollover = June 3nd
-    senior_year = (date.today() - timedelta(days=153)).year + 1
-
-    current_membership = Member.objects.filter(year__range=(senior_year, senior_year+2))
-
-    year_options = Member.get_membership_years()
-
-    return render(request, 'charterclub/faceboard.html', {
-      'title':   'Current Membership',
-      'year_options': reversed(year_options),
-      'display_membership' : current_membership,
-  })
-
-########################################################################
-# Faceboard_year
-# 
-# Displays the membership of a target year
-########################################################################
-def faceboard_year(request, year):
-    # rollover = June 3nd
-    members = Member.objects.filter(year=year)
-
-    year_options = Member.get_membership_years()
-
-    return render(request, 'charterclub/faceboard.html', {
-      'title':   'Class of %s' % year,
-      'year_options': reversed(year_options),
-      'display_membership' : members,
-    })
 
 ########################################################################
 # Some easy one-age requests
 # 
 # Displays the membership of a target year
 ########################################################################
+def index(request):
+    return render(request, "index.html")
 
 
 def history(request):
@@ -93,6 +44,8 @@ def song(request):
 
 def constitution(request):
     return render(request, "charterclub/pages/constitution.html")
+
+
 
 def catering(request):
     manager = Staff.objects.all().order_by('order')
@@ -159,6 +112,43 @@ def contactus(request):
      'prez': prez,
      'vp': vp,
     }) 
+
+
+########################################################################
+# Faceboard
+# 
+# Displays the current membership
+########################################################################
+def faceboard(request):
+    # rollover = June 3nd
+    senior_year = (date.today() - timedelta(days=153)).year + 1
+
+    current_membership = Member.objects.filter(year__range=(senior_year, senior_year+2))
+
+    year_options = Member.get_membership_years()
+
+    return render(request, 'charterclub/faceboard.html', {
+      'title':   'Current Membership',
+      'year_options': reversed(year_options),
+      'display_membership' : current_membership,
+  })
+
+########################################################################
+# Faceboard_year
+# 
+# Displays the membership of a target year
+########################################################################
+def faceboard_year(request, year):
+    # rollover = June 3nd
+    members = Member.objects.filter(year=year)
+
+    year_options = Member.get_membership_years()
+
+    return render(request, 'charterclub/faceboard.html', {
+      'title':   'Class of %s' % year,
+      'year_options': reversed(year_options),
+      'display_membership' : members,
+    })
 
 # greeting page
 @permissions.member

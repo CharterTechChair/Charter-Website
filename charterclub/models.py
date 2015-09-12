@@ -42,7 +42,7 @@ class Person(models.Model):
 ############################################################################  
 class Staff(Person):
     position = models.CharField('Staff\'s position/title', max_length=100)
-    order = models.IntegerField('Order of Appearance on Staff Page',blank=True)
+    order = models.IntegerField('Order of Appearance on Staff Page', blank=True)
 
     
 ###########################################################################

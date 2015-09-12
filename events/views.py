@@ -8,9 +8,10 @@ from django.utils import timezone
 
 from charterclub.models import *
 from charterclub.forms import *
-from charterclub.views import render
+
 import charterclub
 import charterclub.permissions as permissions
+from charterclub.permissions import render
 
 from events.models import Event
 from events.forms import EventEntryForm

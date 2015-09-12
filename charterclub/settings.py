@@ -73,6 +73,7 @@ INSTALLED_APPS = (
     'charterclub',
     'crispy_forms',
     'events',
+    'recruitment',
     'menus',
     'feedback',
     'kitchen',

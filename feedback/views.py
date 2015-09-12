@@ -1,9 +1,10 @@
 import datetime
-from charterclub.views import render
+
 from django.http import HttpResponse, HttpResponseRedirect
 
 from feedback.forms import FeedbackForm
 import charterclub.permissions as permissions
+from charterclub.permissions import render
 
 def feedback(request):
    now = datetime.datetime.now().date()

@@ -9,7 +9,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from menus.models import MenuItem
 from menus.forms import MenuForm
 
-from charterclub.views import render
+from charterclub.permissions import render
 from charterclub import permissions
 
 @permissions.officer

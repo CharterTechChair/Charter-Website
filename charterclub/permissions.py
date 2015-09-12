@@ -1,4 +1,5 @@
-from django.shortcuts import render
+import django.shortcuts
+from django.conf import settings
 import models
 from models import Officer
 from models import Member
@@ -18,6 +19,10 @@ from charterclub.models import Prospective, Member, Officer
 # def myview(request):
 #     render(request, "myview.html")
 
+#######################################################
+# These are decorator functions
+#
+#######################################################
 def officer(func):
     def check_o(request, *args, **kwargs):
         if not check_officer(request):
@@ -51,21 +56,6 @@ def prospective(func):
         return func(request, *args, **kwargs)
     return check_s
 
-from django.conf import settings
-
-# get the username of the currently CAS logged-in user.
-# if there is no currently logged-in user, return an empty string
-# if the application is in debug mode, assume that CAS is non-functional,
-# and return a test value (in this case jwhitton)
-def get_username(request):
-    if settings.CAS_DISABLED:
-        return "testuser"
-    else:
-        if not request.user.username:
-            return ""
-        else:
-            return request.user.username
-
 
 def additional_context(request):
     '''
@@ -94,6 +84,36 @@ def additional_context(request):
         return { "officer" : o, "member" : m, "student" : s, "prospective" : p}
 
     return  { "officer" : None, "member" : None, "student" : None, "prospective" : None}
+
+
+# a replacement render function which passes some additional
+# user information to our template by wrapping the original
+# render function. specifically, it passes information about the
+# student/member/officer status of the user.
+def render(request, template_name, context=None, *args, **kwargs):
+    add_context = additional_context(request)
+    if context:
+        add_context.update(context)
+
+    return django.shortcuts.render(request, template_name, add_context,
+                                   *args, **kwargs)
+
+
+
+
+# get the username of the currently CAS logged-in user.
+# if there is no currently logged-in user, return an empty string
+# if the application is in debug mode, assume that CAS is non-functional,
+# and return a test value (in this case jwhitton)
+def get_username(request):
+    if settings.CAS_DISABLED:
+        return "testuser"
+    else:
+        if not request.user.username:
+            return ""
+        else:
+            return request.user.username
+
 
 def get_student(request):
     '''

@@ -1,4 +1,4 @@
-from charterclub.views import render
+from charterclub.permissions import render
 import charterclub.permissions as permissions
 
 from charterclub.models import Prospective

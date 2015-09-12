@@ -181,6 +181,7 @@ a.btn {
 }
 
 /*Reformat the navbar!*/
+
 .navbar-default {
   border-style: none;
 }
@@ -197,8 +198,8 @@ a.btn {
 }
 .navbar-nav > li > a {
   	color:#fff;
-  	padding-left:20px;
-  	padding-right:20px;
+  	padding-left:15px;
+  	padding-right:15px;
   	border-left:1px solid #6a0b1a;
 }
 .navbar-nav > li:last-child > a {

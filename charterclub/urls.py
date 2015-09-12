@@ -25,10 +25,10 @@ urlpatterns = patterns('',
     
     url(r'^events/',
         include('events.urls')),
-
+    url(r'^recruitment/',
+        include('recruitment.urls')),
     url(r'^menus/',
         include('menus.urls')),
-
     url(r'^feedback',
         include('feedback.urls')),
 
