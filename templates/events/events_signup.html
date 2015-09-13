@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    
+{% load my_filters %}
     <h3> RSVP for {{ event.title }} </h3>
     <p> Time: {{ event.time|time:"g:iA"}} 
      {% if event.guest_limit > 0 and member %}
@@ -17,11 +17,7 @@
     {% if rsvp_entries %}
         {% for entry in rsvp_entries %}
         <p style="margin:5px"> 
-                {% if entry.guest %}
-                    Member: {{entry.student}} with guest: {{entry.guest | title}} in room {{entry.room}}.
-                {% else %}
-                    Member: {{entry.student}} in room {{entry.room}}.
-                {% endif %}
+                {{ entry }} [<a href="/{{ entry.get_deletion_url }}">delete </a>]
         <p>
         {% endfor %}
     {% else %}

@@ -13,8 +13,8 @@ import charterclub
 import charterclub.permissions as permissions
 from charterclub.permissions import render
 
-from events.models import Event
-from events.forms import EventEntryForm
+from events.models import Event, Entry
+from events.forms import EventEntryForm, EntryDeletionForm
 
 
 def events_list(request):
@@ -70,8 +70,6 @@ def events_signup(request, name, id):
 
         if form.is_valid():
             form.execute_form_information()
-        else:
-            print "form is not valid alsdfjlksdjflksdjf"
     else:
         form = EventEntryForm(event=e,student=s)
 
@@ -84,6 +82,38 @@ def events_signup(request, name, id):
       'rsvp_guests': rsvp_guests,
 
     })  
+
+@permissions.student
+def entry_delete(request, name, entry_id):
+    e = Entry.objects.filter(id=int(entry_id))
+    s = permissions.get_student(request)
+
+    # If we don't find the event then send them the error message
+    if not e:  
+        subject = 'The entry %s is not available' % urllib.unquote(name)
+        body = "Check back with us."
+        return render(request, 'standard_message.html', {
+                'subject' : subject,
+                'body'    : body,
+        })
+    else:
+        e = e[0]
+
+    # If we find the event, then send them the form
+    if request.method == 'POST':
+        form = EntryDeletionForm(request.POST, entry=e, student=s)
+
+        if form.is_valid():
+            form.delete_entry()
+            return redirect('/' + e.event.get_signup_url())
+    else:
+        form = EntryDeletionForm(entry=e,student=s)
+
+    return render(request, 'events/entry_deletion.html', {
+        'entry': e, 
+        'form' : form,
+        })
+
 
 # from events.models import Event, Room
 # from events.forms import EventEntryForm, EventCreateForm, EventChoiceForm, EventEditForm

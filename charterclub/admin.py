@@ -115,8 +115,6 @@ class OfficerAdmin(admin.ModelAdmin):
 
 admin.site.register(Officer, OfficerAdmin)
 
-
-
 #################################################################################
 # altering staff with the admin contorl panel
 #################################################################################
@@ -135,7 +133,7 @@ admin.site.register(Staff, StaffAdmin)
 # on creating a new officer, you may choose a member and enter their title
 #################################################################################
 class ProspectiveAdmin(admin.ModelAdmin):
-    list_display = ['__unicode__', 'netid']
+    list_display = ['__unicode__', 'netid', 'num_meals_attended', 'num_meals_signed_up']
     # list_editable = ['events_attended', 'meals_attended']
     search_fields = ['first_name', 'last_name', 'netid', 'year']
 
@@ -147,6 +145,12 @@ class ProspectiveAdmin(admin.ModelAdmin):
 
     # What gets filtered/searched?
     # search_fields = ['first_name', 'last_name', 'netid', 'year', 'position']
+
+    def num_meals_attended(self, obj):
+        return len(obj.meals_attended.all())
+    
+    def num_meals_signed_up(self, obj):
+        return len(obj.meals_signed_up.all())
 
 admin.site.register(Prospective, ProspectiveAdmin)
 

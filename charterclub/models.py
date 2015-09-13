@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib import admin
 from django import forms
 from django.core.validators import RegexValidator
+from django.contrib.contenttypes.models import ContentType
 
 import pdb
 from collections import Counter
@@ -17,13 +18,37 @@ from django.db.models import Min, Max
 
 from kitchen.models import Meal
 
+# Taken from: http://stackoverflow.com/questions/929029/how-do-i-access-the-child-classes-of-an-object-in-django-without-knowing-the-name/929982#929982
+class InheritanceCastModel(models.Model):
+    """
+    An abstract base class that provides a ``real_type`` FK to ContentType.
+
+    For use in trees of inherited models, to be able to downcast
+    parent instances to their child types.
+
+    """
+    real_type = models.ForeignKey(ContentType, editable=False)
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.real_type = self._get_real_type()
+        super(InheritanceCastModel, self).save(*args, **kwargs)
+
+    def _get_real_type(self):
+        return ContentType.objects.get_for_model(type(self))
+
+    def cast(self):
+        return self.real_type.get_object_for_this_type(pk=self.pk)
+
+    class Meta:
+        abstract = True
 
 
 ###########################################################################
 # a Person model
 # Basically an Abstract class containing a person's name
 ############################################################################
-class Person(models.Model):
+class Person(InheritanceCastModel):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     
@@ -99,12 +124,15 @@ def limit_meals_signed_up():
 class Prospective(Student):
     events_attended = models.IntegerField(
         'Number of events attended')
+    
     meals_attended = models.ManyToManyField(Meal, 
                     limit_choices_to=limit_meals_attended_choices,
                     blank=True, related_name="meals_attended")
     meals_signed_up = models.ManyToManyField(Meal, 
                     limit_choices_to=limit_meals_signed_up,
                     blank=True, related_name="meals_signed_up")
+
+    mailing_list = models.BooleanField(default=True)
 
     monthly_meal_limit = 3
 

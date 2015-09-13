@@ -172,3 +172,9 @@ div.event-image {
 .seating-section{
   margin-bottom: 30px;
 }
+
+section.information-block > p{
+  margin:10px;
+  margin-bottom: 15px;
+
+}

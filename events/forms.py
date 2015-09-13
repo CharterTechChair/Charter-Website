@@ -46,11 +46,22 @@ class EventEntryForm(forms.Form):
                                                           widget = forms.Select,
                                                           queryset = self.event.event_room.all(), )
         # Allow guest option if there is one
-        if self.event.guest_limit != 0:
+        if self.event.guest_limit != 0 and self.student.__class__.__name__!= 'Prospective':
             self.fields['guest_first_name'] = forms.CharField(required=False, 
                                                               help_text="Leave blank if you're not bringing a guest")
             self.fields['guest_last_name'] = forms.CharField(required=False,
                                                               help_text="You can resubmit this form to bring more guests.")
+
+    def clean_guest_first_name(self):
+        if self.student.__class__.__name__ == 'Prospective':
+            raise ValidationError('Sorry! Prospectives are not allowed to bring guests.')
+
+        return self.cleaned_data['guest_first_name']
+    def clean_guest_last_name(self):
+        if self.student.__class__.__name__ == 'Prospective':
+            raise ValidationError('Sorry! Prospectives are not allowed to bring guests.')
+        return self.cleaned_data['guest_last_name']
+
 
     def clean(self):
         '''
@@ -59,11 +70,49 @@ class EventEntryForm(forms.Form):
 
         room = self.cleaned_data['room_choice']
 
+        # Check the response
         if self.cleaned_data['is_attending'] == 'no':
             raise forms.ValidationError("Use the 'delete' button at the top to remove your rsvp.")
 
+        senior_year = Student.get_senior_year()
+        now = timezone.now()
+
+        # Check signup times
+        if self.student.__class__.__name__ == 'Prospective':
+            # Check for the prospective signup time
+            signup_t = datetime.combine(self.event.prospective_signup_start, self.event.signup_time)
+            signup_t = timezone.make_aware(signup_t, timezone.get_default_timezone())
+
+            if now < signup_t:
+                raise forms.ValidationError("Prospectives start signing up at %s" % signup_t.strftime('%a %b %d, %Y %I:%M %p'))     
+        else:
+            # Check whether the signup time is legitmate
+            if self.student.year <= senior_year:
+                signup_t = datetime.combine(self.event.senior_signup_start, self.event.signup_time)
+                signup_t = timezone.make_aware(signup_t, timezone.get_default_timezone())
+
+                if now < signup_t:
+                    raise forms.ValidationError("Senior start signing up at %s" % signup_t.strftime('%a %b %d, %Y %I:%M %p'))                
+            if self.student.year == senior_year + 1:
+                signup_t = datetime.combine(self.event.junior_signup_start, self.event.signup_time)
+                signup_t = timezone.make_aware(signup_t, timezone.get_default_timezone())
+                if now < signup_t:
+                    raise forms.ValidationError("Junior start signing up at %s" % signup_t.strftime('%a %b %d, %Y %I:%M %p'))                
+            if self.student.year >=  senior_year + 2:
+                signup_t = datetime.combine(self.event.junior_signup_start, self.event.signup_time)
+                signup_t = timezone.make_aware(signup_t, timezone.get_default_timezone())
+                if now < signup_t:
+                    raise forms.ValidationError("Sophomores start signing up at %s" % signup_t.strftime('%a %b %d, %Y %I:%M %p'))     
+
+        # Check the end times
+        signup_end = datetime.combine(self.event.signup_end_time, self.event.signup_time)
+        signup_end = timezone.make_aware(signup_end, timezone.get_default_timezone())
+
+        if now > signup_end:
+           raise forms.ValidationError("Signup times closed at: %s" % signup_end.strftime('%a %b %d, %Y %I:%M %p'))     
+            
         # Check the guest limit
-        if self.cleaned_data['guest_first_name'] or self.cleaned_data['guest_last_name']:
+        if self.cleaned_data.get('guest_first_name') or self.cleaned_data.get('guest_last_name'):
 
             fname = self.cleaned_data.get('guest_first_name') or ''
             lname = self.cleaned_data.get('guest_last_name') or ''
@@ -125,6 +174,33 @@ class EventEntryForm(forms.Form):
                 for q in query_noguest:
                     q.delete()
 
+
+class EntryDeletionForm(forms.Form):
+    '''
+        Confirms that the entry should be deleted or not.
+    '''
+
+    # Submit buttons
+    helper = FormHelper()   
+    helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
+
+    def __init__(self, *args, **kwargs):
+        self.entry = kwargs.pop('entry')
+        self.student = kwargs.pop('student')
+
+        super(EntryDeletionForm, self).__init__(*args, **kwargs)
+        choices = [('yes', 'I want to delete "%s"' % (self.entry)),]
+
+        self.fields['is_attending'] = forms.ChoiceField(label="Are you sure you want to delete this entry?", choices=choices)
+
+    def clean(self):
+        if self.entry.student.netid != self.student.netid:
+            raise forms.ValidationError('The student entry does not match the logged in student. Please log in with the student who made the rsvp.')
+        return self.cleaned_data
+
+    def delete_entry(self):
+        if self.is_valid():
+            self.entry.delete()
 
 
 

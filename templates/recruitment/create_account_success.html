@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<h3> Thank you {{ prospective.first_name}} for creating an account. </h3>
+<hr>
+<p> You can sign in <a href="{% url 'login' %}" class="btn btn-info" role="button"> here</a></p>
+
+{% endblock %}
+

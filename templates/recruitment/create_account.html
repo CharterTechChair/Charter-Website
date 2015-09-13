@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<section class="information-block">
+    <h2> Create a Prospectives Account </h2>
+    <hr>
+
+    <h5> What is a Prospectives Account? </h5>
+    <p> 
+        A Prospectives Account allows you to keep track of the point system. What you can do with your account:
+         <ul> 
+            <li> Sign up for sophomore meals. </li>
+            <li> Sign up for our club wide events. </li>
+            <li> Keep track of how many points you have </li>
+         </ul>
+
+       When you become a member, your account will be upgraded to a full member account. Your account will also allow you to view parts of the websitess that are for prospectives only!
+    </p>
+    
+    <h5> Who should make one? </h5>
+    <p> The prospectives account should only be made for sophomores. Freshmen cannot join eating clubs until their sophomore year. Upperclassmen can join directly (email one of our officers). </p>
+    
+    <h5> How do I make one? </h5>
+    <p> Just fill out the form below, and we'll use Princeton CAS system to create an account for you our database. </p>
+</section>
+<hr> 
+<h3> Account Creation Form </h3>
+<div class='col-sm-8 col-md-6'>
+    {% crispy form %}
+</div>
+
+
+
+{% endblock %}
+

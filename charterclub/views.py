@@ -37,13 +37,13 @@ def index(request):
 
 
 def history(request):
-    return render(request, "charterclub/pages/history.html")
+    return render(request, "flatpages_default/history.html")
 
 def song(request):
-    return render(request, "charterclub/pages/song.html")
+    return render(request, "flatpages_default/song.html")
 
 def constitution(request):
-    return render(request, "charterclub/pages/constitution.html")
+    return render(request, "flatpages_default/constitution.html")
 
 
 

@@ -56,14 +56,18 @@
                         <li><a href="{%url 'history' %}">History</a></li>
                         <li><a href="{%url 'song' %}">Song</a></li>
                         <li><a href="{%url 'constitution' %}">Constitution</a></li>
-<!--                         <li role="separator" class="divider"></li>
- -->                      </ul>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="{%url 'contactus' %}">Contact Us!</a></li>
+                      </ul>
                     </li>
 
                     <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Join <span class="caret"></span></a>
                       <ul class="dropdown-menu">
+                        <li><a href="{%url 'recruitment_benefits' %}"> Benefits </a></li>
                         <li><a href="{%url 'recruitment_information' %}"> Information </a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="{%url 'create_account' %}"> Create an Account </a></li>
                      </ul>
                     </li>
                     {% if student %}
@@ -115,7 +119,8 @@
                       <li><a href="{%url 'profile' %}"> Profile </a></li>
                       <li><a href="{%url 'mailinglist' %}">Mailing List</a></li>
                       <li><a href="{%url 'meal_signup' %}">Sophomore Meals</a></li>
-                      <li><a href="{%url 'contactus' %}">Contact Us!</a></li>
+                      <li><a href="{%url 'events_list' %}"> Signup for Events </a></li>
+                      
                     
                     </ul>
                   </li>
@@ -180,7 +185,7 @@
         <!-- Begin Body -->
         <div class="container">
 
-          <div id="outer-background-container" data-default-background-img="{{STATIC_URL}}img/oldcharter.jpg" style="background-image:url({{STATIC_URL}}img/oldcharter.jpg);"></div>
+          <div id="outer-background-container" data-default-background-img="{{STATIC_URL}}img/oldcharter.jpg" style="background-image:url({{STATIC_URL}}img/oldcharter.jpg); background-attachment: fixed;"></div>
 
 
           <div class="background-image-overlay"></div>

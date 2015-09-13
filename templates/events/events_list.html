@@ -52,48 +52,11 @@
 
         </ul>
       {% else %}
-      <p> Looks like there hasn't been any events schedule yet </p>
-      <p> Check with us in the future </p>
+        <p> Looks like there hasn't been any events scheduleD yet </p>
+        <p> Check with us in the future </p>
 
       {% endif %}
 
-
-
-      <!-- <div class="col-xs-12">
-      {% for event, has_rsvp, rsvp_msg in events_info %}
-          <div class="col-xs-12 col-centered event-entry">
-              <h3> {{ event }}</h3>
-              <p> {{ event.snippet }} </p>
-              
-              <p class='rsvp-text'> {{ rsvp_msg }} </p>
-              
-              {% if has_rsvp %}
-              <a class="btn btn-default minimal-button" href="{{event.get_signup_url }}">
-                   <span class="glyphicon glyphicon glyphicon-ok" aria-hidden="true"></span>
-                    Resubmit RSVP
-              </a>
-              {% else %}
-              <a class="btn btn-default minimal-button" href="{{event.get_signup_url }}">
-                   <span class="glyphicon glyphicon glyphicon-star" aria-hidden="true"></span>
-                    RSVP here
-              </a>
-              {% endif %}
-
-
-               <a class="btn btn-default minimal-button" href="{{event.get_view_url }}">
-                   <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                    View Seatings
-              </a>
-
-              {% if has_rsvp %}
-              <a class="btn btn-default minimal-button" href="{{ event.get_unrsvp_url }}">
-                   <span class="glyphicon glyphicon glyphicon-remove" aria-hidden="true"></span>
-                    UN-RSVP here
-              </a>
-              {% endif %}
-          </div>
-      {% endfor %}
-      </div> -->
    </div>
 
 <p></p>

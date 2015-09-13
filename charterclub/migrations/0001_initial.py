@@ -20,6 +20,7 @@ class Migration(migrations.Migration):
                 ('last_name', models.CharField(max_length=100)),
             ],
             options={
+                'abstract': False,
             },
             bases=(models.Model,),
         ),
@@ -41,8 +42,10 @@ class Migration(migrations.Migration):
             fields=[
                 ('person_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='charterclub.Person')),
                 ('position', models.CharField(max_length=100, verbose_name=b"Staff's position/title")),
+                ('order', models.IntegerField(verbose_name=b'Order of Appearance on Staff Page', blank=True)),
             ],
             options={
+                'abstract': False,
             },
             bases=('charterclub.person',),
         ),
@@ -54,6 +57,7 @@ class Migration(migrations.Migration):
                 ('year', models.IntegerField(verbose_name=b'Graduation Year')),
             ],
             options={
+                'abstract': False,
             },
             bases=('charterclub.person',),
         ),
@@ -62,8 +66,10 @@ class Migration(migrations.Migration):
             fields=[
                 ('student_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='charterclub.Student')),
                 ('events_attended', models.IntegerField(verbose_name=b'Number of events attended')),
+                ('mailing_list', models.BooleanField(default=True)),
             ],
             options={
+                'abstract': False,
             },
             bases=('charterclub.student',),
         ),
@@ -76,6 +82,7 @@ class Migration(migrations.Migration):
                 ('allow_rsvp', models.BooleanField(default=True, verbose_name=b'Whether or not this member may attend events')),
             ],
             options={
+                'abstract': False,
             },
             bases=('charterclub.student',),
         ),
@@ -85,9 +92,10 @@ class Migration(migrations.Migration):
                 ('member_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='charterclub.Member')),
                 ('position', models.CharField(max_length=100, verbose_name=b'Position/title')),
                 ('is_active', models.BooleanField(default=True, max_length=100, verbose_name=b'Current Officer')),
-                ('order', models.IntegerField(max_length=100, verbose_name=b'Order of Appearance on Officer Page')),
+                ('order', models.IntegerField(verbose_name=b'Order of Appearance on Officer Page', blank=True)),
             ],
             options={
+                'abstract': False,
             },
             bases=('charterclub.member',),
         ),

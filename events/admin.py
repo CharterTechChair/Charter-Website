@@ -41,7 +41,8 @@ class EventAdmin(admin.ModelAdmin):
                                             'junior_signup_start',
                                             'sophomore_signup_start',
                                             'prospective_signup_start',
-                                            'signup_end_time']}),
+                                            'signup_end_time',
+                                            'signup_time',]}),
         # ('Rooms',
         #                         {'fields' : ['rooms']})
     ]

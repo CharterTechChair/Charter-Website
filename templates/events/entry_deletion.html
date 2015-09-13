@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class='col-sm-6 col-sm-offset-3'>
+<h3> Entry Deletion Confirmation </h3>
+<hr>
+
+{% crispy form %}
+</div>
+{% endblock %}

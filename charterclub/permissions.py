@@ -1,3 +1,5 @@
+import urllib2, json
+
 import django.shortcuts
 from django.conf import settings
 import models
@@ -81,7 +83,7 @@ def additional_context(request):
     if m:  
         return { "officer" : o, "member" : m, "student" : m.student, "prospective" : p}
     if p:
-        return { "officer" : o, "member" : m, "student" : s, "prospective" : p}
+        return { "officer" : o, "member" : m, "student" : p.student, "prospective" : p}
 
     return  { "officer" : None, "member" : None, "student" : None, "prospective" : None}
 
@@ -131,6 +133,24 @@ def get_student(request):
     if query['student']:
         return query['student']
     return None
+
+def tigerbooks_lookup(netid):
+    '''
+        Make a get request to tigerbooks API to find information.
+    '''
+
+    base_url = 'https://tigerbook.herokuapp.com/api/APnwzuMmFu2UTWVMtil7/'
+    url = base_url + netid
+
+    try:
+        response = urllib2.urlopen(url)
+        html_s = response.read()
+        return json.loads(html_s)
+    except:
+        return None
+
+
+
 
 # check if the currently CAS logged-in user is an officer, returning
 # true if so and false otherwise.

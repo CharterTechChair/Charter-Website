@@ -35,15 +35,20 @@ class Entry(models.Model):
             ordering = ("student",)
 
     def __unicode__(self):
-        return "<%s, %s>" % (self.student, self.guest)
+        if self.guest:
+            return "%s: %s %s with guest %s in %s" % (self.student.cast().__class__.__name__, 
+                                                      self.student.first_name,
+                                                      self.student.last_name,
+                                                      self.guest,
+                                                      self.room.__unicode__())
+        else:
+            return "%s: %s %s in %s" % (self.student.cast().__class__.__name__, 
+                                                      self.student.first_name,
+                                                      self.student.last_name,
+                                                      self.room.__unicode__())
+    def get_deletion_url(self):
+        return urllib.quote('events/delete/' + self.__unicode__().replace("/","|") + "/" + str(self.id))
 
-    # def num_attending(self):
-    #     ans = 0
-    #     if student:
-    #         ans += 1
-    #     else:
-    #         try:
-    #             guests_0 = json.loads(self.)
 
 class Room(models.Model):
     name = models.CharField(max_length=255, help_text="Where is the Event Held?")
@@ -223,6 +228,8 @@ class Event(models.Model):
     sophomore_signup_start = models.DateField(default=now, blank=True)
     junior_signup_start    = models.DateField(default=now, blank=True)
     senior_signup_start    = models.DateField(default=now, blank=True)
+    signup_time            = models.TimeField("Start/End  Time for signups", help_text="IMPORTANT. THIS IS IN MILITARY TIME.", 
+                            default=DEFAULT_TIME)    
 
     def get_signup_url(self):
         '''
