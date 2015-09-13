@@ -79,6 +79,9 @@ class Student(Person):
     netid = models.CharField('Princeton Net ID', max_length=100, validators=[alphanumeric])
     year = models.IntegerField('Graduation Year')
 
+    class Meta:
+            ordering = ("year", "last_name", "first_name",)
+
     # Calculate the senior year
     @staticmethod
     def get_senior_year():
@@ -105,8 +108,7 @@ def limit_meals_attended_choices():
     start_date = "%s-08-11" % start_year
     end_date = "%s-08-11" % (start_year + 1)
 
-    return {'sophomore_limit__gt': 0,
-            'day__range': [start_date, end_date]
+    return {'day__range': [start_date, end_date]
     }
 
 def limit_meals_signed_up():
@@ -252,6 +254,9 @@ class Officer(Member):
     position = models.CharField('Position/title', max_length=100)
     is_active = models.BooleanField('Current Officer', default=True, max_length=100)
     order = models.IntegerField('Order of Appearance on Officer Page', blank=True)
+
+    class Meta:
+        ordering = ("is_active", "year", "order", "last_name", "first_name",)
 
 # THIS WILL GET MOVED TO A CAL APP EVENTUALLY
 class SocialEvent(models.Model):

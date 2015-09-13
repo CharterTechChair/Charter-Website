@@ -136,7 +136,7 @@ class ProspectiveAdmin(admin.ModelAdmin):
     list_display = ['__unicode__', 'netid', 'num_meals_attended', 'num_meals_signed_up']
     # list_editable = ['events_attended', 'meals_attended']
     search_fields = ['first_name', 'last_name', 'netid', 'year']
-
+    filter_horizontal = ('meals_attended','meals_signed_up')
     ordering = ['netid']
     # What gets shown, and how?
     # list_display = ('__unicode__',  'position', 'year',)

@@ -32,7 +32,7 @@ class Entry(models.Model):
     room = models.ForeignKey('Room', related_name="entry_room_association")
 
     class Meta:
-            ordering = ("student",)
+            ordering = ("event", "room", "student",)
 
     def __unicode__(self):
         if self.guest:
@@ -54,6 +54,9 @@ class Room(models.Model):
     name = models.CharField(max_length=255, help_text="Where is the Event Held?")
     limit = models.IntegerField()
     event = models.ForeignKey('Event', related_name="event_room")
+    
+    class Meta:
+            ordering = ("event", "name", "limit",)
 
     def __unicode__(self):
         return "%s %s/%s" % (self.name, self.num_people(), self.limit)
@@ -230,7 +233,9 @@ class Event(models.Model):
     senior_signup_start    = models.DateField(default=now, blank=True)
     signup_time            = models.TimeField("Start/End  Time for signups", help_text="IMPORTANT. THIS IS IN MILITARY TIME.", 
                             default=DEFAULT_TIME)    
-
+    class Meta:
+            ordering = ("date", "time", "name",)
+            
     def get_signup_url(self):
         '''
             return the url for signup

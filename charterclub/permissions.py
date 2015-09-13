@@ -119,19 +119,20 @@ def get_username(request):
 
 def get_student(request):
     '''
-        Checks the login and takes the highest priority one
+        Checks the login and takes the highest priority one.
     '''
 
     query = additional_context(request)
 
-    if query['prospective']:
-        return query['prospective']
     if query['officer']:
         return query['officer']
     if query['member']:
         return query['member']
+    if query['prospective']:
+        return query['prospective']
     if query['student']:
         return query['student']
+
     return None
 
 def tigerbooks_lookup(netid):

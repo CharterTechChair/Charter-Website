@@ -13,7 +13,7 @@ def recruitment_information(request):
 
 def create_account(request):
     ''' 
-        Create an account
+        Create an account using the form
     '''
 
      # Give them a form to fill out
@@ -21,10 +21,10 @@ def create_account(request):
         form = AccountCreationForm(request.POST)
         if form.is_valid():
             prospective = form.create_account()
-
-        return render(request, "recruitment/create_account_success.html", {
-                'prospective' : prospective,
-            })
+            
+            return render(request, "recruitment/create_account_success.html", {
+                    'prospective' : prospective,
+                })
     else:
         form = AccountCreationForm()
 
