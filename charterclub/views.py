@@ -223,7 +223,7 @@ def mailinglist(request):
 # at some point
 @permissions.officer
 def mailinglist_view(request):
-    plist = Prospective.objects.all()
+    plist = Prospective.objects.filter(mailing_list=True)
 
     return render(request, "mailinglist_view.html", {
        'plist': plist,

@@ -139,7 +139,7 @@ class MemberListForm(forms.Form):
 class NewOfficerForm(forms.ModelForm):
     class Meta:
         model = Officer
-        fields = ['position']
+        fields = ['position', 'order']
         
     member_choice = forms.ModelChoiceField(widget = forms.Select, queryset = Member.objects.all())             
 
@@ -162,6 +162,7 @@ class EditOfficerForm(forms.ModelForm):
     class Meta:
         model = Officer
         fields = ['position']
+        fields = ['order']
 
 year = (date.today() + timedelta(days=6*30)).year
 years = [year, year+1, year+2, year+3]
