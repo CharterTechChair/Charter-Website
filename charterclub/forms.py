@@ -40,11 +40,6 @@ class NewMemberForm(forms.ModelForm):
 
         return newMember
 
-    def clean_image(self):
-        if self.cleaned_data['image']:
-            print "hello world"
-        return self.cleaned_data['']
-
 
 ################################################################################
 # MemberListForm
