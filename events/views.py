@@ -35,9 +35,13 @@ def events_list(request):
     # If there is a login, setup the proper page for him
     student = permissions.get_student(request)
 
-    future_events_q = [e.has_student(student) for e in future_events]
-    past_events_q     = [e.has_student(student) for e in past_events]
-
+    if student:
+        future_events_q = [e.has_student(student) for e in future_events]
+        past_events_q     = [e.has_student(student) for e in past_events]
+    else:
+        future_events_q = [False for e in future_events]
+        past_events_q = [False for e in past_events]
+        
     return render(request, 'events/events_list.html', {
       'error': '',
       'netid': permissions.get_username(request),

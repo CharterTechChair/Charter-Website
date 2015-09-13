@@ -55,7 +55,7 @@ def catering(request):
     else:
         manager = None
 
-    return render(request, "charterclub/pages/catering.html", {
+    return render(request, "flatpages_default/catering.html", {
           'manager' : manager,
       })
 
