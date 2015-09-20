@@ -57,7 +57,7 @@ class Migration(migrations.Migration):
                 ('year', models.IntegerField(verbose_name=b'Graduation Year')),
             ],
             options={
-                'abstract': False,
+                'ordering': ('year', 'last_name', 'first_name'),
             },
             bases=('charterclub.person',),
         ),
@@ -95,7 +95,7 @@ class Migration(migrations.Migration):
                 ('order', models.IntegerField(verbose_name=b'Order of Appearance on Officer Page', blank=True)),
             ],
             options={
-                'abstract': False,
+                'ordering': ('is_active', 'year', 'order', 'last_name', 'first_name'),
             },
             bases=('charterclub.member',),
         ),

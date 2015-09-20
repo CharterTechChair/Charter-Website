@@ -19,19 +19,29 @@ r1 = Room(name="TV ROOM", limit=-1, event=e1)
 
 
 ########################################
-e2 = Event(title="Christmas Party",
-     snippet="For he's a jolly good fellow!", 
+e2 = Event(title="Winetasting",
+     snippet="Wine-tazing", 
      date=timezone.now() + timedelta(days=5),
-     is_points_event=True,
-     prospective_limit=40)
+     is_points_event=False,
+     prospective_limit=0)
 
-url = 'media/event_images/christmas.jpg'
+url = 'media/event_images/wine.jpg'
 image = File(open(url))
 e2.image.save(url, image)
 
 
 r2a = Room(name="Dining room", limit=40, event=e2)
 r2b = Room(name="Great Room", limit=40, event=e2)
+
+Question(question_text="What kind of drink would you prefer?", 
+         help_text="Alcoholic or Non Alcoholic", 
+         required=True, event=e2).save()
+
+Question(question_text="What is your spirit Animal?", 
+         help_text="something that is fun", 
+         required=False, event=e2).save()
+
+
 
 ########################################
 e3 = Event(title="Comedian Semiformal",
@@ -40,7 +50,7 @@ e3 = Event(title="Comedian Semiformal",
      is_points_event=False,
      prospective_limit=40)
 
-r3 = Room(name="Great Room", limit=80, event=e2)
+r3 = Room(name="Great Room", limit=80, event=e3)
 
 rooms = [r1, r2a, r2b, r3]
 events = [e1, e2, e3]

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from events.models import Event, Room, Entry
+from events.models import Event, Room, Entry, Question
 
 # class RoomAdmin(admin.ModelAdmin):
 #     pass
@@ -19,13 +19,17 @@ class EntryInline(admin.TabularInline):
 
         field = super(EntryInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
-        if db_field.name == 'room':
+        if db_field.name in ['room', 'answer']:
             if request._obj_ is not None:
                 field.queryset = field.queryset.filter(event=request._obj_) 
             else:
                 field.queryset = field.queryset.none()
 
         return field
+
+class QuestionInline(admin.TabularInline):
+    model = Question
+    extra = 2
 
 class EventAdmin(admin.ModelAdmin):
     fieldsets = [
@@ -47,7 +51,7 @@ class EventAdmin(admin.ModelAdmin):
         #                         {'fields' : ['rooms']})
     ]
 
-    inlines = [RoomInline, EntryInline]
+    inlines = [QuestionInline, RoomInline, EntryInline]
     list_display = ['__unicode__', 'snippet', 'is_points_event', 'prospective_limit']
     ordering = ['-date']
 
@@ -61,3 +65,6 @@ class EventAdmin(admin.ModelAdmin):
 # # Register your models here.
 admin.site.register(Event, EventAdmin)
 # admin.site.register(Room, RoomAdmin)
+
+
+
