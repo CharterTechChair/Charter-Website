@@ -21,7 +21,7 @@
 
                     {% if brunch %}
                         <div class="col-xs-12 col-sm-3 menu-type">
-                            <p> <strong> Brunch </strong></p>
+                            <p> <strong> Brunch </strong> {% if officer or prospective %} {{brunch.num_of_sophomores}}/{{brunch.sophomore_limit}} {% endif %}</p>
                                 
                             
                             <p> {% if brunch.name %} {{ brunch.name }} {% endif %}</p>
@@ -44,7 +44,7 @@
 
                     {% else %}
                         <div class="col-xs-12 col-sm-3 menu-type">
-                            <p> <strong> Lunch </strong></p>
+                            <p> <strong> Lunch  {% if officer or prospective %} {{lunch.num_of_sophomores}}/{{lunch.sophomore_limit}} {% endif %}  </strong></p>
                                 
                             
                             <p> {% if lunch.name %} {{ lunch.name }} {% endif %}</p>
@@ -70,9 +70,7 @@
 
              <div class="col-md-6 menu-meal">
                     <div class="col-xs-12 col-sm-3 menu-type">
-                        <p> <strong> Dinner </strong></p>
-
-                        <p> {% if dinner.name %} {{ dinner.name }} {% endif %}</p>
+                        <p> <strong> Dinner </strong> {% if dinner.name %} {{ dinner.name }} {% endif %}  {% if officer or prospective %} {{dinner.num_of_sophomores}}/{{dinner.sophomore_limit}} {% endif %}</p>
                     </div>
 
                     <div class="col-xs-12 col-sm-9 menu-text">
