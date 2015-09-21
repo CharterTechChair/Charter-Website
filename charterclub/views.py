@@ -184,7 +184,7 @@ def profile(request):
     # Show prospective page
     if p_query:
               return render(request, "charterclub/prospective_profile.html", {
-            'member': p_query[0],
+            'prospective': p_query[0],
             # 'events': e,
             'netid': permissions.get_username(request)
         })
