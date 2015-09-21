@@ -171,7 +171,9 @@ class Event(models.Model):
     is_points_event = models.BooleanField("Is Point Event:", 
                                            help_text="Do Prospectives who attend get points?",
                                            default=False)
-
+    display_to_non_members = models.BooleanField("Public Event", 
+                                           help_text="Are non-members allowed to see this event?",
+                                           default=True)
     prospective_limit = models.IntegerField("Prospectives Limit", 
                                             help_text="set 0 to not allow prospectives. This will also hide it on the website from them (email me, Quan, to turn this feature off).",
                                             default=0)

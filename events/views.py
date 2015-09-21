@@ -32,9 +32,9 @@ def events_list(request):
     past_events = Event.objects.filter(date__gte=begin_date, date__lte=now).order_by("-date")
 
     # If it is a prospective, then don't show the ones where sophomores are not allowed
-    future_events = [e for e in future_events if e.prospective_limit > 0]
-    past_events = [e for e in past_events if e.prospective_limit > 0]
-    
+    future_events = [e for e in future_events if e.display_to_non_members]
+    past_events = [e for e in past_events if e.display_to_non_members]
+
     # If there is a login, setup the proper page for him
     student = permissions.get_student(request)
 
@@ -72,7 +72,7 @@ def events_signup(request, name, id):
         e = e[0]
 
     # Bounce Sophomores
-    if e.prospective_limit <= 0 and s.__class__.__name__ == 'Prospective':
+    if not e.display_to_non_members and s.__class__.__name__ == 'Prospective':
         subject = 'Oops. %s' % urllib.unquote(name)
         body = "This event is not open for sophomores :/"
 
