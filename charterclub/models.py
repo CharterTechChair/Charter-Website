@@ -148,17 +148,19 @@ class Prospective(Student):
 
     # Promote a Prospective to a Member
     def promote_to_member(self, house_account):
-        fields = [f.get_attname() for f in Prospective._meta.fields]
-        bk_lst = ['id', 'events_attended', 'meals_attended']
-        fields = [f for f in fields if ('_id' not in f and f not in bk_lst)]
+        # fields = [f.get_attname() for f in Prospective._meta.fields]
+        # bk_lst = ['id', 'events_attended', 'meals_attended', 'mailing_list']
+        white_lst = ['netid', 'first_name', 'last_name', 'year']
+        # fields = [f for f in fields if ('_id' not in f and f not in bk_lst)]
 
         # Create the parameters for an officer
-        member_param = {f:getattr(self, f) for f in fields}
+        member_param = {f:getattr(self, f) for f in white_lst}
         member_param['house_account'] = house_account
-
         
-        # self.delete() #Keep the old Prospective
+        # self.delete() #Delete the old prospective
+        self.delete()
         Member.objects.create(**member_param)
+
 
     #CHECK if montly meal limit has been exceeded
     def will_exceed_meal_limit(self, next_meal):
