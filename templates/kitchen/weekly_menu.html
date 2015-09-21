@@ -20,14 +20,14 @@
              <div class="col-md-6 menu-meal">
 
                     {% if brunch %}
-                        <div class="col-xs-3 menu-type">
+                        <div class="col-xs-12 col-sm-3 menu-type">
                             <p> <strong> Brunch </strong></p>
                                 
                             
                             <p> {% if brunch.name %} {{ brunch.name }} {% endif %}</p>
                         </div>
 
-                        <div class="col-xs-9 menu-text">
+                        <div class="col-xs-12 col-sm-9 menu-text">
                             <strong> Entrees: </strong> 
                             <p> {{ brunch.description |linebreaksbr }} </p>
 
@@ -43,14 +43,14 @@
                         </div>
 
                     {% else %}
-                        <div class="col-xs-3 menu-type">
+                        <div class="col-xs-12 col-sm-3 menu-type">
                             <p> <strong> Lunch </strong></p>
                                 
                             
                             <p> {% if lunch.name %} {{ lunch.name }} {% endif %}</p>
                         </div>
 
-                        <div class="col-xs-9 menu-text">
+                        <div class="col-xs-12 col-sm-9 menu-text">
                             <strong> Entrees: </strong> 
                             <p> {{ lunch.description |linebreaksbr }} </p>
 
@@ -69,13 +69,13 @@
              </div>
 
              <div class="col-md-6 menu-meal">
-                    <div class="col-xs-3 menu-type">
+                    <div class="col-xs-12 col-sm-3 menu-type">
                         <p> <strong> Dinner </strong></p>
 
                         <p> {% if dinner.name %} {{ dinner.name }} {% endif %}</p>
                     </div>
 
-                    <div class="col-xs-9 menu-text">
+                    <div class="col-xs-12 col-sm-9 menu-text">
                         <strong> Entrees: </strong> 
                         <p> {{ dinner.description |linebreaksbr}} </p>
 
@@ -90,53 +90,7 @@
                         {% endif %}                    
                     </div>
              </div>
-            <!-- Food block here for Lunch -->
-          <!--  <div class="col-sm-6 menu-meal">
-                    
-                <div class="col-xs-3 menu-type">
-                    <strong> Lunch  </strong> 
-                    {{lunch.name}}
-                </div>
-
-                <div class="col-xs-9 menu-text"> 
-                    <strong> Entrees: </strong> 
-                    <p> {{ lunch.description }} </p>
-
-                    <strong> Grill: </strong> 
-                    <p> {{ lunch.grill }} </p>
-
-                    <strong> Salad: </strong> 
-                    <p> {{ lunch.salad }} </p>
-                    
-                    {% if lunch.special_note %}
-                    <strong style="font-size:0.75em;"> *{{ lunch.special_note }} </strong>
-                    {% endif %}
-                </div>
-            </div>  -->
             
-            <!-- Food block here for Lunch -->
-            <!-- <div class="col-sm-6 menu-meal">
-
-                <div class="col-xs-3 menu-type">
-                    <strong> Dinner  </strong> 
-                    {{day.meal.name}}
-                </div>
-
-                <div class="col-xs-9 menu-text"> 
-                    <strong> Entrees: </strong> 
-                    <p> {{ dinner.description }} </p>
-
-                    <strong> Plated Option: </strong> 
-                    <p> {{ dinner.grill }} </p>
-
-                    <strong> Salad: </strong> 
-                    <p> {{ dinner.salad }} </p>
-                    
-                    {% if dinner.special_note %}
-                    <strong style="font-size:0.75em;"> *{{ lunch.special_note }} </strong>
-                    {% endif %}
-                </div>
-            </div> -->
         </div>
         {% endfor %}
     </div>
