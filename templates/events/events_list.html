@@ -45,6 +45,10 @@
                   {% else %}
                     <a href="/{{ event.get_signup_url }}" class="btn btn-info" role="button"> Change RSVP </a>
                   {% endif %}
+
+                  {% if officer %}
+                    <a href="/{{ event.get_officer_overview_url }}" class="btn btn-info" role="button"> Officer Overview </a>
+                  {% endif %}
                 {% endif %}
              </li>
          {% endfor %}

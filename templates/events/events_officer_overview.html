@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+<div class='col-sm-12'>
+<h3> Overview for {{ event }} </h3>
+<hr>
+
+<div class="col-sm-12">
+    <h3> Information: </h3>
+    <br>
+
+    {% if event.event_room.all %}
+        {% for room in event.event_room.all %}
+        <div class="seating-section">
+            <h4> {{ room }}  </h4>
+
+            <table class="table">
+                <tr> 
+                    <td><strong> Member </strong> </td>
+                    <td><strong> Guest </strong></td>
+                    {% for question in event.question_set.all %}
+                    <td> <strong> {{ question.question_text }} </strong> </td>
+                    {% endfor %} 
+                </tr>
+
+                {% for entry in room.entry_room_association.all %}
+                <tr> 
+                    <td> {{ entry.student }}</td>
+                    <td> {{ entry.guest|title}} </td>
+                    {% for answer in entry.answers.all %}
+                     <td>  {{ answer.answer_text }} </td>
+                     {% endfor %}
+                    
+                </tr>
+                {% endfor %}
+            </table>
+        </div> <!-- seating-section -->
+        {% endfor %}
+    </div>
+    {% else %}
+    <p> Oops. Looks like rooms haven't been created for this event yet. Go to the admin page, and then create them </p>
+    {% endif %}
+
+
+</div>
+{% endblock %}

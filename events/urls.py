@@ -18,6 +18,23 @@ urlpatterns = patterns('',
         r'^delete/(.+)/([0-9]+)',
         'events.views.entry_delete', 
         name='entry_delete'),
+    url(
+        r'^change/(.+)/([0-9]+)',
+        'events.views.entry_change_answers', 
+        name='entry_change_answers'),
+    url(
+        r'^guest_change/(.+)/([0-9]+)',
+        'events.views.entry_guest_change', 
+        name='entry_guest_change'),
+    url(
+        r'^room_change/(.+)/([0-9]+)',
+        'events.views.entry_room_change', 
+        name='entry_room_change'),
+    url(
+        r'^events_officer_overview/(.+)/([0-9]+)',
+        'events.views.events_officer_overview', 
+        name='events_officer_overview'),
+
 #     url(
 #         
 #         'events.views.events_entry',

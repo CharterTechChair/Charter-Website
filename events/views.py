@@ -14,7 +14,7 @@ import charterclub.permissions as permissions
 from charterclub.permissions import render
 
 from events.models import Event, Entry
-from events.forms import EventEntryForm, EntryDeletionForm
+from events.forms import EventEntryForm, EntryDeletionForm, ChangeAnswersForm, ChangeGuestForm, ChangeRoomForm
 
 
 def events_list(request):
@@ -31,7 +31,10 @@ def events_list(request):
     future_events = Event.objects.filter(date__gte=now).order_by("-date")
     past_events = Event.objects.filter(date__gte=begin_date, date__lte=now).order_by("-date")
 
-
+    # If it is a prospective, then don't show the ones where sophomores are not allowed
+    future_events = [e for e in future_events if e.prospective_limit > 0]
+    past_events = [e for e in past_events if e.prospective_limit > 0]
+    
     # If there is a login, setup the proper page for him
     student = permissions.get_student(request)
 
@@ -68,6 +71,16 @@ def events_signup(request, name, id):
     else:
         e = e[0]
 
+    # Bounce Sophomores
+    if e.prospective_limit <= 0 and s.__class__.__name__ == 'Prospective':
+        subject = 'Oops. %s' % urllib.unquote(name)
+        body = "This event is not open for sophomores :/"
+
+        return render(request, 'standard_message.html', {
+                'subject' : subject,
+                'body'    : body,
+    })
+
     # If we find the event, then send them the form
     if request.method == 'POST':
         form = EventEntryForm(request.POST, event=e, student=s)
@@ -84,6 +97,32 @@ def events_signup(request, name, id):
       'event' : e,
       'rsvp_entries': rsvp_entries,
       'rsvp_guests': rsvp_guests,
+
+    })  
+
+@permissions.officer
+def events_officer_overview(request, name, id):
+    '''
+        Display all the data on this event
+    '''
+    event = Event.objects.filter(id=id)
+    netid = permissions.get_username(request)
+    officer = Officer.objects.filter(netid=netid)
+
+    # If we don't find the event then send them the error message
+    if not event:  
+        subject = 'The signup for this event %s is not available' % urllib.unquote(name)
+        body = "Check back with us."
+        return render(request, 'standard_message.html', {
+                'subject' : subject,
+                'body'    : body,
+        })
+    else:
+        event = event[0]
+
+    return render(request, 'events/events_officer_overview.html', {
+      'event' : event,
+      'officer': officer,
 
     })  
 
@@ -113,11 +152,110 @@ def entry_delete(request, name, entry_id):
     else:
         form = EntryDeletionForm(entry=e,student=s)
 
-    return render(request, 'events/entry_deletion.html', {
+    return render(request, 'events/form.html', {
+        'title': 'Event Deletion Form',
         'entry': e, 
         'form' : form,
         })
 
+
+@permissions.student
+def entry_change_answers(request, name, entry_id):
+    e = Entry.objects.filter(id=int(entry_id))
+    s = permissions.get_student(request)
+
+    # If we don't find the event then send them the error message
+    if not e:  
+        subject = 'The entry %s is not available' % urllib.unquote(name)
+        body = "Check back with us."
+        return render(request, 'standard_message.html', {
+                'subject' : subject,
+                'body'    : body,
+        })
+    else:
+        e = e[0]
+
+    # If we find the event, then send them the form
+    if request.method == 'POST':
+        form = ChangeAnswersForm(request.POST, entry=e, student=s)
+
+        if form.is_valid():
+            form.change_answers()
+            return redirect('/' + e.event.get_signup_url())
+    else:
+        form = ChangeAnswersForm(entry=e,student=s)
+
+    return render(request, 'events/form.html', {
+        'title': 'Entry Answer Change Form',
+        'entry': e,
+        'form' : form,
+        })
+
+
+@permissions.student
+def entry_guest_change(request, name, entry_id):
+    e = Entry.objects.filter(id=int(entry_id))
+    s = permissions.get_student(request)
+
+    # If we don't find the event then send them the error message
+    if not e:  
+        subject = 'The entry %s is not available' % urllib.unquote(name)
+        body = "Check back with us."
+        return render(request, 'standard_message.html', {
+                'subject' : subject,
+                'body'    : body,
+        })
+    else:
+        e = e[0]
+
+    # If we find the event, then send them the form
+    if request.method == 'POST':
+        form = ChangeGuestForm(request.POST, entry=e, student=s)
+
+        if form.is_valid():
+            form.change_guest()
+            return redirect('/' + e.event.get_signup_url())
+    else:
+        form = ChangeGuestForm(entry=e,student=s)
+
+    return render(request, 'events/form.html', {
+        'title': 'Change Guest Form',
+        'entry': e,
+        'form' : form,
+        })
+
+@permissions.student
+def entry_room_change(request, name, entry_id):
+    e = Entry.objects.filter(id=int(entry_id))
+    s = permissions.get_student(request)
+
+    # If we don't find the event then send them the error message
+    if not e:  
+        subject = 'The entry %s is not available' % urllib.unquote(name)
+        body = "Check back with us."
+        return render(request, 'standard_message.html', {
+                'subject' : subject,
+                'body'    : body,
+        })
+    else:
+        e = e[0]
+
+    # If we find the event, then send them the form
+    if request.method == 'POST':
+        form = ChangeRoomForm(request.POST, entry=e, student=s)
+
+        if form.is_valid():
+            form.change_room()
+            return redirect('/' + e.event.get_signup_url())
+    else:
+        form = ChangeRoomForm(entry=e,student=s)
+
+    return render(request, 'events/form.html', {
+        'title': 'Change Room Form',
+        'description' : 'Because you must accompany your guest, changing rooms will move all of your guests with you.',
+        'entry': e,
+        'form' : form,
+        })
 
 # from events.models import Event, Room
 # from events.forms import EventEntryForm, EventCreateForm, EventChoiceForm, EventEditForm

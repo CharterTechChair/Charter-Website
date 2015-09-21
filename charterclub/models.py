@@ -76,7 +76,7 @@ class Staff(Person):
 ############################################################################
 class Student(Person):
     alphanumeric = RegexValidator(r'^[0-9a-zA-Z]*$', 'Only alphanumeric characters are allowed.')
-    netid = models.CharField('Princeton Net ID', max_length=100, validators=[alphanumeric])
+    netid = models.CharField('Princeton Net ID', max_length=100, validators=[alphanumeric], unique=True)
     year = models.IntegerField('Graduation Year')
 
     class Meta:

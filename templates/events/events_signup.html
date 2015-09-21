@@ -16,9 +16,23 @@
     <h5> RSVP's that you are involved in: </h5>
     {% if rsvp_entries %}
         {% for entry in rsvp_entries %}
-        <p style="margin:5px"> 
-                {{ entry }} [<a href="/{{ entry.get_deletion_url }}">delete </a>]
-        <p>
+        <ol>
+
+            <li style="margin:5px"> 
+                    <p> {{ entry }} </p>
+                    <ul> 
+                        {% for answer in entry.answers.all %}
+                        <li>
+                            <p> <strong> {{ answer.question.question_text  }} </strong> </p>
+                            <p> {{ answer.answer_text }} </p>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <p>  [<a href="/{{ entry.get_room_change_url }}">change rooms</a>]   [<a href="/{{ entry.get_deletion_url }}">delete</a>] [<a href="/{{ entry.get_change_answers_url }}">change answers</a>] [<a href="/{{ entry.get_guest_change_url }}">add/remove guest</a>]  </p>
+            </li>
+        </ol>
+
+
         {% endfor %}
     {% else %}
         <p> You have not signed up for this event yet! </p>

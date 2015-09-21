@@ -12,20 +12,25 @@ class EntryInline(admin.TabularInline):
     model = Entry
     extra = 1
 
+    readonly_fields=['Form_Answers']
+    exclude=('answers',)
+    ''
     def formfield_for_foreignkey(self, db_field, request=None, **kwargs):
         '''
-            Limit the Rooms of an entry to the event it belongs in.
+            Limit the Rooms and answer of an entry to the event it belongs in.
         '''
 
         field = super(EntryInline, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
-        if db_field.name in ['room', 'answer']:
+        if db_field.name in ['room']:
             if request._obj_ is not None:
                 field.queryset = field.queryset.filter(event=request._obj_) 
             else:
                 field.queryset = field.queryset.none()
-
         return field
+
+    def Form_Answers(self, obj):
+        return "\n".join([ans.__unicode__() for ans in obj.answers.all()])
 
 class QuestionInline(admin.TabularInline):
     model = Question

@@ -5,8 +5,11 @@
 {% block content %}
 
 <div class='col-sm-6 col-sm-offset-3'>
-<h3> Entry Deletion Confirmation </h3>
+<h3> {{ title }} </h3>
 <hr>
+{% if description %}
+<p> {{ description }}</p>
+{% endif %}
 
 {% crispy form %}
 </div>

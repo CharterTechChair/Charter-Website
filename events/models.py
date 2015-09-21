@@ -28,10 +28,16 @@ class Question(models.Model):
     event = models.ForeignKey('Event')
     required = models.BooleanField(default=False)
 
+    def __unicode__(self):
+        return "%s %s" % (self.event, self.question_text)
+
 class Answer(models.Model):
     question = models.ForeignKey('Question', related_name="question_answer_association")
     answer_text =  models.CharField("Answer", 
                                 max_length=1e3)
+
+    def __unicode__(self):
+        return "%s:%s" % (self.question.question_text, self.answer_text)
 
 class Entry(models.Model):
     '''
@@ -67,7 +73,15 @@ class Entry(models.Model):
                                                       self.room.__unicode__())
     def get_deletion_url(self):
         return urllib.quote('events/delete/' + self.__unicode__().replace("/","|") + "/" + str(self.id))
+    
+    def get_change_answers_url(self):
+        return urllib.quote('events/change/' + self.__unicode__().replace("/","|") + "/" + str(self.id))
 
+    def get_guest_change_url(self):
+        return urllib.quote('events/guest_change/' + self.__unicode__().replace("/","|") + "/" + str(self.id))
+
+    def get_room_change_url(self):
+        return urllib.quote('events/room_change/' + self.__unicode__().replace("/","|") + "/" + str(self.id))
 
 class Room(models.Model):
     '''
@@ -88,23 +102,34 @@ class Room(models.Model):
             This method of counting unique names technically does break if 
             two people have the same name,but that is very rare.
         '''
-        names = set()
-        # Count the unique names
+
+        ans = 0
+
         for entry in self.entry_room_association.all():
-            s = entry.student
-            s_name = "%s %s" % (s.first_name, s.last_name)
-            g_name = entry.guest
+
+            if entry.guest:
+                ans += 2
+            else:
+                ans += 1
+        return ans
+
+        # names = set()
+        # # Count the unique names
+        # for entry in self.entry_room_association.all():
+        #     s = entry.student
+        #     s_name = "%s %s" % (s.first_name, s.last_name)
+        #     g_name = entry.guest
             
-            # clean the names
-            s_name_c = re.sub(r'\W+^\s', '', s_name).lower().strip()
-            g_name_c = re.sub(r'\W+^\s', '', g_name).lower().strip()
+        #     # clean the names
+        #     s_name_c = re.sub(r'\W+^\s', '', s_name).lower().strip()
+        #     g_name_c = re.sub(r'\W+^\s', '', g_name).lower().strip()
 
-            if s_name_c:
-                names.add(s_name_c)
-            if g_name_c:
-                names.add(g_name_c)
+        #     if s_name_c:
+        #         names.add(s_name_c)
+        #     if g_name_c:
+        #         names.add(g_name_c)
 
-        return len(names)
+        # return len(names)
         
     def which_entries(self, student):
         '''
@@ -148,7 +173,7 @@ class Event(models.Model):
                                            default=False)
 
     prospective_limit = models.IntegerField("Prospectives Limit", 
-                                            help_text="set 0 to not allow prospectives",
+                                            help_text="set 0 to not allow prospectives. This will also hide it on the website from them (email me, Quan, to turn this feature off).",
                                             default=0)
 
     guest_limit = models.IntegerField("Guest Limit", 
@@ -182,6 +207,9 @@ class Event(models.Model):
         url += "/%s/%s" % (self.title, self.id)
         return urllib.quote(url)
 
+    def get_officer_overview_url(self):
+        return urllib.quote('events/events_officer_overview/' + self.__unicode__().replace("/","|") + "/" + str(self.id))        
+    
     def has_student(self, student):
         '''
             Checks if the member/prospective/officer is part of the event by
@@ -194,12 +222,26 @@ class Event(models.Model):
 
     def which_entries(self, student):
         '''
-            Get all the entries that this person is a part of.
+            Get all the entries that this person (a student object) is a part of.
         '''
 
         entry_q = self.entry_event_association.filter(student__netid=student.netid)
-        guest_q = self.entry_event_association.filter(guest__icontains=student.first_name)\
-                                              .filter(guest__icontains=student.last_name)
+        guest_q = self.entry_event_association.filter(guest__icontains=student.first_name.lower())\
+                                              .filter(guest__icontains=student.last_name.lower())
+        return entry_q | guest_q
+
+    def contains_name_in_entry_set(self, fname, lname):
+        '''
+            Get all the entries that contains this person's name
+        '''
+        if not fname or not lname:
+            return []
+
+        entry_q = self.entry_event_association.filter(student__first_name__icontains=fname.lower())\
+                                               .filter(student__last_name__icontains=lname.lower())
+        guest_q = self.entry_event_association.filter(guest__icontains=fname.lower())\
+                                              .filter(guest__icontains=lname.lower())
+
         return entry_q | guest_q
 
     def get_guests(self, student):

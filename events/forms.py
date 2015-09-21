@@ -13,7 +13,7 @@ from crispy_forms.bootstrap import (
     PrependedText, PrependedAppendedText, FormActions)
 
 # For some models 
-from events.models import Event, Room, Entry
+from events.models import Event, Room, Entry, Answer
 
 from charterclub.models import Member, Student
 from datetime import date, timedelta, datetime
@@ -52,11 +52,21 @@ class EventEntryForm(forms.Form):
             self.fields['guest_last_name'] = forms.CharField(required=False,
                                                               help_text="You can resubmit this form to bring more guests.")
 
+        # Add the questions, if there are any
+        for i, q in enumerate(self.event.question_set.all()):
+            self.fields['question_%s' % i] = forms.CharField(label=q.question_text, 
+                                                             help_text=q.help_text,
+                                                            required=q.required)
+
+        self.question_set = self.event.question_set.all()
+
+
     def clean_guest_first_name(self):
         if self.student.__class__.__name__ == 'Prospective':
             raise ValidationError('Sorry! Prospectives are not allowed to bring guests.')
-
+    
         return self.cleaned_data['guest_first_name']
+
     def clean_guest_last_name(self):
         if self.student.__class__.__name__ == 'Prospective':
             raise ValidationError('Sorry! Prospectives are not allowed to bring guests.')
@@ -68,16 +78,30 @@ class EventEntryForm(forms.Form):
             Check if there is space for the person to be in the room
         '''
 
-        room = self.cleaned_data['room_choice']
-
+        # Make sure they selected a room
+        room = self.cleaned_data.get('room_choice')
+        if not room:
+            raise forms.ValidationError('Please choose a room.')
+        
         # Check the response
         if self.cleaned_data['is_attending'] == 'no':
             raise forms.ValidationError("Use the 'delete' button at the top to remove your rsvp.")
 
-        senior_year = Student.get_senior_year()
-        now = timezone.now()
+        # See if the person is allowed to rsvp
+        if hasattr(self.student, "allow_rsvp"):
+            if not self.student.allow_rsvp:
+                raise forms.ValidationError("You are not allowed to attend events. Sorry :/")
+
+        # Block prospectives from RSVP'ing
+        if self.student.__class__.__name__ == 'Prospective':
+            casted_students = [e.student.cast() for e in self.event.entry_event_association.all()]
+            num_prospective = sum([1 if s.__class__.__name__ == 'Prospective' else 0 for s in casted_students])
+            if num_prospective + 1 > self.event.prospective_limit:
+                raise forms.ValidationError("Sorry! The cap for prospectives (%s/%s) has been reached." % (num_prospective, self.event.prospective_limit))
 
         # Check signup times
+        senior_year = Student.get_senior_year()
+        now = timezone.now()
         if self.student.__class__.__name__ == 'Prospective':
             # Check for the prospective signup time
             signup_t = datetime.combine(self.event.prospective_signup_start, self.event.signup_time)
@@ -110,61 +134,60 @@ class EventEntryForm(forms.Form):
 
         if now > signup_end:
            raise forms.ValidationError("Signup times closed at: %s" % signup_end.strftime('%a %b %d, %Y %I:%M %p'))     
-            
-        # Check the guest limit
-        if self.cleaned_data.get('guest_first_name') or self.cleaned_data.get('guest_last_name'):
+        
 
+        # Now check the guest information
+        if self.cleaned_data.get('guest_first_name') or self.cleaned_data.get('guest_last_name'):
             fname = self.cleaned_data.get('guest_first_name') or ''
             lname = self.cleaned_data.get('guest_last_name') or ''
             self.guest_name = ("%s %s" % (fname, lname)).strip()
-            guests = self.event.get_guests(self.student)
-
-            if len(guests) > self.event.guest_limit:
-                raise forms.ValidationError("The guest limit is %s. You already have '%s' as your guests" % (self.event.guest_limit, guests))
+            
         else:
             self.guest_name = ""
 
-        
-        # Check if there is another entry like it in the database
-        query = self.event.entry_event_association.filter(room=room, student__netid=self.student.netid, guest=self.guest_name)
-
+        # Check if they've already made a submission
+        query = self.event.entry_event_association.filter(student__netid=self.student.netid, guest=self.guest_name)
         if query:
-            raise forms.ValidationError("We already got this submission. Check the 'Where people are sitting section'. Else, enter new data." )
+            raise forms.ValidationError("We already got a submission with (member, guest) pair. To modify a previous submission, use the 'modify' link above." )
+
+        # Check if they're at the guest limit
+        guests = self.event.get_guests(self.student)
+        if self.guest_name and len(guests) >= self.event.guest_limit:
+            raise forms.ValidationError("The guest limit is %s. You already have '%s' as your guests" % (self.event.guest_limit, guests))
+
+        # Make sure they submit to the same room that they have done so before
+        old_room_q = self.event.entry_event_association.filter(student__netid=self.student.netid)
+        if old_room_q:
+            old_room = old_room_q[0]
+
+            if old_room != room:
+                raise forms.ValidationError("You must accompany your previous guests in room %s. If you want to change rooms, first choose %s then use the '[change_room]' option to move yourself and all of your guests." % (old_room, old_room))
+
 
         # Now check for overflow by putting the entry in
         entry = Entry(room=room, student=self.student, guest=self.guest_name, event=self.event)
         self.entry = entry
-        entry.save()
 
-
-        # Then check if the room has overflowed
-        if room.num_people() > room.limit:
-            entry.delete()
-            raise forms.ValidationError("Sorry! %s cannot take more people (%s)" % (room, entry))
-        
-        # else, keep going
-        entry.delete()
-
+        # Check if the room will overflow
+        if self.num_additional_people() + room.num_people() > room.limit:
+            raise forms.ValidationError("The room %s has %s/%s people. You cannot add %s more people." % (room.name, room.num_people(), room.limit, self.num_additional_people()))
 
         return self.cleaned_data
+    
+    def num_additional_people(self):
+        if self.guest_name:
+            return 2
+        else:
+            return 1
+
+
 
     def execute_form_information(self):
         '''
             After form is valid, make the entry
         '''
         if self.is_valid():
-            # Take care of room swaps
-            query = self.event.entry_event_association.filter(student__netid=self.student.netid)
-            if query:
-                for q in query:
-                    q.room = self.cleaned_data['room_choice']
-                    q.save()
-            
-            # Check if there is something new to be added
-            query = self.event.entry_event_association.filter(student__netid=self.student.netid, guest=self.guest_name)
-            if not query:
-                self.entry.save()
-
+            self.entry.save()
 
             # If we already ahve queries with guests, cleanup queries with members but no guests.
             query_withguest = self.event.entry_event_association.filter(student__netid=self.student.netid).exclude(guest='')
@@ -173,6 +196,43 @@ class EventEntryForm(forms.Form):
             if query_withguest:
                 for q in query_noguest:
                     q.delete()
+
+            # Add the new questions
+            for i, question in enumerate(self.question_set):
+                ans = self.cleaned_data.get("question_%s" % i)
+                if ans:
+                    a = Answer(question=question, answer_text=ans)
+                else:
+                    a = Answer(question=question, answer_text='')
+                a.save()
+                self.entry.answers.add(a)
+            self.entry.save()
+
+            # # Submit the answers to the questions
+            # for i, q in enumerate(self.event.question_set.all()):
+            #     # If the answer already exists, modify them
+            #     answer_q =  
+            #     answer = Question(question=q, answer=self.cleaned_data['question_%s' % i]).save()
+
+            # # Take care of room swaps
+            # query = self.event.entry_event_association.filter(student__netid=self.student.netid)
+            # if query:
+            #     for q in query:
+            #         q.room = self.cleaned_data['room_choice']
+            #         q.save()
+            
+            # Check if there is something new to be added
+            # query = self.event.entry_event_association.filter(student__netid=self.student.netid, guest=self.guest_name)
+            # if not query:
+            #     self.entry.save()
+
+            # # If we already ahve queries with guests, cleanup queries with members but no guests.
+            # query_withguest = self.event.entry_event_association.filter(student__netid=self.student.netid).exclude(guest='')
+            # query_noguest = self.event.entry_event_association.filter(student__netid=self.student.netid, guest='')
+
+            # if query_withguest:
+            #     for q in query_noguest:
+            #         q.delete()
 
 
 class EntryDeletionForm(forms.Form):
@@ -202,9 +262,211 @@ class EntryDeletionForm(forms.Form):
         if self.is_valid():
             self.entry.delete()
 
+class ChangeAnswersForm(forms.Form):
+    '''
+        Changes the answers to the questions on the form
+    '''
+
+    # Submit buttons
+    helper = FormHelper()   
+    helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
+
+    def __init__(self, *args, **kwargs):
+        self.entry = kwargs.pop('entry')
+        self.student = kwargs.pop('student')
+
+        super(ChangeAnswersForm, self).__init__(*args, **kwargs)
+     
+        # Add the questions, if there are any
+        for i, q in enumerate(self.entry.event.question_set.all()):
+            self.fields['question_%s' % i] = forms.CharField(label=q.question_text, 
+                                                             help_text=q.help_text,
+                                                            required=q.required)
+
+        self.question_set = self.entry.event.question_set.all()
+
+    def clean(self):
+        if self.entry.student.netid != self.student.netid:
+            raise forms.ValidationError('The student entry does not match the logged in student. Please log in with the student who made the rsvp.')
+        return self.cleaned_data
+
+    def change_answers(self):
+        # Change the answers to all of the questions
+        for i, q in enumerate(self.question_set):
+            answer_q = self.entry.answers.filter(question=q)
+
+            for answer in answer_q:
+                ans = self.cleaned_data.get('question_%s' % i)
+                answer.answer_text = ans
+                answer.save()
+            
+
+class ChangeGuestForm(forms.Form):
+    '''
+        Adds/Modifies/Removes guest
+    '''
+    def __init__(self, *args, **kwargs):
+        self.entry = kwargs.pop('entry')
+        self.student = kwargs.pop('student')
+
+        super(ChangeGuestForm, self).__init__(*args, **kwargs)
+     
+        self.fields['guest_first_name'] = forms.CharField(required=False, 
+                                                          help_text="Leave blank to remove guest")
+        self.fields['guest_last_name'] = forms.CharField(required=False,
+                                                              help_text="Else, type the name of the new guest")
+
+    # Submit buttons
+    helper = FormHelper()   
+    helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
+
+    def clean(self):
+        if self.entry.student.netid != self.student.netid:
+            raise forms.ValidationError('The student entry does not match the logged in student. Please log in with the student who made the rsvp.')
+
+        # Check if this form is to remove a guest
+        fname = self.cleaned_data.get('guest_first_name')
+        lname = self.cleaned_data.get('guest_last_name')
+
+        self.guest_name = "%s %s" % (fname, lname)
+        self.guest_name = self.guest_name.strip()
+
+        if self.is_guest_remove():
+            self.status = 'remove'
+            return self.cleaned_data
+        if self.is_duplicate_entry(fname, lname):
+            raise forms.ValidationError("You already have %s as your guest for this entry. Please use this form to remove or swap." % ("%s %s" % (fname, lname)))
+        if self.is_guest_swap():
+            self.status = 'swap'
+            return self.cleaned_data
+        self.status = 'add'
+        if self.is_over_guest_limit():
+            guest_limit = self.entry.event.guest_limit
+            guest_list = self.entry.event.get_guests(self.student)
+            raise forms.ValidationError("The guest limit is %s. You already have '%s' as your guests" % (guest_limit, guest_list))
+        if self.is_room_is_too_full(fname, lname):
+            num = self.entry.room.num_people()
+            lim = self.entry.room.limit
+            raise forms.ValidationError("We cannot add your guest to the room because it is over capacity %s/%s" % (num, lim))
+
+        return self.cleaned_data
 
 
+    def is_guest_remove(self):
+        if not self.guest_name:
+            return True
+
+    def is_duplicate_entry(self, fname, lname):
+        if self.guest_name.lower() == self.entry.guest.lower().strip():
+            return True
+        return False
+
+    def is_over_guest_limit(self):
+        if self.guest_name:
+            guest_list = self.entry.event.get_guests(self.student)
+            return len(guest_list) >= self.entry.event.guest_limit
+        return False
+
+    def is_guest_swap(self):
+        if self.entry.guest and self.guest_name:
+            return True
+        return False
+
+    def is_room_is_too_full(self, fname, lname):
+        '''
+            Is the room too full to add one more person?
+        '''
+
+        # if self.entry.event.contains_name_in_entry_set(fname, lname):
+        #     return False
+
+
+        if self.guest_name:
+            num = self.entry.room.num_people()
+            lim = self.entry.room.limit
+            return num >= lim
+
+        return False
+
+    def remove_guest(self):
+        self.entry.guest = ''
+        self.entry.save()
+
+    def add_guest(self):
+
+        self.entry.guest = self.guest_name
+        self.entry.save()
+
+    def swap_guest(self):
+        self.remove_guest()
+        self.add_guest()
+
+    def change_guest(self):
+
+        if self.is_valid():
+            if self.status == 'remove':
+                return self.remove_guest()
+            if self.status == 'swap':
+                return self.swap_guest()
+            if self.status == 'add':
+                return self.add_guest()
+
+class ChangeRoomForm(forms.Form):
+    '''
+        Changes the room for the person
+    '''
+    def __init__(self, *args, **kwargs):
+        self.entry = kwargs.pop('entry')
+        self.student = kwargs.pop('student')
+
+        super(ChangeRoomForm, self).__init__(*args, **kwargs)
+        self.fields['room_choice']= forms.ModelChoiceField(required=True,
+                                                  widget = forms.Select,
+                                                  queryset = self.entry.event.event_room.all(), )
+
+    # Submit buttons
+    helper = FormHelper()   
+    helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
+
+    def clean(self):
+        if self.entry.student.netid != self.student.netid:
+            raise forms.ValidationError('The student entry does not match the logged in student. Please log in with the student who made the rsvp.')
+
+        if self.is_full():
+            name = self.cleaned_data['room_choice'].name
+            num = self.cleaned_data['room_choice'].num_people()
+            limit = self.cleaned_data['room_choice'].limit
+            people = self.additional_people()
+            raise forms.ValidationError('The room %s is has %s/%s people. Cannot add %s to this room. ' % (name, num, limit, people))
+
+        return self.cleaned_data
     
+    def is_full(self):
+        room =  self.cleaned_data['room_choice']
+        total = len(self.additional_people()) + room.num_people()
+
+        return total > room.limit
+
+    def additional_people(self):
+        entry_q = self.entry.event.entry_event_association.filter(student__netid=self.student.netid)
+
+        add_people = ["%s %s" % (self.student.first_name, self.student.last_name)]
+
+        for entry in entry_q:
+            if entry.guest:
+                add_people.append(entry.guest)
+
+        return add_people
+
+    def change_room(self):
+        if self.is_valid():
+            room = self.cleaned_data['room_choice']
+            entry_q = self.entry.event.entry_event_association.filter(student__netid=self.student.netid)
+            for entry in entry_q:
+                entry.room = room
+                entry.save()
+
+
 
 # class EventCreateForm(forms.ModelForm):
 #     class Meta:
