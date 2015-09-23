@@ -146,15 +146,17 @@ MEDIA_URL = '/media/'
 ON_HEROKU = os.environ.get('ON_HEROKU')
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),  # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2', # WAS 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),  # Or path to database file if using sqlite3.
+        'NAME': 'ddkidtgk9fbdge',
         # The following settings are not used with sqlite3:
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+        'USER': 'eywigllpkckjyf',
+        'PASSWORD': 'bZcWz2ZdXU3vye3tqsCyIRk1Tm',
+        'HOST': 'ec2-54-204-20-164.compute-1.amazonaws.com',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '5432',                      # Set to empty string for default.
     }
 }
+
 if ON_HEROKU:
     # recommend heroku settings for databases at <https://devcenter.heroku.com/articles/getting-started-with-django>
     import dj_database_url
@@ -196,4 +198,6 @@ STATICFILES_FINDERS = ('django.contrib.staticfiles.finders.FileSystemFinder',
                        'dajaxice.finders.DajaxiceFinder')
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
+# From: https://devcenter.heroku.com/articles/django-assets
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 

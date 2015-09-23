@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
             name='Answer',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('answer_text', models.CharField(max_length=1000.0, verbose_name=b'Answer')),
+                ('answer_text', models.CharField(max_length=255, verbose_name=b'Answer')),
             ],
             options={
             },
@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
             name='Entry',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('guest', models.CharField(max_length=1000, blank=True)),
+                ('guest', models.CharField(max_length=40, blank=True)),
                 ('answers', models.ManyToManyField(to='events.Answer')),
             ],
             options={
@@ -44,15 +44,16 @@ class Migration(migrations.Migration):
                 ('snippet', models.TextField(help_text=b'To be displayed on the website. (Optional).', verbose_name=b'Description')),
                 ('image', models.ImageField(validators=[events.models.validate_image], upload_to=b'event_images/', blank=True, help_text=b'To be displayed on the website. (Optional).', null=True)),
                 ('is_points_event', models.BooleanField(default=False, help_text=b'Do Prospectives who attend get points?', verbose_name=b'Is Point Event:')),
-                ('prospective_limit', models.IntegerField(default=0, help_text=b'set 0 to not allow prospectives', verbose_name=b'Prospectives Limit')),
+                ('display_to_non_members', models.BooleanField(default=True, help_text=b'Are non-members allowed to see this event?', verbose_name=b'Public Event')),
+                ('prospective_limit', models.IntegerField(default=0, help_text=b'set 0 to not allow prospectives. This will also hide it on the website from them (email me, Quan, to turn this feature off).', verbose_name=b'Prospectives Limit')),
                 ('guest_limit', models.IntegerField(default=1, help_text=b'0 = No guests allowed. -1 = As many guests as they can.', verbose_name=b'Guest Limit')),
-                ('date', models.DateField(default=datetime.datetime(2015, 9, 20, 1, 54, 2, 318632, tzinfo=utc), verbose_name=b'Date of Event')),
+                ('date', models.DateField(default=datetime.datetime(2015, 9, 23, 2, 37, 1, 779496, tzinfo=utc), verbose_name=b'Date of Event')),
                 ('time', models.TimeField(default=datetime.time(17, 0), help_text=b'IMPORTANT. THIS IS IN MILITARY TIME.', verbose_name=b'Time of Event')),
-                ('signup_end_time', models.DateField(default=datetime.datetime(2015, 9, 20, 1, 54, 2, 318632, tzinfo=utc))),
-                ('prospective_signup_start', models.DateField(default=datetime.datetime(2015, 9, 20, 1, 54, 2, 318632, tzinfo=utc), blank=True)),
-                ('sophomore_signup_start', models.DateField(default=datetime.datetime(2015, 9, 20, 1, 54, 2, 318632, tzinfo=utc), blank=True)),
-                ('junior_signup_start', models.DateField(default=datetime.datetime(2015, 9, 20, 1, 54, 2, 318632, tzinfo=utc), blank=True)),
-                ('senior_signup_start', models.DateField(default=datetime.datetime(2015, 9, 20, 1, 54, 2, 318632, tzinfo=utc), blank=True)),
+                ('signup_end_time', models.DateField(default=datetime.datetime(2015, 9, 23, 2, 37, 1, 779496, tzinfo=utc))),
+                ('prospective_signup_start', models.DateField(default=datetime.datetime(2015, 9, 23, 2, 37, 1, 779496, tzinfo=utc), blank=True)),
+                ('sophomore_signup_start', models.DateField(default=datetime.datetime(2015, 9, 23, 2, 37, 1, 779496, tzinfo=utc), blank=True)),
+                ('junior_signup_start', models.DateField(default=datetime.datetime(2015, 9, 23, 2, 37, 1, 779496, tzinfo=utc), blank=True)),
+                ('senior_signup_start', models.DateField(default=datetime.datetime(2015, 9, 23, 2, 37, 1, 779496, tzinfo=utc), blank=True)),
                 ('signup_time', models.TimeField(default=datetime.time(17, 0), help_text=b'IMPORTANT. THIS IS IN MILITARY TIME.', verbose_name=b'Start/End  Time for signups')),
             ],
             options={
@@ -64,8 +65,9 @@ class Migration(migrations.Migration):
             name='Question',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('question_text', models.CharField(max_length=1000.0, verbose_name=b'Question Text')),
-                ('help_text', models.CharField(max_length=1000.0, verbose_name=b'Help Text')),
+                ('question_text', models.CharField(max_length=255, verbose_name=b'Question Text')),
+                ('help_text', models.CharField(max_length=255, verbose_name=b'Help Text', blank=True)),
+                ('required', models.BooleanField(default=False)),
                 ('event', models.ForeignKey(to='events.Event')),
             ],
             options={
@@ -76,7 +78,7 @@ class Migration(migrations.Migration):
             name='Room',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(help_text=b'Where is the Event Held?', max_length=255)),
+                ('name', models.CharField(help_text=b'Where is the Event Held?', max_length=127)),
                 ('limit', models.IntegerField()),
                 ('event', models.ForeignKey(related_name='event_room', to='events.Event')),
             ],

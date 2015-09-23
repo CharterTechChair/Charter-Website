@@ -228,9 +228,10 @@ class Member(Student):
         officer_param['is_active'] = True
         officer_param['order'] = order
 
+        self.delete()
         # Now re-insert as an officer
         Officer.objects.create(**officer_param)
-        self.delete()
+        
 
     # Get the years in which membership spans over
     @staticmethod

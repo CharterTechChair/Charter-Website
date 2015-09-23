@@ -153,4 +153,3 @@ for officer, (position, order) in officer_list.iteritems():
 
 # Now for some prospectives
 Prospective(first_name='Julia', last_name='Who', netid='jkhu', year='2017', events_attended=0).save()
-Prospective(first_name='Quan', last_name='Zhou', netid='quanzhou', year='2018', events_attended=0).save()

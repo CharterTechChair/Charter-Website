@@ -53,7 +53,7 @@ class Migration(migrations.Migration):
             name='Student',
             fields=[
                 ('person_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='charterclub.Person')),
-                ('netid', models.CharField(max_length=100, verbose_name=b'Princeton Net ID', validators=[django.core.validators.RegexValidator(b'^[0-9a-zA-Z]*$', b'Only alphanumeric characters are allowed.')])),
+                ('netid', models.CharField(unique=True, max_length=100, verbose_name=b'Princeton Net ID', validators=[django.core.validators.RegexValidator(b'^[0-9a-zA-Z]*$', b'Only alphanumeric characters are allowed.')])),
                 ('year', models.IntegerField(verbose_name=b'Graduation Year')),
             ],
             options={

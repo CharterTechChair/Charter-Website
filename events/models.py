@@ -22,9 +22,9 @@ def JSON_validator(arg):
 
 class Question(models.Model):
     question_text = models.CharField("Question Text", 
-                                max_length=1e3)
+                                max_length=255)
     help_text = models.CharField("Help Text", blank=True,
-                                max_length=1e3)
+                                max_length=255)
     event = models.ForeignKey('Event')
     required = models.BooleanField(default=False)
 
@@ -34,7 +34,7 @@ class Question(models.Model):
 class Answer(models.Model):
     question = models.ForeignKey('Question', related_name="question_answer_association")
     answer_text =  models.CharField("Answer", 
-                                max_length=1e3)
+                                max_length=255)
 
     def __unicode__(self):
         return "%s:%s" % (self.question.question_text, self.answer_text)
@@ -48,7 +48,7 @@ class Entry(models.Model):
                               'year__lte' : Student.get_senior_year() + 2,},
                               related_name='event_student_association',
                               related_query_name="student",)
-    guest  = models.CharField(max_length=1000, blank=True,)
+    guest  = models.CharField(max_length=40, blank=True,)
 
     event = models.ForeignKey('Event', related_name="entry_event_association")
     room = models.ForeignKey('Room', related_name="entry_room_association")
@@ -87,7 +87,7 @@ class Room(models.Model):
     '''
         A Room to an event.
     '''
-    name = models.CharField(max_length=255, help_text="Where is the Event Held?")
+    name = models.CharField(max_length=127, help_text="Where is the Event Held?")
     limit = models.IntegerField()
     event = models.ForeignKey('Event', related_name="event_room")
     
