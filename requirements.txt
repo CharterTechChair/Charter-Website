@@ -16,4 +16,5 @@ django-jquery==1.9.1
 django-static-jquery==2.1.4
 simplejson==3.6.5
 jsmin==2.0.3
-Pillow==2.6.1
+Pillow==2.6.
+whitenoise==2.0.4
