@@ -49,8 +49,13 @@ class EventEntryForm(forms.Form):
         if self.event.guest_limit != 0 and self.student.__class__.__name__!= 'Prospective':
             self.fields['guest_first_name'] = forms.CharField(required=False, 
                                                               help_text="Leave blank if you're not bringing a guest")
+
+            if self.event.guest_limit > 1:
+                help_text="You can resubmit this form to bring more guests."
+            else:
+                help_text = 'Enter the guest name'
             self.fields['guest_last_name'] = forms.CharField(required=False,
-                                                              help_text="You can resubmit this form to bring more guests.")
+                                                              help_text=help_text)
 
         # Add the questions, if there are any
         for i, q in enumerate(self.event.question_set.all()):
