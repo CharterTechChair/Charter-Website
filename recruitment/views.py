@@ -2,12 +2,12 @@ from charterclub.permissions import render
 from recruitment.forms import AccountCreationForm
 
 
-# Flatpages stuff
-def recruitment_benefits(request):
-    return render(request, "flatpages_default/recruitment_benefits.html")
+# # Flatpages stuff
+# def recruitment_benefits(request):
+#     return render(request, "flatpages_default/recruitment_benefits.html")
 
-def recruitment_information(request):
-    return render(request, "flatpages_default/recruitment_information.html")    
+# def recruitment_information(request):
+#     return render(request, "flatpages_default/recruitment_information.html")    
 
 
 
