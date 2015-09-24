@@ -32,7 +32,7 @@ TEMPLATE_DEBUG = True
 #     "\\","/"),)
 
 # Needed for Django Flatpages
-SITE_ID = 1
+SITE_ID = 2
 
 # For managing templates
 TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), "..", "templates").replace('\\', '/'),)
@@ -188,11 +188,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
-
-# Static files on AWS S3 with Heroku:
-# (1) http://stackoverflow.com/questions/20480984/serve-static-files-on-heroku-using-aws-s3-for-django
-#    (1a) http://blog.doismellburning.co.uk/django-and-static-files/
-#    (1b) http://blog.doismellburning.co.uk/using-amazon-s3-to-host-your-django-static-files/
 
 # STATIC_URL = '/static/'
 

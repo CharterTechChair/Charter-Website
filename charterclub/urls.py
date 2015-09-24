@@ -4,6 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 import dajaxice
 from dajaxice.core import dajaxice_config, dajaxice_autodiscover
+from django.contrib.flatpages import views
 
 dajaxice_autodiscover()
 admin.autodiscover()
@@ -107,10 +108,12 @@ urlpatterns = patterns('',
     # Django Admin
     url(r'^admin/',include(admin.site.urls)),
     # Django Flatpages
-    url(r'^pages/', include('django.contrib.flatpages.urls')),
+    # url(r'^about/', include('django.contrib.flatpages.urls')),
 
     # For serving Media files
-) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+) \
++ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) \
++ [url(r'^(?P<url>.*/)$', views.flatpage),]
 
 if settings.DEBUG == False:
     urlpatterns += patterns('', url(r'',
