@@ -174,8 +174,8 @@ def profile(request):
 
     # Reject them if not valid netid
     if not netid_s:
-      return render(request, "permission_denied.html",
-              {"required_permission": "member or prospective"}) 
+        return render(request, "permission_denied.html",
+                {"required_permission": "member or prospective"}) 
 
     # Do lookups in the database
     m_query = Member.objects.filter(netid=netid_s)
