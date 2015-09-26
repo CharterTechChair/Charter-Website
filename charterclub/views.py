@@ -24,7 +24,7 @@ import permissions
 from permissions import render
 
 from ldap_student_lookup import get_student_info
-
+from recruitment.forms import AccountCreationForm
 
 
 ########################################################################
@@ -150,20 +150,6 @@ def faceboard_year(request, year):
       'display_membership' : members,
     })
 
-# greeting page
-@permissions.member
-def hello(request):
-    now = datetime.datetime.now().date()
-    
-    m = Member.objects.filter(netid=permissions.get_username(request))[0]
-
-    return render(request, "hello.html", {
-       'current_date': now,
-       'm': m,
-       'netid': permissions.get_username(request),
-    })
-
-
 
 # Allows a member or a prospective to view their page
 # DO NOT use the decorator permissions.member or permissions.prospective on this
@@ -174,8 +160,8 @@ def profile(request):
 
     # Reject them if not valid netid
     if not netid_s:
-        return render(request, "permission_denied.html",
-                {"required_permission": "member or prospective"}) 
+        return render(request,"permission_denied.html",
+                {"required_permission": "a Princeton student with a netid."}) 
 
     # Do lookups in the database
     m_query = Member.objects.filter(netid=netid_s)
@@ -197,38 +183,21 @@ def profile(request):
             'netid': permissions.get_username(request)
         })
 
-
-    return render(request, "permission_denied.html",
-                  {"required_permission": "member or prospective"})
-
-def mailinglist(request):
+     # If they're making a new account...
     if request.method == 'POST':
-      form = MailingListForm(request.POST)
-      if form.is_valid():
-        form.add_soph()
-
-        return HttpResponseRedirect('contactus')
-          
+        form = AccountCreationForm(request.POST, netid=netid_s)
+        if form.is_valid():
+            prospective = form.create_account()
+            
+            return render(request, "recruitment/create_account_success.html", {
+                    'prospective' : prospective,
+                })
     else:
-      form = MailingListForm()
+        form = AccountCreationForm(netid=netid_s)
+
+    return render(request,  "charterclub/login_no_account.html", {'form': form})
 
 
-    return render(request, 'mailinglist.html', {
-       'form': form,
-       'netid': permissions.get_username(request),
-     })  
-
-# view the list of people who have signed up for our mailing list.
-# should probably implement an actual listserv of some description
-# at some point
-@permissions.officer
-def mailinglist_view(request):
-    plist = Prospective.objects.filter(mailing_list=True)
-
-    return render(request, "mailinglist_view.html", {
-       'plist': plist,
-       'netid': permissions.get_username(request)
-    })
 
 def permission_denied(request):
     return render(request, "permission_denied.html")

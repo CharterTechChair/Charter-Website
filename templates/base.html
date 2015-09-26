@@ -117,7 +117,6 @@
                     <ul class="dropdown-menu">
                       
                       <li><a href="{%url 'profile' %}"> Profile </a></li>
-                      <li><a href="{%url 'mailinglist' %}">Mailing List</a></li>
                       <li><a href="{%url 'meal_signup' %}">Sophomore Meals</a></li>
                       <li><a href="{%url 'events_list' %}"> Signup for Events </a></li>
                       
@@ -144,7 +143,7 @@
                     <ul class="dropdown-menu">
                       <!-- <li><a href="{%url 'add' %}">Update Calendar</a></li>
                       <li><a href="{%url 'menu_input' %}">Change Menu</a></li> -->
-                      <li><a href="{%url 'mailinglist_view' %}">Sophomore Mailing List</a></li>
+                      <li><a href="{%url 'mailing_list_view' %}">Sophomore Mailing List</a></li>
                       <li><a href="{%url 'admin:index' %}">Admin Control Panel</a></li>
                     </ul>
                   </li>
@@ -157,22 +156,27 @@
 
 
               <ul class="nav navbar-right navbar-nav">
-                {% if not student %}
-                <li><a href="{%url 'login' %}">Login</a></li>
+                {% if not netid %}
+                <li><a href="{%url 'login' %}?next_page={%url 'profile' %}">Login</a></li>
                 {% else %}
-                <li class="dropdown">
-                  <!-- need to check on this url call -->
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <i class="glyphicon glyphicon-chevron-down"></i></a>
-                  <ul class="dropdown-menu">
-                    <li class="loggedin"> Logged in as {{ student.first_name }} {{ student.last_name }}</li>
+                {% if student %}
+                  <li class="dropdown">
+                    <!-- need to check on this url call -->
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i> <i class="glyphicon glyphicon-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
 
-                    {% if member or prospective %}
-                    <li><a href="{%url 'profile' %}">Profile</a></li>
-                    {% endif %}
-                    
-                    <li><a href="{%url 'logout' %}">Logout</a></li>
-                  </ul>
-                </li>
+                      <li class="loggedin"> Logged in as {{ student.first_name }} {{ student.last_name }}</li>
+
+                      {% if member or prospective %}
+                      <li><a href="{%url 'profile' %}">Profile</a></li>
+                      {% endif %}
+                      
+                      <li><a href="{%url 'logout' %}">Logout</a></li>
+                    </ul>
+                  </li>
+                {% else %}
+                   <li><a href="{%url 'logout' %}">Logout</a></li>
+                  {% endif %}
                 {% endif %}
               </ul>
             </div><!-- /.navbar-collapse -->

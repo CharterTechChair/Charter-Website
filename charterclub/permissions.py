@@ -79,13 +79,13 @@ def additional_context(request):
 
     # Then return the results with the proper object pointers
     if o:
-        return { "officer" : o, "member" : o.member, "student" : o.member.student, "prospective" : p}
+        return { "netid": netid, "officer" : o, "member" : o.member, "student" : o.member.student, "prospective" : p}
     if m:  
-        return { "officer" : o, "member" : m, "student" : m.student, "prospective" : p}
+        return { "netid": netid, "officer" : o, "member" : m, "student" : m.student, "prospective" : p}
     if p:
-        return { "officer" : o, "member" : m, "student" : p.student, "prospective" : p}
+        return { "netid" : netid, "officer" : o, "member" : m, "student" : p.student, "prospective" : p}
 
-    return  { "officer" : None, "member" : None, "student" : None, "prospective" : None}
+    return  { "netid": netid, "officer" : None, "member" : None, "student" : None, "prospective" : None}
 
 
 # a replacement render function which passes some additional

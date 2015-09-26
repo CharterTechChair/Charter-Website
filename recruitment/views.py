@@ -1,5 +1,6 @@
 from charterclub.permissions import render
-from recruitment.forms import AccountCreationForm
+import charterclub.permissions as permissions
+from recruitment.forms import AccountCreationForm #, MailingListForm
 
 
 # # Flatpages stuff
@@ -13,22 +14,36 @@ from recruitment.forms import AccountCreationForm
 
 def create_account(request):
     ''' 
-        Create an account using the form
+        Display Recruitment information
     '''
 
-     # Give them a form to fill out
-    if request.method == 'POST':
-        form = AccountCreationForm(request.POST)
-        if form.is_valid():
-            prospective = form.create_account()
-            
-            return render(request, "recruitment/create_account_success.html", {
-                    'prospective' : prospective,
-                })
-    else:
-        form = AccountCreationForm()
+    return render(request, "recruitment/create_account.html")
 
-        
+# def mailing_list(request):
+#     if request.method == 'POST':
+#       form = MailingListForm(request.POST)
+#       if form.is_valid():
+#         form.add_soph()
 
-    return render(request, "recruitment/create_account.html", {
-                'form' : form,})
+#         return HttpResponseRedirect('contactus')
+          
+#     else:
+#       form = MailingListForm()
+
+
+#     return render(request, 'recruitment/mailinglist.html', {
+#        'form': form,
+#        'netid': permissions.get_username(request),
+#      })  
+
+# view the list of people who have signed up for our mailing list.
+# should probably implement an actual listserv of some description
+# at some point
+@permissions.officer
+def mailing_list_view(request):
+    plist = Prospective.objects.filter(mailing_list=True)
+
+    return render(request, "mailinglist_view.html", {
+       'plist': plist,
+       'netid': permissions.get_username(request)
+    })

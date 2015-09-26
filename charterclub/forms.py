@@ -172,38 +172,3 @@ YEARS = []
 for y in years:
     YEARS.append((y, str(y)))
 
-################################################################################
-# MailingListForm
-# To add sophomores based on the mailing list
-################################################################################
-class MailingListForm(forms.Form):
-    # Fields of this Form
-    netid = forms.CharField(max_length=10)
-    first_name = forms.CharField(max_length=30)
-    last_name = forms.CharField(max_length=30)
-    year = forms.ChoiceField(widget=forms.Select, choices=YEARS)
-
-    # Submit buttons
-    helper = FormHelper()   
-    helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
-
-    # Add sophomores based on the data collected
-    def add_soph(self):
-        if self.is_valid():
-            data = self.cleaned_data
-            
-            p = Prospective.objects.filter(netid=data['netid'])
-            if not p:
-                pnew = Prospective(netid=data['netid'],
-                                   first_name=data['first_name'],
-                                   last_name=data['last_name'],
-                                   year=data['year'],
-                                   events_attended=0)
-                pnew.save()
-
-        
-
-    # def __init__(self, *args, **kwargs):
-    #     super(MemberListForm, self).__init__(*args, **kwargs)
-    #     self.helper.form_tag = False
-

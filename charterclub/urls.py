@@ -80,14 +80,6 @@ urlpatterns = patterns('',
         'charterclub.views.contactus',
         name='contactus'),
     url(
-        r'^mailinglist$',
-        'charterclub.views.mailinglist',
-        name='mailinglist'),
-    url(
-        r'^mailinglist_view$',
-        'charterclub.views.mailinglist_view',
-        name='mailinglist_view'),
-    url(
         r'^underconstruction$',
         'charterclub.views.underconstruction',
         name='underconstruction'),
@@ -100,10 +92,7 @@ urlpatterns = patterns('',
         r'^accounts/logout/$',
         'django_cas.views.logout',
         name = 'logout'),
-    url(
-        r'^accounts/login/hello$', 
-        'charterclub.views.hello', 
-        name='hello'),
+    
     url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
     # Django Admin
     url(r'^admin/',include(admin.site.urls)),

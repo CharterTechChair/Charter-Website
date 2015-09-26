@@ -125,7 +125,7 @@ def limit_meals_signed_up():
 
 class Prospective(Student):
     events_attended = models.IntegerField(
-        'Number of events attended')
+        'Number of events attended', default=0)
     
     meals_attended = models.ManyToManyField(Meal, 
                     limit_choices_to=limit_meals_attended_choices,

@@ -24,13 +24,19 @@
     <p> The prospectives account should only be made for sophomores. Freshmen cannot join eating clubs until their sophomore year. Upperclassmen can join directly (email one of our officers). </p>
     
     <h5> How do I make one? </h5>
-    <p> Just fill out the form below, and we'll use Princeton CAS system to create an account for you our database. </p>
+    <p> <a href="{% url 'login' %}"> Login </a> with your Princeton netid first, and we'll use Princeton CAS system to create an account for you our database. </p>
 </section>
 <hr> 
-<h3> Account Creation Form </h3>
-<div class='col-sm-8 col-md-6'>
-    {% crispy form %}
-</div>
+
+{% if not student %}
+    <a href="{% url 'login' %}" class="btn btn-info" role="button"> Log into Princeton CAS </a> 
+{% else %}
+    <p> Looks like you have an account already! </p>
+{% endif %}
+
+
+
+
 
 
 
