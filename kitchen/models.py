@@ -40,7 +40,7 @@ class Meal(InheritanceCastModel):
 
 
     def __unicode__(self):
-        return "%s %s" % (self.day.strftime("%m/%d/%y %a"), self.display_name)
+        return "%s %s" % (self.day.strftime("%m/%d/%y %a"), self.__class__.__name__)
 
 
     def num_of_sophomores(self):
