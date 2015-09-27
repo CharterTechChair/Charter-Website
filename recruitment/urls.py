@@ -13,10 +13,10 @@ urlpatterns = patterns('',
     #     r'^information$', 
     #     'recruitment.views.recruitment_information', 
     #     name='recruitment_information'),
-    url(
-        r'^recruitment/create_account$', 
-        'recruitment.views.create_account', 
-        name='create_account'),
+    # url(
+    #     r'^recruitment/create_account$', 
+    #     'recruitment.views.create_account', 
+    #     name='create_account'),
     # url(
     #     r'^mailing_list$',
     #     'recruitment.views.mailing_list',

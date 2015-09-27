@@ -12,12 +12,12 @@ from recruitment.forms import AccountCreationForm #, MailingListForm
 
 
 
-def create_account(request):
-    ''' 
-        Display Recruitment information
-    '''
+# def create_account(request):
+#     ''' 
+#         Display Recruitment information
+#     '''
 
-    return render(request, "recruitment/create_account.html")
+#     return render(request, "recruitment/create_account.html")
 
 # def mailing_list(request):
 #     if request.method == 'POST':
