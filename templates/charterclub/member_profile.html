@@ -14,7 +14,8 @@
       <hr>
       <h4>Upcoming RSVP's:</h4>
       <ul>
-      {% for entry in future_entries %}
+      
+      {% for entry in member.get_future_related_entries.all %}
         <li>
           <h4> {{ entry.event }} </h4>
           <p> Time: {{ entry.event.time|time:"g:iA"}}  </p>

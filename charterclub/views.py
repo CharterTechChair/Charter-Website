@@ -164,7 +164,8 @@ def profile(request):
                 {"required_permission": "a Princeton student with a netid."}) 
 
     student = permissions.get_student(request)
-    future_entries = Entry.get_related_entries_for_student(student)
+    future_entries = Entry.get_future_related_entries_for_student(student)
+    past_entries = Entry.get_past_related_entries_for_student(student)
 
     # Show prospective page
     if student.__class__.__name__== 'Prospective':

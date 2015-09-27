@@ -95,6 +95,14 @@ class Student(Person):
     #     self.first_name = member.first_name
     #     self.last_name = member.last_name
 
+    def get_future_related_entries(self):
+        from events.models import Entry
+        return Entry.get_future_related_entries_for_student(self)
+
+    def get_past_past_related_entries(self):
+        from events.models import Entry
+
+        return Entry.get_past_related_entries_for_student(self)
 
 ###########################################################################
 # Prospective model
@@ -173,6 +181,10 @@ class Prospective(Student):
         print freq
         if  any(f > Prospective.monthly_meal_limit for f in freq.itervalues()):
             return True        
+
+
+
+
 
 ###########################################################################
 # Member

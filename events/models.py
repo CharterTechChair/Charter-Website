@@ -84,7 +84,7 @@ class Entry(models.Model):
         return urllib.quote('events/room_change/' + self.__unicode__().replace("/","|") + "/" + str(self.id))
 
     @staticmethod
-    def get_related_entries(fname, lname):
+    def get_future_related_entries(fname, lname):
         entry_q = Entry.objects.filter(event__date__gte=now, 
                                        student__first_name__icontains=fname, 
                                        student__last_name__icontains=lname)
@@ -94,8 +94,22 @@ class Entry(models.Model):
         return (entry_q | guest_q).order_by('-event__date')
 
     @staticmethod
-    def get_related_entries_for_student(student):
-        return Entry.get_related_entries(student.first_name, student.last_name)
+    def get_past_related_entries(fname, lname):
+        entry_q = Entry.objects.filter(event__date__lte=now, 
+                                       student__first_name__icontains=fname, 
+                                       student__last_name__icontains=lname)
+        guest_q = Entry.objects.filter(event__date__lte=now, 
+                                        guest__icontains=fname).filter(
+                                        guest__icontains=lname)
+        return (entry_q | guest_q).order_by('-event__date')
+
+    @staticmethod
+    def get_future_related_entries_for_student(student):
+        return Entry.get_future_related_entries(student.first_name, student.last_name)
+
+    @staticmethod
+    def get_past_related_entries_for_student(student):
+        return Entry.get_past_related_entries(student.first_name, student.last_name)
 
 class Room(models.Model):
     '''
