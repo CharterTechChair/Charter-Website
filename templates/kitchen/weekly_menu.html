@@ -7,12 +7,16 @@
 
 <container>
     <h2> Weekly Menu </h2>
+    <div class='row'>
+        <a href="{% url 'weekly_menu' %}/{{ prev_week.isoformat}}" class="btn btn-info" role="button"> Prev Week </a> <a href="{% url 'weekly_menu' %}/{{ next_week.isoformat}}" class="btn btn-info" role="button"> Next Week </a>
+    <div class='row'>
     <hr>
+    
 
-    <div class="col-xs-11 col-centered">
+    <div class="col-xs-12 col-sm-11 col-centered">
 
         <!-- Day here -->
-
+        
         {% for name, day, brunch, lunch, dinner in meals_week %}
         <div class='col-sm-12 menu-day'>
             <h3> {{ name }} </h3>

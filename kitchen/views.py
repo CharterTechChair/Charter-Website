@@ -7,14 +7,25 @@ from kitchen.models import Meal, Brunch, Lunch, Dinner
 from kitchen.forms import MealSignupForm
 
 from django.utils import timezone
-
+from django.utils.dateparse import parse_date
 import datetime
 
-# Displays the weekly menu for this week
-def weekly_menu(request):
+# Displays the weekly menu for a specific day
+def weekly_menu_day(request, date):
     # Find the relevant days
-    today = timezone.now()
-    monday = (today + datetime.timedelta(days=-today.weekday(), weeks=0)).date()
+    target = parse_date(date)
+
+    if not target:
+        return render(request, 'standard_message.html', {
+            'subject': 'Oops, looks like something went wonky.',
+            'body' : 'Could note parse_date from "%s"' % (date)
+
+            })
+
+    prev_week = target + datetime.timedelta(weeks=-1)
+    next_week = target + datetime.timedelta(weeks=1)
+
+    monday = (target + datetime.timedelta(days=-target.weekday(), weeks=0))
     week = [monday + datetime.timedelta(days=i) for i in range(0,7)]
     
     meals_iter = []
@@ -42,7 +53,13 @@ def weekly_menu(request):
 
     return render(request, 'kitchen/weekly_menu.html', {
         'meals_week' : meals_iter,
+        'prev_week' : prev_week,
+        'next_week' : next_week,
     })
+
+def weekly_menu(request):
+    return weekly_menu_day(request, timezone.now().date().isoformat())
+
 
 # Uses a calender widget to sign up for meals
 @permissions.prospective

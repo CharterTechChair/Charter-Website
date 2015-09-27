@@ -10,6 +10,10 @@ urlpatterns = patterns('',
         r'^weekly_menu$', 
         'kitchen.views.weekly_menu', 
         name='weekly_menu'),
+        url(
+    r'^weekly_menu/([0-9]{4}-[0-9]{1,2}-[0-9]{1,2})/$', 
+        'kitchen.views.weekly_menu_day', 
+        name='weekly_menu_day'),
     url(
         r'^meal_signup$', 
         'kitchen.views.meal_signup', 
