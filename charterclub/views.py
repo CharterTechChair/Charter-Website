@@ -120,11 +120,10 @@ def contactus(request):
 # Displays the current membership
 ########################################################################
 def faceboard(request):
+  
     # rollover = June 3nd
     senior_year = (date.today() - timedelta(days=153)).year + 1
-
     current_membership = Member.objects.filter(year__range=(senior_year, senior_year+2))
-
     year_options = Member.get_membership_years()
 
     return render(request, 'charterclub/faceboard.html', {

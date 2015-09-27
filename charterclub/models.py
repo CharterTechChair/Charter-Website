@@ -249,14 +249,11 @@ class Member(Student):
     @staticmethod
     def get_membership_years():
         years = []
-        minn = Member.objects.all().aggregate(Min('year'))['year__min']
-        maxx = Member.objects.all().aggregate(Max('year'))['year__max']
-
-        for y in range(minn, maxx+1):
-            if Member.objects.filter(year=y):
-                years.append(y)
-                
-        return years
+        
+        minn = Member.objects.exclude(netid='charter').order_by('year')[0].year
+        maxx = Member.objects.exclude(netid='charter').order_by('-year')[1].year
+               
+        return range(minn, maxx)
 
 
     def __iter__(self):

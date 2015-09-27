@@ -1,9 +1,5 @@
-# This is to be copy and pasted into the shell
-from charterclub.models import *
-import os
-os.sys.path.append('..')
-
 from django.core.files import File
+from charterclub.models import *
 
 # Insert Members
 member_list = [("Jean-Carlos", "Arenas", "jarenas", 2016),
@@ -101,9 +97,10 @@ member_list = [("Jean-Carlos", "Arenas", "jarenas", 2016),
 ("Christopher", "Moretti", "cmoretti", 2015),
 ("X. Kelvin", "Zou", "xuanz", 2015),
 ("Elba", "Garza", "elba", 2015),
-("Tom", "Wu", "tongbinw", '2015')]
+("Tom", "Wu", "tongbinw", 2015)]
 
-member_list +=
+
+member_list = member_list + \
     [('Jean-Carlos','Arenas','jarenas', 2016, 255.00),
     ('Andra','Bailard','abailard', 2016, 225.00),
     ('Curtis','Belmonte','curtislb', 2016, 255.00),
@@ -166,39 +163,16 @@ member_list +=
     ('Shirley','Zhu','shirleyz', 2016, 255.00),
     ('Daniel','Zirkel','dzirkel', 2016, 255.00),
     ('Joshua','Zuckerman','jrz', 2016, 255.00)]
-
+# Insert member images - NOTE. MUST HAVE THE MEMBER IMAGES SAVED IN '/media/member_images/<netid>'
+# you ALSO need to be the project root directory
 for row in member_list:
-    Member(first_name=row[0], last_name=row[1], netid=row[2], year=row[3], house_account=255.00,
-           ).save()
+    try:
+        netid = row[2]
+        url = 'media/member_images/%s.jpg' % netid
+        image = File(open(url))
 
-
-# Officers Here
-officer_list = {'jarenas': ('President', 1),
-                'roryf' : ( 'Vice President', 2),
-                'rad3': ('Treasurer', 3),
-                'ddore': ('Social Chair', 4),
-                'msabbott' : ('Kitchen Manager', 5),
-                'cat3': ('Kitchen Manager', 5),
-                'kblair': ('House Manager', 6),
-                'ecblum': ('Liquid Assets', 7),
-                'moluo': ('Liquid Assets', 7),
-                'shirleyz': ('Liquid Assets', 7),
-                'hannahgm': ('Communications Chair', 8),
-                'dennisds': ('Events Chair', 8),
-                'dzirkel': ('Events Chair', 8),
-                'dschen' : ('Community Service Chair / Sustainability Chair', 9),
-                'ljkelly': ('Community Service Chair / Sustainability Chair', 9),
-                'erictp': ('Intramurals Chair', 10),
-                'curtislb': ('Games Chair', 11),
-                'yinaba': ('Games Chair', 11),
-                'quanzhou': ('Webmaster', 12),
-                'jwhitton': ('Webmaster',12),
-               }
-
-
-for officer, (position, order) in officer_list.iteritems():
-    m = Member.objects.filter(netid=officer)[0]
-    m.promote_to_officer(position, order=order)
-
-# Now for some prospectives
-Prospective(first_name='Julia', last_name='Who', netid='jkhu', year='2017', events_attended=0).save()
+        m_o = Member.objects.filter(netid=netid)[0]
+        m_o.image.save(url, image)
+        m_o.save()
+    except:
+        print "Could not find an image for member: %s %s" % (row[0], row[1])
