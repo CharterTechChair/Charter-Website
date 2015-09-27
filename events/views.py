@@ -31,25 +31,30 @@ def events_list(request):
     future_events = Event.objects.filter(date__gte=now).order_by("-date")
     past_events = Event.objects.filter(date__gte=begin_date, date__lte=now).order_by("-date")
 
-    # If it is a prospective, then don't show the ones where sophomores are not allowed
-    future_events = [e for e in future_events if e.display_to_non_members]
-    past_events = [e for e in past_events if e.display_to_non_members]
+    # # If it is a prospective, then don't show the ones where sophomores are not allowed
+    # future_events = [e for e in future_events if e.display_to_non_members]
+    # past_events = [e for e in past_events if e.display_to_non_members]
 
     # If there is a login, setup the proper page for him
     student = permissions.get_student(request)
 
     if student:
         future_events_q = [e.has_student(student) for e in future_events]
+        future_rsvp_guests = [e.get_guests(student) for e in future_events]
         past_events_q     = [e.has_student(student) for e in past_events]
+        past_rsvp_guests = [e.get_guests(student) for e in past_events]
     else:
         future_events_q = [False for e in future_events]
+        future_rsvp_guests = [[] for e in future_events]
         past_events_q = [False for e in past_events]
+        past_rsvp_guests = [[] for e in past_events]
+
         
     return render(request, 'events/events_list.html', {
       'error': '',
       'netid': permissions.get_username(request),
-      'future_events': zip(future_events, future_events_q),
-      'past_events' : zip(past_events, past_events_q),
+      'future_events': zip(future_events, future_events_q, future_rsvp_guests),
+      'past_events' : zip(past_events, past_events_q, past_rsvp_guests),
     })  
 
 @permissions.student

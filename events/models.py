@@ -186,17 +186,19 @@ class Event(models.Model):
     time = models.TimeField("Time of Event", help_text="IMPORTANT. THIS IS IN MILITARY TIME.", 
                             default=DEFAULT_TIME)
 
-    signup_end_time = models.DateField(default=now)
+    
 
     # Times for Junior Seniors and Sophomores
+    require_rsvp = models.BooleanField("Does this event require an RSVP?", default=False)
+
     prospective_signup_start = models.DateField(default=now, blank=True)
     sophomore_signup_start = models.DateField(default=now, blank=True)
     junior_signup_start    = models.DateField(default=now, blank=True)
     senior_signup_start    = models.DateField(default=now, blank=True)
     signup_time            = models.TimeField("Start/End  Time for signups", help_text="IMPORTANT. THIS IS IN MILITARY TIME.", 
                             default=DEFAULT_TIME)    
-
-    # Room is done with an ForeignKey
+    signup_end_time = models.DateField(default=now)
+    
 
     class Meta:
             ordering = ("date", "time", "name",)
@@ -252,6 +254,20 @@ class Event(models.Model):
         '''
 
         return [entry.guest.strip() for entry in self.entry_event_association.filter(student__netid=student.netid) if entry.guest.strip()]
+
+    def current_num_participants(self):
+        current_num = [room.num_people() for room in self.event_room.all()]
+        return sum(current_num)
+
+    def max_num_participants(self):
+        max_num = [room.limit for room in self.event_room.all()]
+        return sum(max_num)
+
+    def num_prospectives(self):
+        all_students = [e.student.cast() for e in self.entry_event_association.all()]
+        prospectives = [s for s in all_students if s.__class__.__name__ == 'Prospective']
+        return len(prospectives)
+
 
     def __unicode__(self):
         return "%s, %s" % (self.title, self.date.isoformat()[:10])

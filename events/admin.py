@@ -46,7 +46,8 @@ class EventAdmin(admin.ModelAdmin):
                                 'fields' : ['guest_limit', 'is_points_event', 'prospective_limit', 'display_to_non_members']}),
         ('Signup Information', 
                                 {'description' : 'More optional parameters.',
-                                 'fields': ['senior_signup_start',
+                                 'fields': ['require_rsvp',
+                                            'senior_signup_start',
                                             'junior_signup_start',
                                             'sophomore_signup_start',
                                             'prospective_signup_start',
@@ -57,7 +58,7 @@ class EventAdmin(admin.ModelAdmin):
     ]
 
     inlines = [QuestionInline, RoomInline, EntryInline]
-    list_display = ['__unicode__', 'snippet', 'is_points_event', 'prospective_limit']
+    list_display = ['__unicode__', 'snippet', 'requires_rsvp', 'is_points_event', 'prospective_limit' ]
     ordering = ['-date']
 
 
@@ -67,6 +68,15 @@ class EventAdmin(admin.ModelAdmin):
         request._obj_ = obj
         return super(EventAdmin, self).get_form(request, obj, **kwargs)
 
+    def requires_rsvp(self, obj):
+        return obj.require_rsvp
+
+    # def total(self, obj):
+    #     return "%s/%s" % (obj.current_num_participants(), obj.max_num_participants())
+
+    # def prospectives(self, obj):
+    #     return "%s/%s" % (obj.num_prospectives(), obj.prospective_limit)
+    
 # # Register your models here.
 admin.site.register(Event, EventAdmin)
 # admin.site.register(Room, RoomAdmin)

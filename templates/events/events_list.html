@@ -23,34 +23,41 @@
       
       {% if future_events %}
         <ul>
-         {% for event, has_person in future_events %}
-             <li> 
-                <h4> {{event.date}} | {{ event.title }} </h4>
-                <p> Time: {{ event.time|time:"g:iA"}} 
-                    {% if event.guest_limit > 0 and member %}
-                      | Guest limit: {{ event.guest_limit}}
+         {% for event, has_person, rsvp_guests in future_events %}
+            {% if member or officer or event.display_to_non_members %}
+               <li> 
+                  <h4> {{event.date}} | {{ event.title }} </h4>
+                  <p> Time: {{ event.time|time:"g:iA"}} 
+                      {% if event.guest_limit > 0 and student %}
+                        | Guest limit: {% if member %} {{rsvp_guests|length}}/{% endif %}{{ event.guest_limit}}
+                      {% endif %}
+
+                   </p>
+
+                  {% if event.image %}
+                    <div class='event-image' style="background-image: url({{event.image.url}});"> 
+                    </div>
+                  {% endif %}
+                  <p> {{ event.snippet }} </p>
+                  
+                  {% if student %}
+                    {% if event.require_rsvp %}
+                      {% if not has_person %}
+                        <a href="/{{ event.get_signup_url }}" class="btn btn-info" role="button"> RSVP </a>
+                      {% else %}
+                        <a href="/{{ event.get_signup_url }}" class="btn btn-info" role="button"> Change RSVP </a>
+                      {% endif %}
+
+                      {% if officer %}
+                        <a href="/{{ event.get_officer_overview_url }}" class="btn btn-info" role="button"> Officer Overview </a>
+                      {% endif %}
+                    {% else %}
+                      <p> [This event does not require an RSVP] </p>
                     {% endif %}
 
-                 </p>
-
-                {% if event.image %}
-                  <div class='event-image' style="background-image: url({{event.image.url}});"> 
-                  </div>
-                {% endif %}
-                <p> {{ event.snippet }} </p>
-                
-                {% if member or officer or prospective %}
-                  {% if not has_person %}
-                    <a href="/{{ event.get_signup_url }}" class="btn btn-info" role="button"> RSVP </a>
-                  {% else %}
-                    <a href="/{{ event.get_signup_url }}" class="btn btn-info" role="button"> Change RSVP </a>
                   {% endif %}
-
-                  {% if officer %}
-                    <a href="/{{ event.get_officer_overview_url }}" class="btn btn-info" role="button"> Officer Overview </a>
-                  {% endif %}
-                {% endif %}
-             </li>
+               </li>
+             {% endif %}
          {% endfor %}
 
 
