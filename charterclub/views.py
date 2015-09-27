@@ -20,7 +20,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render_to_response
 
 from models import *
-import permissions
+import permissions as permissions
 from permissions import render
 
 from ldap_student_lookup import get_student_info
@@ -163,23 +163,23 @@ def profile(request):
         return render(request,"permission_denied.html",
                 {"required_permission": "a Princeton student with a netid."}) 
 
-    # Do lookups in the database
-    m_query = Member.objects.filter(netid=netid_s)
-    p_query = Prospective.objects.filter(netid=netid_s)
+    student = permissions.get_student(request)
+    future_entries = Entry.get_related_entries_for_student(student)
 
     # Show prospective page
-    if p_query:
-              return render(request, "charterclub/prospective_profile.html", {
-            'prospective': p_query[0],
-            # 'events': e,
-            'netid': permissions.get_username(request)
+    if student.__class__.__name__== 'Prospective':
+            return render(request, "charterclub/prospective_profile.html", {
+              'prospective': student,
+              'future_entries': future_entries,
+              # 'events': e,
+              'netid': permissions.get_username(request)
         })
               
     # Show members page 
-    if m_query:
+    if student.__class__.__name__== 'Member':
         return render(request, "charterclub/member_profile.html", {
-            'member': m_query[0],
-            # 'events': e,
+            'member': student,
+            'future_entries': future_entries,
             'netid': permissions.get_username(request)
         })
 

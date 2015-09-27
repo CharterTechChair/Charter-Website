@@ -83,6 +83,20 @@ class Entry(models.Model):
     def get_room_change_url(self):
         return urllib.quote('events/room_change/' + self.__unicode__().replace("/","|") + "/" + str(self.id))
 
+    @staticmethod
+    def get_related_entries(fname, lname):
+        entry_q = Entry.objects.filter(event__date__gte=now, 
+                                       student__first_name__icontains=fname, 
+                                       student__last_name__icontains=lname)
+        guest_q = Entry.objects.filter(event__date__gte=now, 
+                                        guest__icontains=fname).filter(
+                                        guest__icontains=lname)
+        return (entry_q | guest_q).order_by('-event__date')
+
+    @staticmethod
+    def get_related_entries_for_student(student):
+        return Entry.get_related_entries(student.first_name, student.last_name)
+
 class Room(models.Model):
     '''
         A Room to an event.
@@ -202,7 +216,8 @@ class Event(models.Model):
 
     class Meta:
             ordering = ("date", "time", "name",)
-            
+    
+
     def get_signup_url(self):
         '''
             return the url for signup
@@ -233,6 +248,18 @@ class Event(models.Model):
         guest_q = self.entry_event_association.filter(guest__icontains=student.first_name.lower())\
                                               .filter(guest__icontains=student.last_name.lower())
         return entry_q | guest_q
+
+    def which_room(self, student):
+        '''
+            Returns the room of the event
+        '''
+
+        entry_q = self.which_entries(student)
+
+        if not entry_q:
+            return ''
+        else:
+            return entry_q[0].room.name
 
     def contains_name_in_entry_set(self, fname, lname):
         '''

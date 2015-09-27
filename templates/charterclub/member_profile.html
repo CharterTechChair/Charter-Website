@@ -12,17 +12,13 @@
       <h4>House account balance:</h4>
       ${{ member.house_account }}
       <hr>
-      <h4>Upcoming events:</h4>
+      <h4>Upcoming RSVP's:</h4>
       <ul>
-      {% for event,room, guest_s in events %}
+      {% for entry in future_entries %}
         <li>
-          <h4> {{ event }} </h4>
-          <p>
-          You RSVP'd for {{ event }} in the {{ room }}.
-                {% if guest_s != "" %}
-                    Your guest is {{ guest_s }}.
-                {% endif %}
-          </p>
+          <h4> {{ entry.event }} </h4>
+          <p> Time: {{ entry.event.time|time:"g:iA"}}  </p>
+          <p>{{ entry }} </p>
         </li>
 
       {% endfor %} 
