@@ -52,8 +52,8 @@ def member(func):
 
 def prospective(func):
     def check_s(request, *args, **kwargs):
-        if not prospective(request):
-            return check_render(request, "permission_denied.html",
+        if not check_prospective(request):
+            return render(request, "permission_denied.html",
                           {"required_permission": "prospective"})
         return func(request, *args, **kwargs)
     return check_s

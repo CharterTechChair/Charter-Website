@@ -1,6 +1,7 @@
 from charterclub.permissions import render
 import charterclub.permissions as permissions
 from recruitment.forms import AccountCreationForm #, MailingListForm
+from charterclub.models import Prospective
 
 
 # # Flatpages stuff
