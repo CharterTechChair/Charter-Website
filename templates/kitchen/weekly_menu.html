@@ -49,7 +49,7 @@
                             <p> {{ brunch.omlette }} </p>
                             
                             {% if brunch.special_note %}
-                            <strong style="font-size:0.75em;"> *{{ brunch.special_note }} </strong>
+                            <strong class='meal-special-note'> *{{ brunch.special_note }} </strong>
                             {% endif %}
                         </div>
 
@@ -72,7 +72,7 @@
                             <p> {{ lunch.salad }} </p>
                             
                             {% if lunch.special_note %}
-                            <strong style="font-size:0.75em;"> *{{ lunch.special_note }} </strong>
+                            <strong class='meal-special-note'> *{{ lunch.special_note }} </strong>
                             {% endif %}
                         </div>
 
@@ -97,7 +97,7 @@
                         <p> {{ dinner.salad }} </p>
                         
                         {% if dinner.special_note %}
-                        <strong style="font-size:0.75em;"> *{{ dinner.special_note }} </strong>
+                        <strong class='meal-special-note'> *{{ dinner.special_note }} </strong>
                         {% endif %}                    
                     </div>
              </div>

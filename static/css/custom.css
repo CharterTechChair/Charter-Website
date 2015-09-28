@@ -174,6 +174,10 @@ div.event-image {
   padding-top: 5px;
 }
 
+.meal-special-note {
+  font-size:0.75em;
+}
+
 .menu-text > p {
   margin-left: 5px;
 }

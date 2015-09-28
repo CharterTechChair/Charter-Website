@@ -11,9 +11,9 @@
 .meal-descript {
     display: none;
 }
-/*h2 {
-    font-size: 1.25em;
-}*/
+h2 {
+    font-size: 3.0em;
+}
 
 h3 {
     font-size: 2.0em;
@@ -23,7 +23,9 @@ h3 {
     font-size: 9px;
 }
 
-
+.meal-special-note {
+    font-size: 8px;
+}
 .panel-transparent .panel-body {
     background-color: #fff !important;
 }
