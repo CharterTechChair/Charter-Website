@@ -6,10 +6,10 @@
 
 {% block content %}
 
-<h3> No Account Detected </h3>
+<h3> Looks like you're not on our mailing/members list </h3>
 <hr>
 
-<p> Looks like "{{ netid }}" isn't someone in our database. If you are a: </p>
+<p> The netid "{{ netid }}" isn't someone in our database. If you are a: </p>
 <ul>
     <li> <strong> Sophomore - </strong> create an account below. </li> 
     <li> <strong> Member - </strong> Email our tech chair/webmaster (<a href="{%url 'officer_list' %}">officer page</a>) with subject "Account Creation - My Netid" and tell us your first name, last name, and year.</li> 
@@ -18,7 +18,7 @@
 For additional questions, please contact our tech chair/webmaster on our <a href="{%url 'officer_list' %}"> officer page</a>.
 
 <hr>
-<h3> Sophomore Account Creation Form </h3>
+<h3> Sign Up Here </h3>
 <p> We use API from <a href="https://tigerbook.herokuapp.com/"> https://tigerbook.herokuapp.com/ </a> to verify your information.</p>
     <div class='col-sm-8 col-md-6'>
         {% crispy form %}

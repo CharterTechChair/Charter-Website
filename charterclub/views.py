@@ -156,13 +156,30 @@ def faceboard_year(request, year):
 def profile(request):
     # check their permissions
     netid_s = permissions.get_username(request)
+    student = permissions.get_student(request)
 
     # Reject them if not valid netid
     if not netid_s:
         return render(request,"permission_denied.html",
                 {"required_permission": "a Princeton student with a netid."}) 
 
-    student = permissions.get_student(request)
+    # For people not in our database
+    if not student:
+      if request.method == 'POST':
+          form = AccountCreationForm(request.POST, netid=netid_s)
+          if form.is_valid():
+              prospective = form.create_account()
+              
+              return render(request, "charterclub/create_account_success.html", {
+                      'prospective' : prospective,
+                  })
+      else:
+          form = AccountCreationForm(netid=netid_s)
+
+      return render(request,  "charterclub/login_no_account.html", {'form': form})
+
+
+    
     future_entries = Entry.get_future_related_entries_for_student(student)
     past_entries = Entry.get_past_related_entries_for_student(student)
 
@@ -176,26 +193,12 @@ def profile(request):
         })
               
     # Show members page 
-    if student.__class__.__name__== 'Member':
-        return render(request, "charterclub/member_profile.html", {
-            'member': student,
-            'future_entries': future_entries,
-            'netid': permissions.get_username(request)
-        })
-
-     # If they're making a new account...
-    if request.method == 'POST':
-        form = AccountCreationForm(request.POST, netid=netid_s)
-        if form.is_valid():
-            prospective = form.create_account()
-            
-            return render(request, "recruitment/create_account_success.html", {
-                    'prospective' : prospective,
-                })
-    else:
-        form = AccountCreationForm(netid=netid_s)
-
-    return render(request,  "charterclub/login_no_account.html", {'form': form})
+    # if student.__class__.__name__ in ['Member', 'Officer']:
+    return render(request, "charterclub/member_profile.html", {
+        'member': student,
+        'future_entries': future_entries,
+        'netid': permissions.get_username(request)
+    })
 
 
 
