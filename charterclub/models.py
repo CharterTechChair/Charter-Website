@@ -15,8 +15,8 @@ from django.core.exceptions import ValidationError
 
 # For analyzing Models
 from django.db.models import Min, Max
-
 from kitchen.models import Meal
+from recruitment.models import ProspectiveMealEntry
 
 # Taken from: http://stackoverflow.com/questions/929029/how-do-i-access-the-child-classes-of-an-object-in-django-without-knowing-the-name/929982#929982
 class InheritanceCastModel(models.Model):
@@ -132,15 +132,15 @@ def limit_meals_signed_up():
 
 
 class Prospective(Student):
-    events_attended = models.IntegerField(
-        'Number of events attended', default=0)
+    # events_attended = models.IntegerField(
+    #     'Number of events attended', default=0)
     
-    meals_attended = models.ManyToManyField(Meal, 
-                    limit_choices_to=limit_meals_attended_choices,
-                    blank=True, related_name="meals_attended")
-    meals_signed_up = models.ManyToManyField(Meal, 
-                    limit_choices_to=limit_meals_signed_up,
-                    blank=True, related_name="meals_signed_up")
+    # meals_attended = models.ManyToManyField(Meal, 
+    #                 limit_choices_to=limit_meals_attended_choices,
+    #                 blank=True, related_name="meals_attended")
+    # meals_signed_up = models.ManyToManyField(Meal, 
+    #                 limit_choices_to=limit_meals_signed_up,
+    #                 blank=True, related_name="meals_signed_up")
 
     mailing_list = models.BooleanField(default=True)
 
@@ -148,11 +148,13 @@ class Prospective(Student):
 
     # meals = make another model for meals signups? use date fields?
     def get_num_points(self):
-        return self.events_attended
+        # return self.events_attended
+        return -1
 
     # Get upcoming meals
     def get_upcoming_meals(self):
-        return self.meals_signed_up.filter(day__gte=timezone.now())
+        ProspectiveMealEntry.filter(prospective=self, meal__day__gte=timezone.now())
+        # return self.meals_signed_up.filter(day__gte=timezone.now())
 
     # Promote a Prospective to a Member
     def promote_to_member(self, house_account):

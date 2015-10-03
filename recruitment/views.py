@@ -39,6 +39,7 @@ from charterclub.models import Prospective
 
 # view the list of people who have signed up for our mailing list.
 # should probably implement an actual listserv of some description
+
 # at some point
 @permissions.officer
 def mailing_list_view(request):
@@ -48,3 +49,10 @@ def mailing_list_view(request):
        'plist': plist,
        'netid': permissions.get_username(request)
     })
+
+# @permissions.officer
+# def print_meals(request):
+    
+#     return render(request, "prospective_meal_view.html", {
+
+#         })
