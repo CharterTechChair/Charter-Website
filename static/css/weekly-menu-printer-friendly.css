@@ -4,6 +4,27 @@
     display: none;
 }
 
+hr {
+  display: none;
+}
+
+h2 {
+    margin-top: 20px;
+    margin-left: 10px;
+    font-size: 4.0em;
+}
+
+.charter-menu-logo {
+  background-image: url("/static/img/Full_Charter_Logo_Colored.png") !important;
+  height: 110px;
+  width: 110px;
+  background-size: contain !important;
+  background-position: center;
+  background-repeat: no-repeat !important;
+  /*margin-left: 50%;*/
+  /*float: right;*/
+}
+
 .meal-name {
     display:none;
 }
@@ -11,9 +32,7 @@
 .meal-descript {
     display: none;
 }
-h2 {
-    font-size: 3.0em;
-}
+
 
 h3 {
     font-size: 2.0em;
