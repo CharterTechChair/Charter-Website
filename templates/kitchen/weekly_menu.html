@@ -11,19 +11,10 @@
 {% block content %}
 
 <container>
-    
-        <div class='col-xs-6'>
-            <h2> Weekly Menu </h2>
-        </div>
-        <div class="col-xs-6 charter-menu-logo">
-            
-        </div>
-    
-
+    <h2> Weekly Menu </h2>
     <div class='row'>
         <a href="{% url 'weekly_menu' %}/{{ prev_week.isoformat}}" class="btn btn-info" role="button"> Prev Week </a> <a href="{% url 'weekly_menu' %}/{{ next_week.isoformat}}" class="btn btn-info" role="button"> Next Week </a>
     <div class='row'>
-    
     <hr>
     
 
