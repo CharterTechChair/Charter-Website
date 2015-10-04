@@ -132,12 +132,16 @@ admin.site.register(Staff, StaffAdmin)
 # altering officers from with the admin control panel.
 # on creating a new officer, you may choose a member and enter their title
 #################################################################################
+from recruitment.prospective_admin_inline import ProspectiveMealEntryInline, ProspectiveEventEntryInline
+
 class ProspectiveAdmin(admin.ModelAdmin):
     list_display = ['__unicode__', 'netid']
     # list_editable = ['events_attended', 'meals_attended']
     search_fields = ['first_name', 'last_name', 'netid', 'year']
     # filter_horizontal = ('meals_attended','meals_signed_up')
     ordering = ['netid']
+    inlines = [ProspectiveMealEntryInline, ProspectiveEventEntryInline]
+
     # What gets shown, and how?
     # list_display = ('__unicode__',  'position', 'year',)
     # list_editable = ('position',)

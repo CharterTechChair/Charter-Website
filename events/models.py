@@ -7,6 +7,7 @@ from django.contrib import admin
 from  django.core.urlresolvers import reverse
 from django import forms
 
+# from charterclub.models import Member, Student
 from charterclub.models import Member, Student
 
 from datetime import time

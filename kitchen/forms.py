@@ -1,5 +1,8 @@
+from collections import Counter
+
 from django import forms
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset
@@ -12,11 +15,11 @@ from functools import partial
 from kitchen.models import Brunch, Lunch, Dinner
 from charterclub.models import Prospective
 
+from recruitment.models import ProspectiveMealEntry
 ##################################################
 #   MealSignup Form
 #   Allows sophomores to sign up for meals
 ###################################################
-
 class MealSignupForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.prospective = kwargs.pop('prospective')
@@ -38,8 +41,9 @@ class MealSignupForm(forms.Form):
     helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
 
     def add_prospective(self, prospective):
-        self.clean()
-        prospective.meals_signed_up.add(self.meal)
+        if self.is_valid():
+            entry = ProspectiveMealEntry(meal=self.meal, prospective=self.prospective)
+            entry.save()
 
 
     def clean(self):
@@ -60,14 +64,30 @@ class MealSignupForm(forms.Form):
         if not m:
             raise ValidationError('There is not a meal of type:%s on date %s' % (meal_type, date))
 
-        print self.prospective
-
         # Now check if the meal is full
         if m[0].is_full():
             raise ValidationError('Sorry! This meal has been filled up. Try refreshing the data.')
-        if self.prospective.will_exceed_meal_limit(m[0]):
+        if will_exceed_meal_limit(self.prospective, m[0]):
             raise ValidationError('You\'ve reached the limit of %s meals per month' % Prospective.monthly_meal_limit)
-        
+        if already_signed_up_for_meal(self.prospective, m[0]):
+            raise ValidationError("Looks like you've already signed up for this meal %s" % m[0])
         self.meal = m[0]
 
         return self.cleaned_data
+
+    #CHECK if montly meal limit has been exceeded
+def will_exceed_meal_limit(prospective, next_meal):
+    this_months_entries = prospective.prospectivemealentry_set.filter(meal__day__month=timezone.now().date().month)
+    group =  ["%s-%s" % (entry.meal.day.month, entry.meal.day.year) for entry in this_months_entries]
+
+    group.append("%s-%s" % (next_meal.day.month, next_meal.day.year))
+
+    freq = Counter(group)
+    print freq
+    if  any(f > Prospective.monthly_meal_limit for f in freq.itervalues()):
+            return True        
+
+def already_signed_up_for_meal(prospective, meal):
+    if prospective.prospectivemealentry_set.filter(meal=meal):
+        return True
+    return False

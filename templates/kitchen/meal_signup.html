@@ -11,11 +11,11 @@
     <hr>
     <p> You have signed up for the following meals for this month: </p>
     <ul>
-         {% for meal in prospective_this_month_meals %}
+         {% for entry in prospective_this_month_meals %}
           <li> 
-              <h5> {{ meal }}  {{ meal.name }} </h5>
+              <h5> {{ entry.meal }}  {{ entry.meal.name }} </h5>
               <p style="margin-left:8px"> 
-                {{ meal.description | linebreaksbr}} 
+                {{ entry.meal.description | linebreaksbr}} 
               </p>
           </li>
         {% endfor %}
@@ -128,6 +128,24 @@ $(function() {
             var url = "http://localhost:8000/kitchen/meal_info/" + date;
             var data_s = msg = $.ajax({type: "GET", url: url, async: false}).responseText;
             var data_js = $.parseJSON(data_s)
+
+            var type = ["Brunch", "Lunch", "Dinner"];
+
+            meal_type_form_field = $('#id_meal_type')[0]
+
+            for (var i = 0; i < type.length; i++)  {
+                t = type[i]
+                $('select option:contains("{0}")'.format(t)).remove()
+                console.log(t.toLowerCase())
+                if (data_js[t.toLowerCase()][0] !== -1) {
+                    var option = document.createElement("option");
+                    option.text = t + data_js['brunch'][0] + "/" + data_js['brunch'][1]
+                    option.value = t
+
+                    meal_type_form_field.add(option)
+                }
+            }
+
 
             // update the options
             $('select option:contains("Brunch")').text("Brunch " + data_js['brunch'][0] 
