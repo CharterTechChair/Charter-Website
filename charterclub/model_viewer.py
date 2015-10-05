@@ -5,7 +5,7 @@ from charterclub.models import Prospective
 from recruitment.models import ProspectiveMealEntry
 
 
-class StudentViewer:
+class StudentViewer(object):
     def __init__(self, student):
         self.student = student
 
@@ -15,7 +15,7 @@ class StudentViewer:
     def get_past_event_entries(self):
         return Entry.get_past_event_entries_for_student(self)
 
-class ProspectiveViewer:
+class ProspectiveViewer(StudentViewer):
     def __init__(self, prospective):
         super(ProspectiveViewer, self).__init__(prospective.student)
         self.prospective=prospective
