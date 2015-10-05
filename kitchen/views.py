@@ -2,7 +2,6 @@ from charterclub.permissions import render
 import charterclub.permissions as permissions
 
 from charterclub.models import Prospective
-from charterclub.model_viewer import ProspectiveViewer
 
 from kitchen.models import Meal, Brunch, Lunch, Dinner
 from kitchen.forms import MealSignupForm
@@ -67,7 +66,6 @@ def weekly_menu(request):
 def meal_signup(request):
     netid = permissions.get_username(request)
     prospective = Prospective.objects.filter(netid=netid)[0]
-    pv = ProspectiveViewer(prospective)
 
     # Give them a form to fill out
     if request.method == 'POST':
@@ -111,7 +109,6 @@ def meal_signup(request):
     return render(request, 'kitchen/meal_signup.html', 
         {
             "prospective" : prospective,
-            "prospective_viewer" : pv, 
             'form': form,
             'dates_allowed' : dates_allowed,
             'hover_text' : calendar_date_to_text,

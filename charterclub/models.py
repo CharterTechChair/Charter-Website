@@ -7,6 +7,7 @@ from django.core.validators import RegexValidator
 from django.contrib.contenttypes.models import ContentType
 
 import pdb
+from collections import Counter
 
 # from events.models import Event
 from datetime import date, timedelta
@@ -182,6 +183,17 @@ class Prospective(Student):
         if  any(f > Prospective.monthly_meal_limit for f in freq.itervalues()):
             return True        
 
+    #CHECK if montly meal limit has been exceeded
+    def will_exceed_meal_limit(self, next_meal):
+        total_meals = self.prospectivemealentry_set.all() | self.meals_signed_up.all()
+        group =  ["%s-%s" % (m.day.month, m.day.year) for m in total_meals]
+
+        group.append("%s-%s" % (next_meal.day.month, next_meal.day.year))
+
+        freq = Counter(group)
+        print freq
+        if  any(f > Prospective.monthly_meal_limit for f in freq.itervalues()):
+            return True        
 
 
 

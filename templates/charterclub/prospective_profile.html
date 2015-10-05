@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<div class='col-md-11'> 
+<div class='col-md-10'> 
   <h2> Welcome, {{ prospective.first_name }}! </h2>
   <hr>
 
@@ -19,11 +19,11 @@
         <h4> Upcoming </h4>
         <hr>
 
-        {% for meal in prospective_viewer.get_upcoming_meals %}
+        {% for meal in prospective.get_upcoming_meals %}
           <div> 
               <h5> {{ meal }}  {{ meal.name }} </h5>
               <p style="margin-left:8px"> 
-                {{ meal.description | linebreaksbr | linebreaksbr |truncatechars:100}} 
+                {{ meal.description | linebreaksbr}} 
               </p>
           </div>
         {% endfor %}
@@ -33,11 +33,11 @@
         <h4> Completed </h4>
         <hr>
 
-        {% for meal in prospective_viewer.get_completed_meals %}
+        {% for meal in prospective.meals_attended.all %}
             <div> 
               <h5> {{ meal }}  {{ meal.name }} </h5>
               <p style="margin-left:8px"> 
-                {{ meal.description | linebreaksbr |truncatechars:100}} 
+                {{ meal.description | linebreaksbr}} 
               </p>
             </div>
         {% endfor %}

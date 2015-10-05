@@ -2,6 +2,7 @@ from django.contrib import admin
 from django import forms
 
 from charterclub.models import Prospective
+from charterclub.models import limit_meals_attended_choices
 from recruitment.models import ProspectiveMealEntry, ProspectiveEventEntry
 from kitchen.models import Meal
 
