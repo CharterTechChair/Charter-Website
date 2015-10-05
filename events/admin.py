@@ -14,7 +14,7 @@ class EntryInline(admin.TabularInline):
 
     readonly_fields=['Form_Answers']
     exclude=('answers',)
-    
+    ''
     def formfield_for_foreignkey(self, db_field, request=None, **kwargs):
         '''
             Limit the Rooms and answer of an entry to the event it belongs in.

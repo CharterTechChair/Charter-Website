@@ -15,6 +15,7 @@ from django.core.exceptions import ValidationError
 # For analyzing Models
 from django.db.models import Min, Max
 from kitchen.models import Meal
+from recruitment.models import ProspectiveMealEntry
 
 # Taken from: http://stackoverflow.com/questions/929029/how-do-i-access-the-child-classes-of-an-object-in-django-without-knowing-the-name/929982#929982
 class InheritanceCastModel(models.Model):
@@ -128,6 +129,7 @@ def limit_meals_signed_up():
             'day__range': [start_date, end_date]
     }
 
+
 class Prospective(Student):
     # events_attended = models.IntegerField(
     #     'Number of events attended', default=0)
@@ -145,10 +147,13 @@ class Prospective(Student):
 
     # meals = make another model for meals signups? use date fields?
     def get_num_points(self):
-        meal_points = sum([m.points for m in self.prospectivemealentry_set.all()])
-        event_points = sum([m.points for m in self.prospectiveevententry_set.all()])
+        # return self.events_attended
+        return -1
 
-        return meal_points + event_points
+    # Get upcoming meals
+    def get_upcoming_meals(self):
+        ProspectiveMealEntry.filter(prospective=self, meal__day__gte=timezone.now())
+        # return self.meals_signed_up.filter(day__gte=timezone.now())
 
     # Promote a Prospective to a Member
     def promote_to_member(self, house_account):
@@ -165,6 +170,17 @@ class Prospective(Student):
         self.delete()
         Member.objects.create(**member_param)
 
+    #CHECK if montly meal limit has been exceeded
+    def will_exceed_meal_limit(self, next_meal):
+        total_meals = self.meals_attended.all() | self.meals_signed_up.all()
+        group =  ["%s-%s" % (m.day.month, m.day.year) for m in total_meals]
+
+        group.append("%s-%s" % (next_meal.day.month, next_meal.day.year))
+
+        freq = Counter(group)
+        print freq
+        if  any(f > Prospective.monthly_meal_limit for f in freq.itervalues()):
+            return True        
 
 
 

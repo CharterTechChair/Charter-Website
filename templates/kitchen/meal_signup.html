@@ -129,24 +129,6 @@ $(function() {
             var data_s = msg = $.ajax({type: "GET", url: url, async: false}).responseText;
             var data_js = $.parseJSON(data_s)
 
-            var type = ["Brunch", "Lunch", "Dinner"];
-
-            meal_type_form_field = $('#id_meal_type')[0]
-
-            for (var i = 0; i < type.length; i++)  {
-                t = type[i]
-                $('select option:contains("{0}")'.format(t)).remove()
-                console.log(t.toLowerCase())
-                if (data_js[t.toLowerCase()][0] !== -1) {
-                    var option = document.createElement("option");
-                    option.text = t + data_js['brunch'][0] + "/" + data_js['brunch'][1]
-                    option.value = t
-
-                    meal_type_form_field.add(option)
-                }
-            }
-
-
             // update the options
             $('select option:contains("Brunch")').text("Brunch " + data_js['brunch'][0] 
                                                                 + "/" + data_js['brunch'][1])

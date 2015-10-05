@@ -9,11 +9,11 @@ class StudentViewer:
     def __init__(self, student):
         self.student = student
 
-    def get_future_related_entries(self):
-        return Entry.get_future_related_entries_for_student(self)
+    def get_future_event_entries(self):
+        return Entry.get_future_event_entries_for_student(self)
 
-    def get_past_past_related_entries(self):
-        return Entry.get_past_related_entries_for_student(self)
+    def get_past_event_entries(self):
+        return Entry.get_past_event_entries_for_student(self)
 
 class ProspectiveViewer:
     def __init__(self, prospective):
@@ -34,3 +34,5 @@ class ProspectiveViewer:
         entries = self.prospective.prospectivemealentry_set.filter(completed=True)
         return [e.meal for e in entries]
 
+    def get_future_event_entries(self):
+        ProspectiveMealEntry.get_future_related_entries_for_student()
