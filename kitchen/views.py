@@ -5,6 +5,7 @@ from charterclub.models import Prospective
 
 from kitchen.models import Meal, Brunch, Lunch, Dinner
 from kitchen.forms import MealSignupForm
+from recruitment.models import ProspectiveMealEntry
 
 from django.utils import timezone
 from django.utils.dateparse import parse_date
@@ -101,9 +102,7 @@ def meal_signup(request):
 
     #Get the meals that they ate this month
     now = timezone.now()
-    prospective_this_month_meals = prospective.meals_signed_up.filter(day__gte=now) \
-                                   | prospective.meals_attended.filter(day__month=now.month)     \
-                                   | prospective.meals_signed_up.filter(day__month=now.month)
+    prospective_this_month_meals = prospective.prospectivemealentry_set.filter(meal__day__month=timezone.now().date().month)
 
     now = timezone.now()
     return render(request, 'kitchen/meal_signup.html', 
@@ -143,8 +142,9 @@ def meal_info(request, month, day, year):
         if not meal_q:
             data[string] = (-1, -1)
         else:
-            num_attending = len(meal_q[0].meals_attended.all())
+            num_attending = len(meal_q[0].prospectivemealentry_set.all())
             num_limit = meal_q[0].sophomore_limit
 
             data[string] = (num_attending, num_limit)
+            
     return HttpResponse(json.dumps(data), content_type="application/json")

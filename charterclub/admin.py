@@ -12,6 +12,7 @@ from list_filter import CurrentMembershipListFilter
 # Form previews
 from charterclub.preview import MemberListPreview
 from charterclub.forms import MemberListForm, NewMemberForm, EditOfficerForm, NewOfficerForm
+from recruitment.prospective_admin_inline import ProspectiveMealEntryInline, ProspectiveEventEntryInline
 from django import forms
 
 # Unsure if we should implement this
@@ -138,6 +139,7 @@ class ProspectiveAdmin(admin.ModelAdmin):
     search_fields = ['first_name', 'last_name', 'netid', 'year']
     # filter_horizontal = ('meals_attended','meals_signed_up')
     ordering = ['netid']
+    inlines = [ProspectiveMealEntryInline, ProspectiveEventEntryInline]
     # What gets shown, and how?
     # list_display = ('__unicode__',  'position', 'year',)
     # list_editable = ('position',)

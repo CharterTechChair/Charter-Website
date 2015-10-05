@@ -38,6 +38,8 @@ class Meal(InheritanceCastModel):
     description    = models.TextField(max_length=1000, help_text="What are we eating today?")
     special_note    = models.CharField(max_length=1000, blank=True, help_text="Optoinal note- i.e. 'Seniors only', or 'Meal ends early at 7:00pm'")
 
+    class Meta:
+        ordering = ['-day']
 
     def __unicode__(self):
         return "%s %s" % (self.day.strftime("%m/%d/%y %a"), self.__class__.__name__)
@@ -47,7 +49,7 @@ class Meal(InheritanceCastModel):
         '''
             Number of sophomores eating here
         '''
-        return len(self.meals_attended.all() | self.meals_signed_up.all())
+        return len(self.prospectivemealentry_set.all())
 
     def is_full(self):
         '''

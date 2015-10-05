@@ -7,6 +7,7 @@ from django.contrib import admin
 from  django.core.urlresolvers import reverse
 from django import forms
 
+from charterclub.models import Student
 
 from datetime import time
 now = timezone.now()
@@ -140,24 +141,7 @@ class Room(models.Model):
                 ans += 1
         return ans
 
-        # names = set()
-        # # Count the unique names
-        # for entry in self.entry_room_association.all():
-        #     s = entry.student
-        #     s_name = "%s %s" % (s.first_name, s.last_name)
-        #     g_name = entry.guest
-            
-        #     # clean the names
-        #     s_name_c = re.sub(r'\W+^\s', '', s_name).lower().strip()
-        #     g_name_c = re.sub(r'\W+^\s', '', g_name).lower().strip()
-
-        #     if s_name_c:
-        #         names.add(s_name_c)
-        #     if g_name_c:
-        #         names.add(g_name_c)
-
-        # return len(names)
-        
+       
     def which_entries(self, student):
         '''
             Get all the entries that this person is a part of.

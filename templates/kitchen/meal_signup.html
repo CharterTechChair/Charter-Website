@@ -129,26 +129,40 @@ $(function() {
             var data_s = msg = $.ajax({type: "GET", url: url, async: false}).responseText;
             var data_js = $.parseJSON(data_s)
 
+            var type = ['Brunch', 'Lunch', 'Dinner']
+            var choice_field = $('#id_meal_type')[0]
+
+            for (i=0; i < type.length; i++) {
+                t = type[i]
+                $('select option:contains("{0}")'.format(t)).remove()
+                if (data_js[t.toLowerCase()][0] !== -1) {
+                    var option = document.createElement('option');
+                    option.text = t + " " +  data_js[t.toLowerCase()][0]  + "/" + data_js[t.toLowerCase()][1]
+                    option.value = t
+
+                    choice_field.add(option)
+                }
+            }
             // update the options
-            $('select option:contains("Brunch")').text("Brunch " + data_js['brunch'][0] 
-                                                                + "/" + data_js['brunch'][1])
-            $('select option:contains("Lunch")').text("Lunch " + data_js['lunch'][0] 
-                                                                + "/" + data_js['lunch'][1])
-            $('select option:contains("Dinner")').text("Dinner " + data_js['dinner'][0] 
-                                                                + "/" + data_js['dinner'][1])
+            // $('select option:contains("Brunch")').text("Brunch " + data_js['brunch'][0] 
+            //                                                     + "/" + data_js['brunch'][1])
+            // $('select option:contains("Lunch")').text("Lunch " + data_js['lunch'][0] 
+            //                                                     + "/" + data_js['lunch'][1])
+            // $('select option:contains("Dinner")').text("Dinner " + data_js['dinner'][0] 
+            //                                                     + "/" + data_js['dinner'][1])
 
-            // Now remove the ones that are not allowed
-            if (data_js['brunch'][0] === -1) {
-                $('select option:contains("Brunch")').remove()
-            }
+            // // Now remove the ones that are not allowed
+            // if (data_js['brunch'][0] === -1) {
+            //     $('select option:contains("Brunch")').remove()
+            // }
 
-            if (data_js['lunch'][0] === -1) {
-                $('select option:contains("Lunch")').remove()
-            }
+            // if (data_js['lunch'][0] === -1) {
+            //     $('select option:contains("Lunch")').remove()
+            // }
 
-            if (data_js['dinner'][0] === -1) {
-                $('select option:contains("Dinner")').remove()
-            }
+            // if (data_js['dinner'][0] === -1) {
+            //     $('select option:contains("Dinner")').remove()
+            // }
             
             // $.getJSON("http://localhost:8000/kitchen/meal_info/{0}/{1}/{2}".format)
             // $("#start").val(date + time.toString(' HH:mm').toString());
