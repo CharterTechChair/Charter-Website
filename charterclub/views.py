@@ -23,6 +23,7 @@ from models import *
 import permissions as permissions
 from permissions import render
 
+from charterclub.model_viewer import ProspectiveViewer
 from ldap_student_lookup import get_student_info
 from recruitment.forms import AccountCreationForm
 
@@ -185,9 +186,11 @@ def profile(request):
 
     # Show prospective page
     if student.__class__.__name__== 'Prospective':
-            return render(request, "charterclub/prospective_profile.html", {
+        pv = ProspectiveViewer(student)
+        return render(request, "charterclub/prospective_profile.html", {
               'prospective': student,
               'future_entries': future_entries,
+              'prospective_viewer' : pv, 
               # 'events': e,
               'netid': permissions.get_username(request)
         })

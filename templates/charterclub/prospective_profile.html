@@ -6,7 +6,7 @@
 {% block content %}
 
 <div class='col-md-10'> 
-  <h2> Welcome, {{ prospective.first_name }}! </h2>
+  <h2> Welcome, {{ prospective_viewer.prospective.first_name }}! </h2>
   <hr>
 
   <p> This is the landing page. From this page, you can view the number of points you have, the events you have attended, and our upcoming recruitment events. </p>
@@ -19,11 +19,11 @@
         <h4> Upcoming </h4>
         <hr>
 
-        {% for meal in prospective.get_upcoming_meals %}
+        {% for meal in prospective_viewer.get_upcoming_meals %}
           <div> 
               <h5> {{ meal }}  {{ meal.name }} </h5>
               <p style="margin-left:8px"> 
-                {{ meal.description | linebreaksbr}} 
+                {{ meal.description | linebreaksbr | truncatechars:100}} 
               </p>
           </div>
         {% endfor %}
@@ -33,11 +33,11 @@
         <h4> Completed </h4>
         <hr>
 
-        {% for meal in prospective.meals_attended.all %}
+        {% for meal in prospective_viewer.get_completed_meals %}
             <div> 
               <h5> {{ meal }}  {{ meal.name }} </h5>
               <p style="margin-left:8px"> 
-                {{ meal.description | linebreaksbr}} 
+                {{ meal.description | linebreaksbr | truncatechars:100}} 
               </p>
             </div>
         {% endfor %}
@@ -55,7 +55,7 @@
         <h4> Upcoming </h4>
         <hr>
         
-        {% for entry in prospective.get_future_related_entries.all %}
+        {% for entry in prospective_viewer.get_future_event_entries %}
           <div style="margin:10px;"> 
             <h4> {{ entry.event }} </h4>
             <p> Time: {{ entry.event.time|time:"g:iA"}} | Is Point Event? {{ entry.event.is_points_event}} </p>
@@ -68,7 +68,7 @@
         <h4> Completed </h4>
         <hr>
       
-        {% for entry in prospective.get_past_related_entries.all %}
+        {% for entry in prospective_viewer.get_past_event_entries %}
         <div style="margin:10px;"> 
             <h4> {{ entry.event }} </h4>
             <p> Time: {{ entry.event.time|time:"g:iA"}} | Is Point Event? {{ entry.event.is_points_event}} </p>

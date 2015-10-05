@@ -35,4 +35,7 @@ class ProspectiveViewer(StudentViewer):
         return [e.meal for e in entries]
 
     def get_future_event_entries(self):
-        ProspectiveMealEntry.get_future_related_entries_for_student()
+        return Entry.get_future_related_entries_for_student(self.prospective)
+
+    def get_past_event_entries(self):
+        return Entry.get_past_related_entries_for_student(self.prospective)
