@@ -10,6 +10,8 @@ from datetime import date, timedelta
 
 from forms import *
 from events.models import *
+from charterclub.model_viewer import ProspectiveViewer
+
 # import configuration
 from os import listdir, path
 from django.core.mail import send_mail, BadHeaderError
@@ -185,8 +187,10 @@ def profile(request):
 
     # Show prospective page
     if student.__class__.__name__== 'Prospective':
-            return render(request, "charterclub/prospective_profile.html", {
+        pv = ProspectiveViewer(student)
+        return render(request, "charterclub/prospective_profile.html", {
               'prospective': student,
+              'prospective_viewer' : pv,
               'future_entries': future_entries,
               # 'events': e,
               'netid': permissions.get_username(request)

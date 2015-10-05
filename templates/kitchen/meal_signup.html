@@ -11,11 +11,11 @@
     <hr>
     <p> You have signed up for the following meals for this month: </p>
     <ul>
-         {% for entry in prospective_this_month_meals %}
+         {% for meal in prospective_viewer.get_upcoming_meals %}
           <li> 
-              <h5> {{ entry.meal }}  {{ entry.meal.name }} </h5>
+              <h5> {{ meal }}  {{ meal.name }} </h5>
               <p style="margin-left:8px"> 
-                {{ entry.meal.description | linebreaksbr}} 
+                {{ meal.description | linebreaksbr}} 
               </p>
           </li>
         {% endfor %}

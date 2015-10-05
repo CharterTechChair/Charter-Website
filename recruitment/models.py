@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 
 from events.models import Entry
+
 from charterclub.models import limit_meals_attended_choices
 
 
@@ -16,8 +17,15 @@ class ProspectiveMealEntry(models.Model):
     has_been_checked = models.BooleanField("Has an officer checked this meal or not?", default=False)
     points = models.DecimalField("Number of points this event is worth", default=1, max_digits=5, decimal_places=2)
 
+    class Meta:
+        ordering = ['-meal']
+
     def __unicode__(self):
         return "%s for %s" % (self.prospective, self.meal)
+
+    # @property
+    # def sorted_prospectivemealentry_set(self):
+    #     return self.prospectivemealentry_set.order_by('day')
 
 class ProspectiveEventEntry(Entry):
     '''
