@@ -3,7 +3,7 @@ from django import forms
 
 from charterclub.models import Prospective
 from charterclub.models import limit_meals_attended_choices
-from recruitment.models import ProspectiveMealEntry, ProspectiveEventEntry
+from recruitment.models import ProspectiveMealEntry#, ProspectiveEventEntry
 from kitchen.models import Meal
 
 
@@ -26,19 +26,19 @@ class ProspectiveMealEntryInline(admin.TabularInline):
     #             field.queryset = field.queryset.none()
     #     return field
 
-class ProspectiveEventEntryInline(admin.TabularInline):
-    model = ProspectiveEventEntry
-    extra = 1
+# class ProspectiveEventEntryInline(admin.TabularInline):
+#     model = ProspectiveEventEntry
+#     extra = 1
 
-    readonly_fields=['Form_Answers', 'Event_Name', 'Room_Name',]
-    exclude=('answers','event', 'room')
+#     readonly_fields=['Form_Answers', 'Event_Name', 'Room_Name',]
+#     exclude=('answers','event', 'room')
 
 
-    def Form_Answers(self, obj):
-        return "\n".join([ans.__unicode__() for ans in obj.answers.all()])
+#     def Form_Answers(self, obj):
+#         return "\n".join([ans.__unicode__() for ans in obj.answers.all()])
 
-    def Event_Name(self, obj):
-        return self.event.__unicode__()
+#     def Event_Name(self, obj):
+#         return self.event.__unicode__()
 
-    def Room_Name(self, obj):
-        return self.room.__unicode__()
+#     def Room_Name(self, obj):
+#         return self.room.__unicode__()

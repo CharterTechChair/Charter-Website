@@ -19,13 +19,13 @@ class ProspectiveMealEntry(models.Model):
     def __unicode__(self):
         return "%s for %s" % (self.prospective, self.meal)
 
-class ProspectiveEventEntry(Entry):
-    '''
-        Models a recruitment event where we have to make 
-    '''
+# class ProspectiveEventEntry(Entry):
+#     '''
+#         Models a recruitment event where we have to make 
+#     '''
 
-    has_been_checked = models.BooleanField("Has an officer checked this prospective into this event?", default=False)
-    completed = models.BooleanField("Has this person attended this event?", default=False)
-    signup_date = models.DateField(blank=True, default=timezone.now().date())
-    points = models.DecimalField("Number of points this event is worth", default=1, max_digits=5, decimal_places=2)
+#     has_been_checked = models.BooleanField("Has an officer checked this prospective into this event?", default=False)
+#     completed = models.BooleanField("Has this person attended this event?", default=False)
+#     signup_date = models.DateField(blank=True, default=timezone.now().date())
+#     points = models.DecimalField("Number of points this event is worth", default=1, max_digits=5, decimal_places=2)
 
