@@ -132,13 +132,16 @@ def limit_meals_signed_up():
 
 class Prospective(Student):
     mailing_list = models.BooleanField(default=True)
-
     monthly_meal_limit = 3
 
     # meals = make another model for meals signups? use date fields?
     def get_num_points(self):
         # return self.events_attended
-        return -1
+        meal_points = [entry.points for entry in self.prospectivemealentry_set.filter(completed=True)]
+        prospective_event_points = [entry.points for entry in self.prospectiveevententry_set.filter(completed=True)]
+
+        return sum(meal_points) + sum(prospective_event_points)
+
 
     # Promote a Prospective to a Member
     def promote_to_member(self, house_account):

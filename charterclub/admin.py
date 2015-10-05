@@ -134,19 +134,24 @@ admin.site.register(Staff, StaffAdmin)
 # on creating a new officer, you may choose a member and enter their title
 #################################################################################
 class ProspectiveAdmin(admin.ModelAdmin):
-    list_display = ['__unicode__', 'netid']
+    list_display = ['__unicode__', 'netid', 'num_of_points']
     # list_editable = ['events_attended', 'meals_attended']
     search_fields = ['first_name', 'last_name', 'netid', 'year']
     # filter_horizontal = ('meals_attended','meals_signed_up')
     ordering = ['netid']
     inlines = [ProspectiveMealEntryInline, ProspectiveEventEntryInline]
+    readonly_fields = ['num_of_points',]
+
+    def num_of_points(self, obj):
+        return obj.get_num_points()
+
     # What gets shown, and how?
     # list_display = ('__unicode__',  'position', 'year',)
     # list_editable = ('position',)
     # ordering = ['position']
 
     # What gets filtered/searched?
-    # search_fields = ['first_name', 'last_name', 'netid', 'year', 'position']
+    search_fields = ['first_name', 'last_name', 'netid', 'year', 'position']
 
     # def num_meals_attended(self, obj):
     #     return len(obj.meals_attended.all())

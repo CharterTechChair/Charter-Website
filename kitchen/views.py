@@ -62,6 +62,30 @@ def weekly_menu_day(request, date):
 def weekly_menu(request):
     return weekly_menu_day(request, timezone.now().date().isoformat())
 
+def sophomore_list_day(request, date):
+   # Find the relevant days
+    target = parse_date(date)
+
+    if not target:
+        return render(request, 'standard_message.html', {
+            'subject': 'Oops, looks like something went wonky.',
+            'body' : 'Could note parse_date from "%s"' % (date)
+
+    })
+
+    prev_day = target + datetime.timedelta(days=-1)
+    next_day = target + datetime.timedelta(days=1)
+
+    sophomore_list = ProspectiveMealEntry.objects.filter(meal__day==target).order_by('student__netid')
+
+    return render(request, 'kitchen/sophomore_list.html', {
+        'prev_day' : prev_day,
+        'next_day' : next_day,
+        'sophomore_list' : sophomore_list,
+    })
+
+def sophomore_list(request):
+    return sophomore_list_day(request, timezone.now().date().isoformat())
 
 # Uses a calender widget to sign up for meals
 @permissions.prospective
@@ -151,3 +175,5 @@ def meal_info(request, month, day, year):
             data[string] = (num_attending, num_limit)
 
     return HttpResponse(json.dumps(data), content_type="application/json")
+
+
