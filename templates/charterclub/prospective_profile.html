@@ -15,32 +15,34 @@
   <div class="col-md-12">
     <h3> Sophomore Meals </h3>
     <br> 
-    <div class="col-sm-6">
-        <h4> Upcoming </h4>
-        <hr>
+    <div class='row'>
+      <div class="col-sm-6">
+          <h4> Upcoming </h4>
+          <hr>
 
-        {% for meal in prospective.get_upcoming_meals %}
-          <div> 
-              <h5> {{ meal }}  {{ meal.name }} </h5>
-              <p style="margin-left:8px"> 
-                {{ meal.description | linebreaksbr}} 
-              </p>
-          </div>
-        {% endfor %}
-    </div>
-
-    <div class="col-sm-6">
-        <h4> Completed </h4>
-        <hr>
-
-        {% for meal in prospective.meals_attended.all %}
+          {% for meal in prospective_model_viewer.get_upcoming_meals %}
             <div> 
-              <h5> {{ meal }}  {{ meal.name }} </h5>
-              <p style="margin-left:8px"> 
-                {{ meal.description | linebreaksbr}} 
-              </p>
+                <h5> {{ meal }}  {{ meal.name }} </h5>
+                <p style="margin-left:8px"> 
+                  {{ meal.description | linebreaksbr |truncatechars:150}} 
+                </p>
             </div>
-        {% endfor %}
+          {% endfor %}
+      </div>
+
+      <div class="col-sm-6">
+          <h4> Completed </h4>
+          <hr>
+
+          {% for meal in prospective_model_viewer.get_completed_meals %}
+              <div> 
+                <h5> {{ meal }}  {{ meal.name }} </h5>
+                <p style="margin-left:8px"> 
+                  {{ meal.description | linebreaksbr |truncatechars:150}} 
+                </p>
+              </div>
+          {% endfor %}
+      </div>
     </div>
 
   </div>

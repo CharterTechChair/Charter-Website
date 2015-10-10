@@ -155,7 +155,7 @@ $(function() {
             $('select option:contains("Dinner")').text("Dinner " + data_js['dinner'][0] 
                                                                 + "/" + data_js['dinner'][1])
 
-            // Now remove the ones that are not allowed
+            // Now remove the ones that are not allowed (a bit of tech-debt here but this doesn't work if I remove it)
             if (data_js['brunch'][0] === -1) {
                 $('select option:contains("Brunch")').remove()
             }

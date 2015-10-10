@@ -27,6 +27,7 @@ from ldap_student_lookup import get_student_info
 from recruitment.forms import AccountCreationForm
 
 
+from model_viewer import ProspectiveModelViewer
 ########################################################################
 # Some easy one-age requests
 # 
@@ -185,9 +186,12 @@ def profile(request):
 
     # Show prospective page
     if student.__class__.__name__== 'Prospective':
-            return render(request, "charterclub/prospective_profile.html", {
+        pmv = ProspectiveModelViewer(student.cast())
+
+        return render(request, "charterclub/prospective_profile.html", {
               'prospective': student,
               'future_entries': future_entries,
+              'prospective_model_viewer' : pmv,
               # 'events': e,
               'netid': permissions.get_username(request)
         })
