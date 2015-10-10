@@ -2,6 +2,8 @@ import urllib2, json
 
 import django.shortcuts
 from django.conf import settings
+from django.utils import timezone
+
 import models
 from models import Officer
 from models import Member
@@ -76,14 +78,15 @@ def additional_context(request):
     o = dereference(Officer.objects.filter(netid=netid))
     m = dereference(Member.objects.filter(netid=netid))
     p = dereference(Prospective.objects.filter(netid=netid))
+    now = timezone.now()
 
     # Then return the results with the proper object pointers
     if o:
-        return { "netid": netid, "officer" : o, "member" : o.member, "student" : o.member.student, "prospective" : p}
+        return { "netid": netid, "officer" : o, "member" : o.member, "student" : o.member.student, "prospective" : p, 'now': now}
     if m:  
-        return { "netid": netid, "officer" : o, "member" : m, "student" : m.student, "prospective" : p}
+        return { "netid": netid, "officer" : o, "member" : m, "student" : m.student, "prospective" : p, 'now': now}
     if p:
-        return { "netid" : netid, "officer" : o, "member" : m, "student" : p.student, "prospective" : p}
+        return { "netid" : netid, "officer" : o, "member" : m, "student" : p.student, "prospective" : p, 'now': now}
 
     return  { "netid": netid, "officer" : None, "member" : None, "student" : None, "prospective" : None}
 

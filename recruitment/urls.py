@@ -25,4 +25,12 @@ urlpatterns = patterns('',
         r'^mailing_list_view$',
         'recruitment.views.mailing_list_view',
         name='mailing_list_view'),
+    url(
+        r'^prospective_meal_list/([0-9]{4}-[0-9]{1,2}-[0-9]{1,2})/$',
+        'recruitment.views.prospective_meal_list_day',
+        name='prospective_meal_list_day'),
+    url(
+        r'^prospective_meal_list$',
+        'recruitment.views.prospective_meal_list',
+        name='prospective_meal_list'),
 )
