@@ -140,7 +140,7 @@ class ProspectiveAdmin(admin.ModelAdmin):
     search_fields = ['first_name', 'last_name', 'netid', 'year']
     # filter_horizontal = ('meals_attended','meals_signed_up')
     ordering = ['netid']
-    inlines = [ProspectiveMealEntryInline, ProspectiveEventEntryInline]
+    inlines = [ProspectiveMealEntryInline]
 
     # What gets shown, and how?
     # list_display = ('__unicode__',  'position', 'year',)
