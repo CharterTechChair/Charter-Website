@@ -6,10 +6,17 @@
 {{ block.super }}
 
 <style>
+.print-only-show {
+    display:none;
+}
 @media print
 {   
-    .btn{
+    .print-hide{
         display:none;
+    }
+
+    .print-only-show{
+        display:initial;
     }
 }
 </style>
@@ -20,9 +27,18 @@
 
 <h2> Prospective Meal List</h2>
 <p> {{ time.date|date:"l, F j"}} </p>
-<a href="{% url 'prospective_meal_list' %}/{{ prev_day.isoformat}}" class="btn btn-info" role="button"> Prev Day </a>
-<a href="{% url 'prospective_meal_list' %}/{{ next_day.isoformat}}" class="btn btn-info" role="button"> Next Day </a>
+<a href="{% url 'prospective_meal_list' %}/{{ prev_day.isoformat}}" class="btn btn-info print-hide" role="button"> Prev Day </a>
+<a href="{% url 'prospective_meal_list' %}/{{ next_day.isoformat}}" class="btn btn-info print-hide" role="button"> Next Day </a>
 <hr>
+
+<div class="print-hide">
+    <h3> Instructions For Officers</h3>
+    <p> Print this page out and leave it at the check-in desk  </p>
+    <hr>
+</div>
+<div class="print-only-show">
+    <p> Sign next to your name; we'll use it to credit you for this meal. </p>
+</div>
 
 {% for meal_name, meal_entries in entries.items %}
     <h3>  {{ meal_name }} </h3>
