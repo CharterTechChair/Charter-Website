@@ -1,6 +1,22 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
+{% block css %}
+{{ block.super }}
+<style>
+.seating-section{
+  margin-bottom: 30px;
+  font-size: 10px;
+}
+
+@media print {
+    .seating-section{
+      font-size: 8px;
+    }
+}
+@media-print
+</style>
+{% endblock %}
 {% block content %}
 
 <div class='col-sm-12'>
@@ -15,27 +31,28 @@
         {% for room in event.event_room.all %}
         <div class="seating-section">
             <h4> {{ room }}  </h4>
+            <div class="table-responsive">
+                <table class="table .table-condensed">
+                    <tr> 
+                        <td><strong> Member </strong> </td>
+                        <td><strong> Guest </strong></td>
+                        {% for question in event.question_set.all %}
+                        <td> <strong> {{ question.question_text }} </strong> </td>
+                        {% endfor %} 
+                    </tr>
 
-            <table class="table">
-                <tr> 
-                    <td><strong> Member </strong> </td>
-                    <td><strong> Guest </strong></td>
-                    {% for question in event.question_set.all %}
-                    <td> <strong> {{ question.question_text }} </strong> </td>
-                    {% endfor %} 
-                </tr>
-
-                {% for entry in room.entry_room_association.all %}
-                <tr> 
-                    <td> {{ entry.student }}</td>
-                    <td> {{ entry.guest|title}} </td>
-                    {% for answer in entry.answers.all %}
-                     <td>  {{ answer.answer_text }} </td>
-                     {% endfor %}
-                    
-                </tr>
-                {% endfor %}
-            </table>
+                    {% for entry in room.entry_room_association.all %}
+                    <tr> 
+                        <td> {{ entry.student }}</td>
+                        <td> {{ entry.guest|title}} </td>
+                        {% for answer in entry.answers.all %}
+                         <td>  {{ answer.answer_text }} </td>
+                         {% endfor %}
+                        
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
         </div> <!-- seating-section -->
         {% endfor %}
     </div>
