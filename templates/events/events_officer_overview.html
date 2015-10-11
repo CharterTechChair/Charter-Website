@@ -37,7 +37,9 @@
                         <td><strong> Member </strong> </td>
                         <td><strong> Guest </strong></td>
                         {% for question in event.question_set.all %}
-                        <td> <strong> {{ question.question_text }} </strong> </td>
+                        {% if question.display_on_overview %}
+                            <td> <strong> {{ question.question_text }} </strong> </td>
+                        {% endif %}
                         {% endfor %} 
                     </tr>
 
@@ -46,8 +48,10 @@
                         <td> {{ entry.student }}</td>
                         <td> {{ entry.guest|title}} </td>
                         {% for answer in entry.answers.all %}
-                         <td>  {{ answer.answer_text }} </td>
-                         {% endfor %}
+                        {% if answer.question.display_on_overview %}
+                            <td>  {{ answer.answer_text }} </td>
+                        {% endif %}
+                        {% endfor %}
                         
                     </tr>
                     {% endfor %}

@@ -43,7 +43,7 @@ class EventAdmin(admin.ModelAdmin):
                                   'description' : "Instructions: Fill the 'Mininum Information' and 'Room' fields. The rest of this form contain optional fields."}),
         ('Extra Event Fields', 
                                 {'description' : "You can change these if you'd like.",
-                                'fields' : ['guest_limit', 'is_points_event', 'prospective_limit', 'display_to_non_members']}),
+                                'fields' : ['guest_limit', 'prospective_limit', 'is_points_event', 'display_to_non_members']}),
         ('Signup Information', 
                                 {'description' : 'More optional parameters.',
                                  'fields': ['require_rsvp',
