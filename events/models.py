@@ -28,7 +28,7 @@ class Question(models.Model):
                                 max_length=255)
     event = models.ForeignKey('Event')
     required = models.BooleanField(default=False)
-    display_on_overview = models.BooleanField("Show the question on officer overview?", default=True)
+    display_on_overview = models.BooleanField("Show the question on print for officer overview?", default=True)
 
     def __unicode__(self):
         return "%s %s" % (self.event, self.question_text)

@@ -13,6 +13,10 @@
     .seating-section{
       font-size: 8px;
     }
+
+    .hide-on-print{
+        display:none;
+    }
 }
 @media-print
 </style>
@@ -37,9 +41,11 @@
                         <td><strong> Member </strong> </td>
                         <td><strong> Guest </strong></td>
                         {% for question in event.question_set.all %}
-                        {% if question.display_on_overview %}
-                            <td> <strong> {{ question.question_text }} </strong> </td>
-                        {% endif %}
+                            {% if question.display_on_overview %}
+                                <td> <strong> {{ question.question_text }} </strong> </td>
+                            {% else %}
+                                <td class="hide-on-print"> <strong> {{ question.question_text }} </strong> </td>
+                            {% endif %}
                         {% endfor %} 
                     </tr>
 
@@ -48,9 +54,11 @@
                         <td> {{ entry.student }}</td>
                         <td> {{ entry.guest|title}} </td>
                         {% for answer in entry.answers.all %}
-                        {% if answer.question.display_on_overview %}
-                            <td>  {{ answer.answer_text }} </td>
-                        {% endif %}
+                            {% if answer.question.display_on_overview %}
+                                <td>  {{ answer.answer_text }} </td>
+                            {% else %}
+                                <td class="hide-on-print">  {{ answer.answer_text }} </td>
+                            {% endif %}
                         {% endfor %}
                         
                     </tr>
