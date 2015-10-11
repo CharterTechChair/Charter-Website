@@ -147,9 +147,9 @@ class Prospective(Student):
     # meals = make another model for meals signups? use date fields?
     def get_num_points(self):
         meal_points = sum([m.points for m in self.prospectivemealentry_set.all()])
-        event_points = sum([m.points for m in self.prospectiveevententry_set.all()])
+        # event_points = sum([m.points for m in self.prospectiveevententry_set.all()])
 
-        return meal_points + event_points
+        return meal_points #+ event_points
 
     # Promote a Prospective to a Member
     def promote_to_member(self, house_account):
