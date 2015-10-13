@@ -1,5 +1,6 @@
 from django.contrib import admin
 from kitchen.models import Meal, Brunch, Lunch, Dinner
+from recruitment.prospective_admin_inline import ProspectiveMealEntryInline
 
 # Register your models here.
 class MealAdmin(admin.ModelAdmin):
@@ -17,6 +18,8 @@ class MealAdmin(admin.ModelAdmin):
     list_editable = ['sophomore_limit', ]
     ordering = ['-day']
 
+    inlines = [ProspectiveMealEntryInline]
+    
     def cast_unicode(self, obj):
         return obj.cast().__unicode__()
 
