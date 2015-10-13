@@ -14,15 +14,18 @@ class MealAdmin(admin.ModelAdmin):
     ]
 
 
-    list_display = ['cast_unicode', 'name', 'sophomore_limit', 'description', 'special_note']
+    list_display = ['cast_unicode', 'name', 'sophs', 'sophomore_limit', 'description', 'special_note']
     list_editable = ['sophomore_limit', ]
     ordering = ['-day']
 
     inlines = [ProspectiveMealEntryInline]
-    
+
     def cast_unicode(self, obj):
         return obj.cast().__unicode__()
 
+    def sophs(self, obj):
+        return obj.num_of_sophomores()
+    
 # admin.site.register(Meal, MealAdmin)
 
 class BrunchAdmin(MealAdmin):

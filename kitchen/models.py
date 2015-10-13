@@ -69,7 +69,6 @@ class Meal(InheritanceCastModel):
         return "%s/%s" % (self.num_of_sophomores(), self.sophomore_limit)
 
 
-
 class Brunch(Meal):
     display_name = "Brunch"
     grill_special = models.CharField(max_length=1000, blank=True, help_text="Optional")
