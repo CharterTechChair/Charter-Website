@@ -142,7 +142,7 @@ class Prospective(Student):
 
     mailing_list = models.BooleanField(default=True)
 
-    monthly_meal_limit = 3
+    monthly_meal_limit = 2
 
     # meals = make another model for meals signups? use date fields?
     def get_num_points(self):
