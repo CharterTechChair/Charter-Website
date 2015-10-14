@@ -171,7 +171,7 @@ def profile(request):
           if form.is_valid():
               prospective = form.create_account()
               
-              return render(request, "charterclub/create_account_success.html", {
+              return render(request, "recruitment/create_account_success.html", {
                       'prospective' : prospective,
                   })
       else:

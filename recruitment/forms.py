@@ -38,6 +38,7 @@ class AccountCreationForm(forms.Form):
     helper.add_input(Submit('Submit', 'Submit', css_class='btn-primary'))
 
     def clean(self):
+        # returns none if tigerbooks fails
         info = tigerbooks_lookup(self.netid)
         
         # Use tigerbooks API to pull data
