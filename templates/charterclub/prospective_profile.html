@@ -9,7 +9,12 @@
   <h2> Welcome, {{ prospective.first_name }}! </h2>
   <hr>
 
-  <p> This is the landing page. From this page, you can view the number of points you have, the events you have attended, and our upcoming recruitment events. </p>
+  <p> This is the landing page. From this page, you can view the upcoming meals, the ones you have completed, the upcoming events that you have RSVP'd and the events you have completed. </p>
+
+  <ul>
+    <li> You can sign up for meals <a href="{% url 'meal_signup' %}"> here. </a> </li>
+    <li> You can sign up for events <a href="{% url 'events_list' %}"> here. </a> </li>
+  </ul>
   <br> 
 
   <div class="col-md-12">
