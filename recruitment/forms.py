@@ -54,7 +54,7 @@ class AccountCreationForm(forms.Form):
             info['netid'] = self.netid
             info['year'] = self.cleaned_data['year']
 
-        info['year'] = 2018
+        
         # Check for errors
         if info['year'] < Student.get_senior_year() + 2:
             raise forms.ValidationError('The Class of %s can join directly. Please contact our President/Vice-President to get more details.' % info['year'])
