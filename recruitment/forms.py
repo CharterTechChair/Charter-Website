@@ -39,28 +39,28 @@ class AccountCreationForm(forms.Form):
 
     def clean(self):
         # returns none if tigerbooks fails
-        info = tigerbooks_lookup(self.netid)
-        
+        query = tigerbooks_lookup(self.netid)
+        info = {}
+
         # Use tigerbooks API to pull data
-        if info:
-            info['year'] = info['class_year']
-            del info['class_year']
+        if query:
+            info['year'] = query['class_year']
+            info['first_name'] = query['first_name']
+            info['last_name'] = query['last_name']
             info['netid'] = self.netid
         # If no data, use  a custom sign-in info
         else:
-            info = {}
+            info['year'] = self.cleaned_data['year']
             info['first_name'] = self.cleaned_data['first_name']
             info['last_name'] = self.cleaned_data['last_name']
             info['netid'] = self.netid
-            info['year'] = self.cleaned_data['year']
 
-        
         # Check for errors
-        if info['year'] < Student.get_senior_year() + 2:
-            raise forms.ValidationError('The Class of %s can join directly. Please contact our President/Vice-President to get more details.' % info['year'])
-        if info['year'] > Student.get_senior_year() + 2:
-            raise forms.ValidationError('You must be a sophomore to create a prospective account. Upperclassman can join directly.')
+        soph_year = Student.get_senior_year() + 2
+        if info['year'] != soph_year:
+            raise forms.ValidationError('You must be a sophomore to create a prospective account. Upperclassman can join directly. Please email our president/vice-president that you wanted to create an account.')
         query = Prospective.objects.filter(netid=info['netid'])
+        
         if query:
             raise forms.ValidationError('Oops. Looks like you already made an account with us. To login, click "login" from the dropdown in the top right corner.')
       
