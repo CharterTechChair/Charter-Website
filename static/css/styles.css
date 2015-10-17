@@ -108,6 +108,10 @@ a {
   .dropdown-menu {
     font-size: 11px;
   }
+
+  .credits> h5 {
+    font-size: 8px;
+  }
 }
 
 
