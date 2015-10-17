@@ -70,6 +70,48 @@ a {
   }
 }
 
+/*For extra small devices*/
+@media (max-width: 768px) {
+  #content {
+    padding: 0px;
+  }
+
+  .panel-body {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  h3 {
+    font-size: 16px;
+  }
+
+  h4 {
+    font-size: 14px;
+  }
+
+  h5 {
+    font-size: 12px;
+  }
+
+  body {
+    font-size: 12px;
+  }
+
+  .dropdown-menu {
+    font-size: 11px;
+  }
+}
+
+
+
 #outer-background-container {
     display:block;
     /*background: #000;*/
