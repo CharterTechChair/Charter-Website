@@ -116,7 +116,7 @@ div.event-image {
 
 }
 
-.faceboard-thumbnail {
+.col-centered {
   text-align: center;
 }
 
@@ -147,13 +147,18 @@ div.event-image {
   .faceboard-photo {
     height:160px;
   }
-
+  
+  .faceboard-filler {
+    height: 160px;
+  }
   .thumb{
     margin-bottom: 10px; 
     padding-left: 2px;
     padding-right: 2px;
   }
 }
+
+
 .menu-day {
   margin: 5px;
 }

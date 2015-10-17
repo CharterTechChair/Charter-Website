@@ -10,7 +10,7 @@
     </div>
     <div class="row faceboard-row">
         {% for officer in top6 %}
-        <div class="col-sm-4 col-xs-12 faceboard-thumbnail"> 
+        <div class="col-sm-4 col-xs-6 thumb col-centered"> 
             <div class="faceboard-title">
                 <div class="faceboard-content"> 
                     {{ officer.position }}
@@ -36,12 +36,13 @@
     <hr>
     <div class="row faceboard-row">
         {% for officer in officer_rest %}
-        <div class="col-sm-4 col-xs-12 faceboard-thumbnail"> 
+        <div class="col-sm-4 col-xs-6 thumb col-centered"> 
             <div class="faceboard-title">
                 <div class="faceboard-content"> 
                     {{ officer.position }}
                  </div>
             </div>
+
             <div class="faceboard-image-div">
              {% if officer.image %}
                 <div class='faceboard-photo' style="background-image: url({{officer.image.url}});"> </div>
