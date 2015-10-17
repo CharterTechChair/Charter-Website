@@ -138,10 +138,22 @@ div.event-image {
   background-position: center;
 }
 
+
 .thumb {
     margin-bottom: 30px;
 }
 
+@media screen and (max-width: 768px) {
+  .faceboard-photo {
+    height:160px;
+  }
+
+  .thumb{
+    margin-bottom: 10px; 
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+}
 .menu-day {
   margin: 5px;
 }
