@@ -16,6 +16,8 @@
               <h5> {{ entry.meal }}  {{ entry.meal.name }} </h5>
               <p style="margin-left:8px"> 
                 {{ entry.meal.description | linebreaksbr}} 
+                <br>
+                <a href="/{{ entry.cancellation_url }}"> [Delete] </a>
               </p>
           </li>
         {% endfor %}

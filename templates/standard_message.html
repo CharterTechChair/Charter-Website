@@ -5,10 +5,10 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-
+{% autoescape off %}
     <h2> {{ subject }} </h2>
-
+    <hr>
     <p> {{ body }} </p>
-
+{% endautoescape %}
 
 {% endblock %}

@@ -4,6 +4,7 @@ from django.utils import timezone
 from events.models import Entry
 from charterclub.models import limit_meals_attended_choices
 
+import urllib
 
 class ProspectiveMealEntry(models.Model):
     '''
@@ -13,14 +14,20 @@ class ProspectiveMealEntry(models.Model):
     meal = models.ForeignKey("kitchen.Meal", limit_choices_to=limit_meals_attended_choices)
     completed = models.BooleanField("Has this person completed the meal?", default=False)
     signup_date = models.DateField(blank=True, default=timezone.now().date())
-    points = models.DecimalField("Number of points this event is worth", default=1, max_digits=5, decimal_places=2)
+    points = models.DecimalField("Number of points this meal is worth", default=1, max_digits=5, decimal_places=2)
 
     def __unicode__(self):
         return "%s for %s" % (self.prospective, self.meal)
 
+    def cancellation_url(self):
+        base_url='kitchen/meal_cancellation/'
+        url = base_url + "%s/%s/%s/%s" % (self.id,self.prospective.id, self.meal.cast().__class__.__name__, self.signup_date.isoformat())
+        return urllib.quote(url)
+
+
 class ProspectiveEventEntry(Entry):
     '''
-        Models a recruitment event where we have to make 
+        (Not used yet)
     '''
     completed = models.BooleanField("Has this person attended this event?", default=False)
     signup_date = models.DateField(blank=True, default=timezone.now().date())

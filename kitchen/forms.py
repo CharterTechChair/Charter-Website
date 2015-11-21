@@ -3,6 +3,7 @@ from collections import Counter
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from django.shortcuts import redirect
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset
@@ -91,3 +92,33 @@ def already_signed_up_for_meal(prospective, meal):
     if prospective.prospectivemealentry_set.filter(meal=meal):
         return True
     return False
+        
+##################################################
+#   MealSignup Form
+#   Allows sophomores to cancel a meal on a specific date
+###################################################
+class MealCancellationForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        self.meal_entry = kwargs.pop('meal_entry')
+ 
+        super(MealCancellationForm, self).__init__(*args, **kwargs)
+    
+        self.fields['affirmation'] = forms.ChoiceField(label="Delete %s?" % self.meal_entry.meal,
+                                        required= True,
+                                        choices= (('Yes', 'Yes'),
+                                                  ('No', 'No')))
+
+    helper = FormHelper()   
+    helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
+
+    def clean_affirmation(self):
+        data = self.cleaned_data['affirmation']
+        if not data == 'Yes':
+            raise forms.ValidationError('You must select "Yes" to delete this meal')
+        return data
+
+    def delete_meal(self):
+        if self.cleaned_data['affirmation'] == 'Yes':
+            self.meal_entry.delete()
+            
+

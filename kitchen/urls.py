@@ -22,7 +22,10 @@ urlpatterns = patterns('',
         r'^meal_info/([0-9]{1,2})/([0-9]{1,2})/([0-9]{4})$', 
         'kitchen.views.meal_info', 
         name='meal_info'),
-    
+    url(
+        r'^meal_cancellation/(\d+)/(\d+)/(\w+)/(.+)', 
+        'kitchen.views.meal_cancellation', 
+        name='meal_cancellation'),
 )
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

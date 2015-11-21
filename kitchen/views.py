@@ -1,14 +1,21 @@
+from django.shortcuts import redirect
+
 from charterclub.permissions import render
 import charterclub.permissions as permissions
 
 from charterclub.models import Prospective
 
 from kitchen.models import Meal, Brunch, Lunch, Dinner
-from kitchen.forms import MealSignupForm
+from kitchen.forms import MealSignupForm, MealCancellationForm
+
+from recruitment.models import ProspectiveMealEntry
 
 from django.utils import timezone
 from django.utils.dateparse import parse_date
+
 import datetime
+from django.core.urlresolvers  import reverse
+from django.http import HttpRequest
 
 # Displays the weekly menu for a specific day
 def weekly_menu_day(request, date):
@@ -147,3 +154,36 @@ def meal_info(request, month, day, year):
 
             data[string] = (num_attending, num_limit)
     return HttpResponse(json.dumps(data), content_type="application/json")
+
+@permissions.prospective
+def meal_cancellation(request, entry_id, student_id, meal_type, entry_date):
+    prospective = permissions.get_student(request)
+    meal_entry_q = ProspectiveMealEntry.objects.filter(id=entry_id)
+
+    if not meal_entry_q:
+        return render(request, 'standard_message.html', {
+            'subject': 'Oops. Looks like this meal doesn\'t exist',
+            'body' : "Could not find entry_id=%s for a %s on %s. It's possible that the meal has already been deleted. \
+                      <p> Check the <a href=%s> meal signup </a> page again. </p>" % (entry_id, meal_type, entry_date, request.build_absolute_uri(reverse('meal_signup')))
+        })
+
+    meal_entry = meal_entry_q[0]
+    if not meal_entry.prospective == prospective:
+        return render(request, 'standard_message.html', {
+            'subject': "This meal doesn't belong to you...",
+            'body' : 'This entry belongs to %s but you are logged on as %s.' % (meal_entry.prospective, prospective)
+        })
+    
+
+    if request.method == 'POST':
+        form = MealCancellationForm(request.POST, meal_entry=meal_entry)
+        if form.is_valid():
+            form.delete_meal()
+        return redirect('meal_signup')
+    else:
+        form = MealCancellationForm(meal_entry=meal_entry)
+
+    return render(request, 'kitchen/meal_entry_cancellation.html', {
+            'meal_entry' : meal_entry,
+            'form' : form, 
+    })

@@ -1,0 +1,25 @@
+<!-- will be a working Faceboard. eventually. -->
+
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<container>
+    <div class='col-sm-offset-2 col-sm-6'>
+    <h3> Meal Cancellation Form </h3>   
+    <div>
+        <p> {{ meal_entry.meal}} </p>
+        <p> {{ meal_entry.meal.description}} </p>
+
+    </div>
+    {% crispy form %}
+    </div>
+
+</container>
+
+
+{% endblock %}
+
+
