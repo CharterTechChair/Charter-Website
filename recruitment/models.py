@@ -24,6 +24,8 @@ class ProspectiveMealEntry(models.Model):
         url = base_url + "%s/%s/%s/%s" % (self.id,self.prospective.id, self.meal.cast().__class__.__name__, self.signup_date.isoformat())
         return urllib.quote(url)
 
+    def can_be_cancelled_by_user(self):
+        return self.meal.day > timezone.now().date()
 
 class ProspectiveEventEntry(Entry):
     '''

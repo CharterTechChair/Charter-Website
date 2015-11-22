@@ -17,7 +17,14 @@
               <p style="margin-left:8px"> 
                 {{ entry.meal.description | linebreaksbr}} 
                 <br>
-                <a href="/{{ entry.cancellation_url }}"> [Delete] </a>
+
+                <div>
+                {% if entry.can_be_cancelled_by_user %} 
+                <a href="/{{ entry.cancellation_url }}"> [Cancel] </a>
+                {% else %}
+                [Cannot be Canceled]
+                {% endif %}
+                </div>
               </p>
           </li>
         {% endfor %}

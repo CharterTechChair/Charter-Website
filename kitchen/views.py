@@ -174,6 +174,11 @@ def meal_cancellation(request, entry_id, student_id, meal_type, entry_date):
             'body' : 'This entry belongs to %s but you are logged on as %s.' % (meal_entry.prospective, prospective)
         })
     
+    if not meal_entry.can_be_cancelled_by_user():
+        return render(request, 'standard_message.html', {
+            'subject': "Sorry! I can't cancel %s. :(" % meal_entry.meal,
+            'body' : 'We can\'t let people cancel meals on the day of the meal. This stops dishonest people from eating a meal, then canceling it, then signing up for another more meals. Email our VP if you have questions!',
+        })
 
     if request.method == 'POST':
         form = MealCancellationForm(request.POST, meal_entry=meal_entry)
