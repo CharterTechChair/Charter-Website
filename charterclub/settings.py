@@ -190,26 +190,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 # STATIC_URL = '/static/'
+# From https://django-storages.readthedocs.org/en/latest/backends/amazon-S3.html
+AWS_STORAGE_BUCKET_NAME = os.environ['S3_BUCKET_NAME']
+AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+# STATIC_URL='http://your_s3_bucket.s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME    
+STATIC_URL = '/static/'
+MEDIA_URL='http://your_s3_bucket.s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME    
 
-if ON_HEROKU:
-    AWS_STORAGE_BUCKET_NAME = os.environ['S3_BUCKET_NAME']
-    AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
-    AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
-    # STATIC_URL='http://your_s3_bucket.s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME    
-    STATIC_URL = '/static/'
-    MEDIA_URL='http://your_s3_bucket.s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME    
-
-    # From: https://devcenter.heroku.com/articles/django-assets
-    # STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-    MEDIAFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-else:
-    MEDIA_URL = '/media/'
-    STATIC_URL = '/static/'
-    
-    
-    
-
+# From: https://devcenter.heroku.com/articles/django-assets
+# STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+MEDIAFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
 
 MEDIA_ROOT = os.path.join(ENV_PATH, '..', 'media/')
