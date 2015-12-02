@@ -10,7 +10,7 @@ class MealAdmin(admin.ModelAdmin):
     fieldsets = [
         ('Meal Information',          {'fields': ['name', 'day', 'sophomore_limit']}),
         ('Meal Display Information', {'fields': ['description',]}),
-        ('Other',                    {'fields': ['special_note']}),
+        ('Other',                    {'fields': ['special_note', 'optional_pdf']}),
     ]
 
 

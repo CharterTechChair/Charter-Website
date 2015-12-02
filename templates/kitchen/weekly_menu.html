@@ -41,12 +41,13 @@
                         <div class="col-xs-12 col-sm-9 menu-text">
                             <strong> Entrees: </strong> 
                             <p> {{ brunch.description |linebreaksbr }} </p>
-
-                            <strong> Grill: </strong> 
-                            <p> {{ brunch.grill_special }} </p>
-
-                             <strong> Omlette: </strong> 
-                            <p> {{ brunch.omlette }} </p>
+                            
+                            {% if brunch.optional_pdf %}
+                            
+                            <form method="get" action="{{ brunch.optional_pdf.url }}">
+                                <button class="btn btn-info menu-pdf-btn" type="submit">Click Here for the PDF Menu</button>
+                            </PDF of the Menu
+                            {% endif %}
                             
                             {% if brunch.special_note %}
                             <strong class='meal-special-note'> *{{ brunch.special_note }} </strong>
@@ -64,13 +65,14 @@
                         <div class="col-xs-12 col-sm-9 menu-text">
                             <strong> Entrees: </strong> 
                             <p> {{ lunch.description |linebreaksbr }} </p>
-
-                            <strong> Grill: </strong> 
-                            <p> {{ lunch.grill_special }} </p>
-
-                            <strong> Salad: </strong> 
-                            <p> {{ lunch.salad }} </p>
                             
+                            {% if lunch.optional_pdf %}
+                            
+                            <form method="get" action="{{ lunch.optional_pdf.url }}">
+                                <button class="btn btn-info menu-pdf-btn" type="submit">PDF of the Menu</button>
+                            </form>
+                            {% endif %}
+
                             {% if lunch.special_note %}
                             <strong class='meal-special-note'> *{{ lunch.special_note }} </strong>
                             {% endif %}
@@ -89,13 +91,14 @@
                     <div class="col-xs-12 col-sm-9 menu-text">
                         <strong> Entrees: </strong> 
                         <p> {{ dinner.description |linebreaksbr}} </p>
+                            
+                            {% if dinner.optional_pdf %}
+                            
+                            <form method="get" action="{{ dinner.optional_pdf.url }}">
+                                <button class="btn btn-info menu-pdf-btn" type="submit">Click Here for the PDF Menu</button>
+                            </PDF of the Menu
+                            {% endif %}
 
-                        <strong> Plated Option: </strong> 
-                        <p> {{ dinner.grill_special }} </p>
-
-                        <strong> Salad: </strong> 
-                        <p> {{ dinner.salad }} </p>
-                        
                         {% if dinner.special_note %}
                         <strong class='meal-special-note'> *{{ dinner.special_note }} </strong>
                         {% endif %}                    

@@ -28,7 +28,21 @@ class InheritanceCastModel(models.Model):
     class Meta:
         abstract = True
 
-# Create your models here.
+###########################################################################
+# Meal
+#
+# Model that represents something a meal that can be eaten. 
+# Extends into Lunch, Brunch, and Dinner Models
+############################################################################
+def validate_file(fieldfile_obj):
+    # Note: this function is put up here so that validators=[func] can 
+    #       be called on it
+    filesize = fieldfile_obj.file.size
+    megabyte_limit = 5
+    if filesize > megabyte_limit*1024*1024:
+        raise ValidationError("Max file size is %sMB. Sorry! This is to ensure that\
+         you're not accidentally uploading huge files." % str(megabyte_limit))
+
 class Meal(InheritanceCastModel):
     display_name = "Meal"
     # Fields of this object
@@ -38,6 +52,8 @@ class Meal(InheritanceCastModel):
     description    = models.TextField(max_length=1000, help_text="What are we eating today?")
     special_note    = models.CharField(max_length=1000, blank=True, help_text="Optoinal note- i.e. 'Seniors only', or 'Meal ends early at 7:00pm'")
 
+    optional_pdf = models.FileField(upload_to='meal_optional_pdf/', null=True, blank=True, validators=[validate_file])
+    
     class Meta:
         ordering = ['-day']
 
