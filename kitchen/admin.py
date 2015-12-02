@@ -27,7 +27,6 @@ class MealAdmin(admin.ModelAdmin):
         return obj.num_of_sophomores()
     
 # admin.site.register(Meal, MealAdmin)
-
 class BrunchAdmin(MealAdmin):
     pass
 admin.site.register(Brunch, BrunchAdmin)
