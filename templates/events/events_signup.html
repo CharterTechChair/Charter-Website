@@ -10,7 +10,10 @@
         | Guest limit: {{rsvp_guests|length}}/{{ event.guest_limit}}
     {% endif %}
     </p>
-   
+    {% if event.image %}
+    <div class='event-image' style="background-image: url({{event.image.url}});"> </div>
+    {% endif %}
+    <p> {{ event.snippet }}</p>
     
     
     <h5> RSVP's that you are involved in: </h5>

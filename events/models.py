@@ -182,6 +182,14 @@ def validate_image(fieldfile_obj):
     if filesize > kilobyte_limit*1024:
         raise ValidationError("Max file size is %sKB. If the filesize is too big, the page will be very slow to laod for people with bad connections." % str(kilobyte_limit))
 
+def validate_file(fieldfile_obj):
+    # Note: this function is put up here so that validators=[func] can 
+    #       be called on it
+    filesize = fieldfile_obj.file.size
+    megabyte_limit = 30
+    if filesize > megabyte_limit*1024*1024:
+        raise ValidationError("Max file size is %sMB. Seriously...if you're uploading something bigger than %sMB, you need to reconsider if what you're doing right now is the best way to share it." % str(megabyte_limit))
+
 
 class Event(models.Model):
     '''
@@ -198,6 +206,19 @@ class Event(models.Model):
                                  blank=True,
                                  validators=[validate_image],
                                  )
+
+    downloadable_file   =  models.FileField(help_text="For example, this could be winter formals menu or any other resource you'd like to share. \
+                                                       If you want to share multiple files, be a man, zip the folder and upload the .zip (Optional).",
+                                upload_to = 'event_files/', 
+                                 null=True, 
+                                 blank=True,
+                                 validators=[validate_file],
+                                 )
+
+    downloadable_file_label = models.CharField(help_text="To tell people on the website what your downloadble file is.",
+                                                null=True, 
+                                                blank=True,
+                                                max_length=255)
     is_points_event = models.BooleanField("Is Point Event:", 
                                            help_text="Do Prospectives who attend get points?",
                                            default=False)

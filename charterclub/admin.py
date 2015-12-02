@@ -135,7 +135,7 @@ admin.site.register(Staff, StaffAdmin)
 from recruitment.prospective_admin_inline import ProspectiveMealEntryInline, ProspectiveEventEntryInline
 
 class ProspectiveAdmin(admin.ModelAdmin):
-    list_display = ['__unicode__', 'netid']
+    list_display = ['__unicode__', 'netid', 'year']
     # list_editable = ['events_attended', 'meals_attended']
     search_fields = ['first_name', 'last_name', 'netid', 'year']
     # filter_horizontal = ('meals_attended','meals_signed_up')

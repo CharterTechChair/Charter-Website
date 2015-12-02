@@ -39,8 +39,11 @@ class QuestionInline(admin.TabularInline):
 class EventAdmin(admin.ModelAdmin):
     fieldsets = [
         ('Mininum Information', 
-                                { 'fields': ['title', 'snippet', 'date', 'time', 'image',],
+                                { 'fields': ['title', 'snippet', 'date', 'time', 'image'],
                                   'description' : "Instructions: Fill the 'Mininum Information' and 'Room' fields. The rest of this form contain optional fields."}),
+        ('Optional Additional Files', 
+                                {'fields' : ['downloadable_file', 'downloadable_file_label'],
+                                'description' : "Instructions: If you to share a pdf menu, or a .zip folder, or etc."}),
         ('Extra Event Fields', 
                                 {'description' : "You can change these if you'd like.",
                                 'fields' : ['guest_limit', 'prospective_limit', 'is_points_event', 'display_to_non_members']}),

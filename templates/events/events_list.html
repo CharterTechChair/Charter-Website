@@ -38,8 +38,18 @@
                     <div class='event-image' style="background-image: url({{event.image.url}});"> 
                     </div>
                   {% endif %}
-                  <p> {{ event.snippet }} </p>
+                  <p> {{ event.snippet}} </p>
                   
+                    {% if event.downloadable_file %}
+
+                    <p> 
+                        <form method="get" action="{{ event.downloadable_file.url }}">
+                            <button class="btn btn-info menu-pdf-btn" type="submit"> {{ event.downloadable_file_label}} </button>
+                        </form>
+                    </p>
+                    {% endif %}
+                  
+
                   {% if student %}
                     {% if event.require_rsvp %}
                       {% if not has_person %}
