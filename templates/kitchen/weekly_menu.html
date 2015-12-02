@@ -46,11 +46,11 @@
                             
                             <form method="get" action="{{ brunch.optional_pdf.url }}">
                                 <button class="btn btn-info menu-pdf-btn" type="submit">Click Here for the PDF Menu</button>
-                            </PDF of the Menu
+                            </form>
                             {% endif %}
                             
                             {% if brunch.special_note %}
-                            <strong class='meal-special-note'> *{{ brunch.special_note }} </strong>
+                            <p> <strong class='meal-special-note'> *{{ brunch.special_note }} </strong> </p>
                             {% endif %}
                         </div>
 
@@ -67,14 +67,13 @@
                             <p> {{ lunch.description |linebreaksbr }} </p>
                             
                             {% if lunch.optional_pdf %}
-                            
                             <form method="get" action="{{ lunch.optional_pdf.url }}">
                                 <button class="btn btn-info menu-pdf-btn" type="submit">PDF of the Menu</button>
                             </form>
                             {% endif %}
 
                             {% if lunch.special_note %}
-                            <strong class='meal-special-note'> *{{ lunch.special_note }} </strong>
+                            <p> <strong class='meal-special-note'> *{{ lunch.special_note }} </strong> </p>
                             {% endif %}
                         </div>
 
@@ -96,11 +95,11 @@
                             
                             <form method="get" action="{{ dinner.optional_pdf.url }}">
                                 <button class="btn btn-info menu-pdf-btn" type="submit">Click Here for the PDF Menu</button>
-                            </PDF of the Menu
+                            </form>
                             {% endif %}
 
                         {% if dinner.special_note %}
-                        <strong class='meal-special-note'> *{{ dinner.special_note }} </strong>
+                        <p> <strong class='meal-special-note'> *{{ dinner.special_note }} </strong> </p>
                         {% endif %}                    
                     </div>
              </div>
