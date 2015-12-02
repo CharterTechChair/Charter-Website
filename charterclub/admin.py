@@ -14,6 +14,8 @@ from charterclub.preview import MemberListPreview
 from charterclub.forms import MemberListForm, NewMemberForm, EditOfficerForm, NewOfficerForm
 from django import forms
 
+from recruitment.models import ProspectiveMealEntry
+
 # Unsure if we should implement this
 '''
 class PersonAdmin(admin.ModelAdmin):
@@ -135,27 +137,17 @@ admin.site.register(Staff, StaffAdmin)
 from recruitment.prospective_admin_inline import ProspectiveMealEntryInline, ProspectiveEventEntryInline
 
 class ProspectiveAdmin(admin.ModelAdmin):
-    list_display = ['__unicode__', 'netid', 'year']
+    list_display = ['__unicode__', 'netid', 'year', 'num_credited_meals', 'num_uncredited_meals']
     # list_editable = ['events_attended', 'meals_attended']
     search_fields = ['first_name', 'last_name', 'netid', 'year']
     # filter_horizontal = ('meals_attended','meals_signed_up')
-    ordering = ['netid']
+    ordering = ['-year', 'netid']
     inlines = [ProspectiveMealEntryInline]
 
-    # What gets shown, and how?
-    # list_display = ('__unicode__',  'position', 'year',)
-    # list_editable = ('position',)
-    # ordering = ['position']
-
-    # What gets filtered/searched?
-    # search_fields = ['first_name', 'last_name', 'netid', 'year', 'position']
-
-    # def num_meals_attended(self, obj):
-    #     return len(obj.meals_attended.all())
-    
-    # def num_meals_signed_up(self, obj):
-    #     return len(obj.meals_signed_up.all())
-
+    def num_credited_meals(self, obj):
+        return obj.prospectivemealentry_set.filter(completed=True).count()
+    def num_uncredited_meals(self, obj):
+        return obj.prospectivemealentry_set.filter(completed=False).count()
 admin.site.register(Prospective, ProspectiveAdmin)
 
 #################################################################################
