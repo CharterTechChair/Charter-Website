@@ -201,6 +201,7 @@ def validate_image(fieldfile_obj):
 class Member(Student):
     # ----- Fields associated with this Model ---
     house_account = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    guest_meals = models.IntegerField("number of guest meals this member has", default=4)
     image = models.ImageField(upload_to = 'member_images/', null=True, blank=True, validators=[validate_image])
     allow_rsvp = models.BooleanField(
         'Whether or not this member may attend events', default=True)
