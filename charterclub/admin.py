@@ -31,8 +31,8 @@ admin.site.register(Person, PersonAdmin)
 #################################################################################
 class MemberAdmin(admin.ModelAdmin):
     # What gets shown, and how?
-    list_display = ('__unicode__', 'netid', 'year', 'house_account', 'allow_rsvp')
-    list_editable = ('house_account', 'allow_rsvp',)
+    list_display = ('__unicode__', 'netid', 'year', 'house_account', 'allow_rsvp', 'guest_meals')
+    list_editable = ('house_account', 'allow_rsvp', 'guest_meals')
     ordering = ['-year', 'last_name', 'first_name']
 
     # How can we narrow what gets shown?
