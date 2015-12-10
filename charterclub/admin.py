@@ -11,7 +11,7 @@ from list_filter import CurrentMembershipListFilter
 
 # Form previews
 from charterclub.preview import MemberListPreview
-from charterclub.forms import MemberListForm, NewMemberForm, EditOfficerForm, NewOfficerForm
+from charterclub.forms import MemberListForm, EditOfficerForm, NewOfficerForm
 from django import forms
 
 from recruitment.models import ProspectiveMealEntry
@@ -40,31 +40,11 @@ class MemberAdmin(admin.ModelAdmin):
     list_filter = (CurrentMembershipListFilter, 'year')
     show_full_result_count = True
     
-
-    def get_form(self, request, obj=None, **kwargs):
-        if not obj:
-            return NewMemberForm
-        else:
-            pass
-        return super(MemberAdmin, self).get_form(request, obj, **kwargs)
-
     def get_readonly_fields(self, request, obj=None):
         if obj:
             return ['netid']
         else:
             return []
-
-    # if a new member is created with a netid which already exists in the
-    # database, this is effectively blocked from happening.
-    def save_model(self, request, obj, form, change):
-        if not change:
-            existing = Member.objects.filter(netid=obj.netid)
-            
-            if len(existing) > 0:
-                obj = existing[0]
-                obj.pk = None
-                existing[0].delete()
-        obj.save()
 
     # Adds the "add_members" to the url
     def get_urls(self):

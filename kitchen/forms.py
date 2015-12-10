@@ -17,6 +17,8 @@ from kitchen.models import Brunch, Lunch, Dinner
 from charterclub.models import Prospective
 
 from recruitment.models import ProspectiveMealEntry
+
+from settings_charter.settings_service import DynamicSettingsServices
 ##################################################
 #   MealSignup Form
 #   Allows sophomores to sign up for meals
@@ -65,11 +67,12 @@ class MealSignupForm(forms.Form):
         if not m:
             raise ValidationError('There is not a meal of type:%s on date %s' % (meal_type, date))
 
+        limit = DynamicSettingsServices.get('default_sophomore_meal_per_month')
         # Now check if the meal is full
         if m[0].is_full():
             raise ValidationError('Sorry! This meal has been filled up. Try refreshing the data.')
         if will_exceed_meal_limit(self.prospective, m[0]):
-            raise ValidationError('You\'ve reached the limit of %s meals per month' % Prospective.monthly_meal_limit)
+            raise ValidationError('You\'ve reached the limit of %s meals per month' % limit)
         if already_signed_up_for_meal(self.prospective, m[0]):
             raise ValidationError("Looks like you've already signed up for this meal %s" % m[0])
         self.meal = m[0]
@@ -85,7 +88,9 @@ def will_exceed_meal_limit(prospective, next_meal):
 
     freq = Counter(group)
     print freq
-    if  any(f > Prospective.monthly_meal_limit for f in freq.itervalues()):
+
+    limit = DynamicSettingsServices.get('default_sophomore_meal_per_month')
+    if  any(f > limit for f in freq.itervalues()):
             return True        
 
 def already_signed_up_for_meal(prospective, meal):

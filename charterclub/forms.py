@@ -22,25 +22,6 @@ DAYS = [("Monday", "Monday"),
         ("Saturday", "Saturday"),
         ("Sunday", "Sunday")]
 
-
-################################################################################
-# NewMemberForm
-# 
-# Form for entering a new member into the database
-################################################################################
-class NewMemberForm(forms.ModelForm):
-    class Meta:
-        model = Member
-        fields = ['first_name', 'last_name', 'netid', 'image', 'year', 'allow_rsvp', 'house_account']
-
-    def save(self, commit=True):
-        newMember = super(NewMemberForm, self).save(commit = False)
-        if commit:
-            newMember.save()
-
-        return newMember
-
-
 ################################################################################
 # MemberListForm
 # 

@@ -77,6 +77,7 @@ INSTALLED_APPS = (
     'menus',
     'feedback',
     'kitchen',
+    'settings_charter',
     'django_bootstrap_calendar',
     'storages', # For AWS
     

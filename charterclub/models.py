@@ -17,6 +17,8 @@ from django.core.exceptions import ValidationError
 from django.db.models import Min, Max
 from kitchen.models import Meal
 
+from settings_charter.settings_service import DynamicSettingsServices
+
 # Taken from: http://stackoverflow.com/questions/929029/how-do-i-access-the-child-classes-of-an-object-in-django-without-knowing-the-name/929982#929982
 class InheritanceCastModel(models.Model):
     """
@@ -129,6 +131,9 @@ def limit_meals_signed_up():
             'day__range': [start_date, end_date]
     }
 
+
+
+
 class Prospective(Student):
     # events_attended = models.IntegerField(
     #     'Number of events attended', default=0)
@@ -141,8 +146,6 @@ class Prospective(Student):
     #                 blank=True, related_name="meals_signed_up")
 
     mailing_list = models.BooleanField(default=True)
-
-    monthly_meal_limit = 2
 
     # meals = make another model for meals signups? use date fields?
     def get_num_points(self):
@@ -167,21 +170,6 @@ class Prospective(Student):
         Member.objects.create(**member_param)
 
 
-    #CHECK if montly meal limit has been exceeded
-    def will_exceed_meal_limit(self, next_meal):
-        total_meals = self.prospectivemealentry_set.all() | self.meals_signed_up.all()
-        group =  ["%s-%s" % (m.day.month, m.day.year) for m in total_meals]
-
-        group.append("%s-%s" % (next_meal.day.month, next_meal.day.year))
-
-        freq = Counter(group)
-        print freq
-        if  any(f > Prospective.monthly_meal_limit for f in freq.itervalues()):
-            return True        
-
-
-
-
 
 ###########################################################################
 # Member
@@ -197,12 +185,25 @@ def validate_image(fieldfile_obj):
         raise ValidationError("Max file size is %sKB. Sorry! This is to ensure that\
          the site doesn't freeze when faceboard photos are loaded." % str(kilobyte_limit))
 
+def get_default_house_account():
+    return DynamicSettingsServices.get('default_house_account_for_new_member')
+
+def get_default_guest_meals():
+    return DynamicSettingsServices.get('default_member_meals_per_semester')
+
 # Member object begins here
 class Member(Student):
     # ----- Fields associated with this Model ---
-    house_account = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    guest_meals = models.IntegerField("number of guest meals this member has", default=4)
-    image = models.ImageField(upload_to = 'member_images/', null=True, blank=True, validators=[validate_image])
+    house_account = models.DecimalField(max_digits=10, 
+                                        decimal_places=2, 
+                                        default=get_default_house_account)
+    guest_meals = models.IntegerField("number of guest meals this member has", 
+                                        default=get_default_guest_meals)
+    image = models.ImageField(upload_to = 'member_images/', 
+                              help_text='(optional)',
+                              null=True, 
+                              blank=True, 
+                              validators=[validate_image])
     allow_rsvp = models.BooleanField(
         'Whether or not this member may attend events', default=True)
 
