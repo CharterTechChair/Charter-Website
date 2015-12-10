@@ -133,8 +133,9 @@ $(function() {
             var date = $(this).val();
             var time = $('#time').val();
             
-
-            var url = "http://localhost:8000/kitchen/meal_info/" + date;
+            var hostname = top.location.host.toString();
+            var url = hostname + "kitchen/meal_info/" + date;
+            
             var data_s = msg = $.ajax({type: "GET", url: url, async: false}).responseText;
             var data_js = $.parseJSON(data_s)
 
