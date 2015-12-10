@@ -78,8 +78,6 @@
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.js"></script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.js"></script>
 <script>
-
-
 $(function() {
     var dates_allowed = {
 
@@ -133,9 +131,9 @@ $(function() {
             var date = $(this).val();
             var time = $('#time').val();
             
-            var hostname = top.location.host.toString();
-            var url = hostname + "kitchen/meal_info/" + date;
-            
+            var hostname = window.location.protocol + "//" + window.location.host;
+            var url = hostname + "/kitchen/meal_info/" + date;
+
             var data_s = msg = $.ajax({type: "GET", url: url, async: false}).responseText;
             var data_js = $.parseJSON(data_s)
 
@@ -146,7 +144,7 @@ $(function() {
             for (var i = 0; i < type.length; i++)  {
                 t = type[i]
                 $('select option:contains("{0}")'.format(t)).remove()
-                console.log(t.toLowerCase())
+                
                 if (data_js[t.toLowerCase()][0] !== -1) {
                     var option = document.createElement("option");
                     option.text = t + data_js['brunch'][0] + "/" + data_js['brunch'][1]
@@ -183,10 +181,8 @@ $(function() {
 
         }
     });
-    
-
   });
-
 </script>
+<script src="{% static "js/scripts.js" %}"></script>
 {% endblock %}
 
