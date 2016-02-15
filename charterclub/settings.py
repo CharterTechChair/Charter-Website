@@ -133,8 +133,8 @@ CAS_REDIRECT_URL = 'templates/hello.html'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'roryf@princeton.edu'
-EMAIL_HOST_PASSWORD = 'bjxslmlxjynwyfef'
+EMAIL_HOST_USER = 'charter.techchair@gmail.com'
+EMAIL_HOST_PASSWORD = 'gycsnxekoyfvsdek'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # FOR IMAGES
