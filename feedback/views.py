@@ -18,8 +18,8 @@ def feedback(request):
         message = form.cleaned_data['anonymous_feedback']
         sender = 'charter.techchair@gmail.com'
         cc_myself = form.cleaned_data['cc_myself']
-
         recipients = ['charter-officers@princeton.edu']
+
         if cc_myself:
             my_email = permissions.get_username(request) + "@princeton.edu"
             recipients.append(my_email)
@@ -45,8 +45,3 @@ def thanks(request):
      'error': '',
      'netid': permissions.get_username(request),
     })
-
-3783-4853-58661006
-
-October 2020
-452
