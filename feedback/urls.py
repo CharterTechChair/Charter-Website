@@ -11,7 +11,7 @@ urlpatterns = patterns('',
         'feedback.views.feedback', 
         name='feedback'),
     url(
-        r'/thanks_form', 
+        r'/feedback_thanks', 
         'feedback.views.thanks', 
         name='feedback_thanks'),
 )

@@ -35,7 +35,7 @@ def feedback(request):
      'error': '',
      'netid': permissions.get_username(request),
    })  
-   
+
 @permissions.member
 def thanks(request):
     now = datetime.datetime.now().date()
@@ -46,3 +46,7 @@ def thanks(request):
      'netid': permissions.get_username(request),
     })
 
+3783-4853-58661006
+
+October 2020
+452
