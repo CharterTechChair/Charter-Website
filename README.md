@@ -66,7 +66,7 @@ use this below. See the [video](https://docs.google.com/a/princeton.edu/file/d/0
         python manage.py migrate
         python manage.py syncdb
 
-If you run into an error stating that `blank` can't be found, try running `pip install django-blank` (replacing blank with the module that can't be found)
+If you run into an error stating something along the lines of `ImportError: No module named blank`, try running `pip install django-blank` (replacing blank with the module that can't be found)
 
 It will ask you to create an admin. Use the login credentials in
 `charterclub/local_settings.py`. Say yes, and use the following:
