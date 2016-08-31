@@ -33,7 +33,7 @@ If you don't run this command, you will likely be missing a bunch of software. S
 
 Make sure you install django 1.7.4 (otherwise this won't work):
 
-	pip install django==1.7.4
+        pip install django==1.7.4
 
 - Install the CAS authentication:
 
@@ -57,9 +57,9 @@ use this below. See the [video](https://docs.google.com/a/princeton.edu/file/d/0
 
 - Set your AWS environment variables temporarily:
 
-	   export S3_BUCKET_NAME='test' 
-       export AWS_ACCESS_KEY_ID='test'
-       export AWS_SECRETE_ACCESS_KEY='test'
+        export S3_BUCKET_NAME='test' 
+        export AWS_ACCESS_KEY_ID='test' 
+        export AWS_SECRET_ACCESS_KEY='test' 
 
 - Setup the database according to Django's specifications.
 
