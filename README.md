@@ -31,6 +31,10 @@ If you don't run this command, you will likely be missing a bunch of software. S
 
         pip install django-toolbelt
 
+Make sure you install django 1.7.4 (otherwise this won't work):
+
+	pip install django==1.7.4
+
 - Install the CAS authentication:
 
         cd django-cas
@@ -51,10 +55,18 @@ Open 'psql' and run:
 This creates a role that can login to the database `chartermembers`. You will
 use this below. See the [video](https://docs.google.com/a/princeton.edu/file/d/0B6HetodYPhDwX3NtTlVQc19YQ2s/edit).
 
+- Set your AWS environment variables temporarily:
+
+	   export S3_BUCKET_NAME='test' 
+       export AWS_ACCESS_KEY_ID='test'
+       export AWS_SECRETE_ACCESS_KEY='test'
+
 - Setup the database according to Django's specifications.
 
         python manage.py migrate
         python manage.py syncdb
+
+If you run into an error stating that `blank` can't be found, try running `pip install django-blank` (replacing blank with the module that can't be found)
 
 It will ask you to create an admin. Use the login credentials in
 `charterclub/local_settings.py`. Say yes, and use the following:
