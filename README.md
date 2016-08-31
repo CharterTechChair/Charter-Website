@@ -61,12 +61,18 @@ use this below. See the [video](https://docs.google.com/a/princeton.edu/file/d/0
         export AWS_ACCESS_KEY_ID='test' 
         export AWS_SECRET_ACCESS_KEY='test' 
 
+- Install pillow:
+
+        pip install pillow
+
 - Setup the database according to Django's specifications.
 
         python manage.py migrate
         python manage.py syncdb
 
-If you run into an error stating something along the lines of `ImportError: No module named blank`, try running `pip install django-blank` (replacing blank with the module that can't be found)
+If you run into an error stating something along the lines of `ImportError: No module named blank` (the modules are `jquery, dajax, dajaxice, crispy_forms, storages, jsmin, ldap`), try running `pip install django-blank` (replacing blank with the module that can't be found) 
+
+**NB: ldap's module is `django-auth-ldap` not `django-ldap`**
 
 It will ask you to create an admin. Use the login credentials in
 `charterclub/local_settings.py`. Say yes, and use the following:
