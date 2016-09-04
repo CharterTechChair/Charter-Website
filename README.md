@@ -92,6 +92,43 @@ Then navigate to http://127.0.0.1:8000/, and if you see a success page, then you
 
 Yay! Questions?
 
+Git Protocols
+---
+
+Congrats! You've cloned the repo. Here's what you want to do if you want to submit a change:
+
+**DON'T PUSH TO MASTER, CREATE A BRANCH INSTEAD**
+
+- Create a new branch to work with by using 
+
+        git checkout -b branch_name
+
+- Edit your files.
+- Add all files to the staging area. If you don't add files to the staging area, git won't recognize them, and won't share them with everyone else.
+
+        git add .
+
+- Commit your changes. Bundle all of your changes into one "commit," which is tagged with a commit message and sent to the remote repo.
+
+        git commit -m "Descriptive message"
+
+- Update with what everyone else is doing! You want to stay updated with all of the changes everyone else does, so switch to master, update, and switch back to your branch:
+
+        git checkout master
+        git pull
+        git checkout branch_name
+        git rebase master
+        
+This will make sure that you are in sync with the live master
+
+- If you're done testing (and **ONLY** if you're don't testing), share your changes with everyone else.
+
+        git push origin branch_name
+
+This will create a new branch on the origin repo
+
+- On the branch page on github, open a new pull request for your branch. Tag people in it so that they can see and comment on it before pushing to master. Once you receive enough approval, close the pull request to merge into master!
+
 
 Pushers
 ---
@@ -133,32 +170,3 @@ You should see all of the new commits plus a "merge" commit in your `release` br
 - Push to heroku!
 
         git push heroku master
-
-
-Git Help
----
-See "git protocols" doc in the wiki for more information.
-
-Congrats! You've cloned the repo. Here's what you want to do if you want to submit a change:
-
-- Edit your files.
-- Add all files to the staging area. If you don't add files to the staging area, git won't recognize them, and won't share them with everyone else.
-
-        git add .
-
-- Commit your changes. Bundle all of your changes into one "commit," which is tagged with a commit message and sent to the remote repo.
-
-        git commit -m "[1-word description] Commit Message Here"
-
-- Update with what everyone else is doing! You want to stay updated with all of the changes everyone else does, so run:
-
-        git pull --rebase
-
-"pull" simply fetches all changes; "rebase" adds your changes onto the changes that have been fetched.
-
-- If you're done testing (and **ONLY** if you're don't testing), share your changes with everyone else.
-
-        git push
-
-If you don't test your code, and what you push breaks everyone else's copy of the code, **SHAME ON YOU**!
-
