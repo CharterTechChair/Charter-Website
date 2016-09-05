@@ -1,4 +1,4 @@
-venv
+venv/
 *.pyc
 charterclub/*.pyc
 charterclub/__init__.pyc
