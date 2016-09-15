@@ -223,7 +223,9 @@ class Member(Student):
     # Creates a member, if possible
     def create_new_member(self, param):
         if Members.objects.filter(netid=param['netid']):
-            raise Exception('Creation Error: Member with netid "%s" already exists' % param['netid'])
+            #TODO: YOLO
+            Member.objects.update(**member_param)
+#            raise Exception('Creation Error: Member with netid "%s" already exists' % param['netid'])
         else:
             Member.objects.create(**member_param)
 
