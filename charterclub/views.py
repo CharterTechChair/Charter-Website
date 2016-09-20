@@ -92,8 +92,8 @@ def staff_list(request):
 def contactus(request):
     now = datetime.datetime.now().date()
 
-    prez = Officer.objects.filter(position='President')
-    vp = Officer.objects.filter(position='Vice President')
+    prez = Officer.objects.filter(is_active=True).filter(position='President')
+    vp = Officer.objects.filter(is_active=True).filter(position='Vice President')
 
     if not prez: 
       prez = ''
