@@ -70,7 +70,7 @@ use this below. See the [video](https://docs.google.com/a/princeton.edu/file/d/0
         python manage.py migrate
         python manage.py syncdb
 
-If you run into an error stating something along the lines of `ImportError: No module named blank` (the modules are `jquery, dajax, dajaxice, crispy_forms, storages, jsmin, ldap`), try running `pip install django-blank` (replacing blank with the module that can't be found) 
+If you run into an error stating something along the lines of `ImportError: No module named blank` (the modules are `jquery, dajax, dajaxice, crispy_forms, storages, jsmin, ldap, boto`), try running `pip install django-blank` (replacing blank with the module that can't be found) 
 
 **NB: ldap's module is `django-auth-ldap` not `django-ldap`**
 
