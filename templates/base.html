@@ -157,8 +157,11 @@
                       <li><a href="{%url 'admin:index' %}">Admin Control Panel</a></li>
                     </ul>
                   </li>
+				{% else %}
+				{% if staff %}
+				<li><a href="{%url 'admin:index' %}">Admin</a></li>
+				{% endif %}
                 {% endif %}
-
               </ul> <!-- nav navbar-nav -->
 
 
