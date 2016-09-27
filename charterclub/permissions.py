@@ -32,13 +32,13 @@ from charterclub.models import Prospective, Member, Officer
 # These are decorator functions
 #
 #######################################################
-def staff(func):
-	def check_s(request, *args, **kwargs):
+def privileged(func):
+	def check_p(request, *args, **kwargs):
 		if not check_staff(request):
 			return render(request, "permission_denied.html",
-						  {"required_permission": "staff"})
+						  {"required_permission": "privileged"})
 		return func(request, *args, **kwargs)
-	return check_s
+	return check_p
 
 def officer(func):
     def check_o(request, *args, **kwargs):
@@ -88,23 +88,23 @@ def additional_context(request):
     netid = get_username(request)
     
     # Lookup people
-    s = None
-    if (check_staff(request)):
-        s = netid
+    priv = None
+    if (check_your_privilege(request)):
+        priv = netid
     o = dereference(Officer.objects.filter(netid=netid))
     m = dereference(Member.objects.filter(netid=netid))
     p = dereference(Prospective.objects.filter(netid=netid))
     now = timezone.now()
 
     # Then return the results with the proper object pointers
-    if s:
-        return { "netid": netid, "staff": s, "officer" : o, "member" : m, "student" : m.student, "prospective" : p, 'now': now}
+    if priv:
+        return { "netid": netid, "privileged": priv, "officer" : o, "member" : m, "student" : m.student, "prospective" : p, 'now': now}
     if o:
-        return { "netid": netid, "staff": s, "officer" : o, "member" : o.member, "student" : o.member.student, "prospective" : p, 'now': now}
+        return { "netid": netid, "privileged": priv, "officer" : o, "member" : o.member, "student" : o.member.student, "prospective" : p, 'now': now}
     if m:  
-        return { "netid": netid, "staff": s, "officer" : o, "member" : m, "student" : m.student, "prospective" : p, 'now': now}
+        return { "netid": netid, "privileged": priv, "officer" : o, "member" : m, "student" : m.student, "prospective" : p, 'now': now}
     if p:
-        return { "netid" : netid, "staff": s, "officer" : o, "member" : m, "student" : p.student, "prospective" : p, 'now': now}
+        return { "netid" : netid, "privileged": priv, "officer" : o, "member" : m, "student" : p.student, "prospective" : p, 'now': now}
 
     return  { "netid": netid, "staff": None, "officer" : None, "member" : None, "student" : None, "prospective" : None}
 
@@ -173,7 +173,7 @@ def tigerbooks_lookup(netid):
 
 # check if the currently CAS logged-in user is staff, returning
 # true if so and false otherwise.
-def check_staff(request):
+def check_your_privilege(request):
     usr = get_username(request)
     if usr == "":
         return False
