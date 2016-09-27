@@ -97,8 +97,7 @@ def additional_context(request):
     now = timezone.now()
 
     # Then return the results with the proper object pointers
-    if priv:
-        return { "netid": netid, "privileged": priv, "officer" : o, "member" : m, "student" : m.student, "prospective" : p, 'now': now}
+	# TODO see if we can merge down these cases (eg do we need the o case or do we get member already?)
     if o:
         return { "netid": netid, "privileged": priv, "officer" : o, "member" : o.member, "student" : o.member.student, "prospective" : p, 'now': now}
     if m:  
@@ -106,7 +105,7 @@ def additional_context(request):
     if p:
         return { "netid" : netid, "privileged": priv, "officer" : o, "member" : m, "student" : p.student, "prospective" : p, 'now': now}
 
-    return  { "netid": netid, "staff": None, "officer" : None, "member" : None, "student" : None, "prospective" : None}
+    return  { "netid": netid, "privileged": priv, "officer" : None, "member" : None, "student" : None, "prospective" : None}
 
 
 # a replacement render function which passes some additional
