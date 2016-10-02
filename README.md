@@ -55,11 +55,9 @@ Open 'psql' and run:
 This creates a role that can login to the database `chartermembers`. You will
 use this below. See the [video](https://docs.google.com/a/princeton.edu/file/d/0B6HetodYPhDwX3NtTlVQc19YQ2s/edit).
 
-- Set your AWS environment variables temporarily:
+- Set your environment variables by obtaining a `localEnv.sh` file from the tech chair, and run it by using the command:
 
-        export S3_BUCKET_NAME='test' 
-        export AWS_ACCESS_KEY_ID='test' 
-        export AWS_SECRET_ACCESS_KEY='test' 
+		source localEnv.sh
 
 - Install pillow:
 
