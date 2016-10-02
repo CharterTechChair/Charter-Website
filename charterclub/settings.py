@@ -16,7 +16,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '(mihe#rzn6$nxj0=ht()h==#315l7ojk@b5s#b_d)p6*6geyi6'
+SECRET_KEY = os.environ.get('CHARTER_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -133,8 +133,8 @@ CAS_REDIRECT_URL = 'templates/hello.html'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'charter.techchair@gmail.com'
-EMAIL_HOST_PASSWORD = 'gycsnxekoyfvsdek'
+EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 # FOR IMAGES
@@ -149,11 +149,11 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', # WAS 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),  # Or path to database file if using sqlite3.
-        'NAME': 'ddkidtgk9fbdge',
+        'NAME': os.environ.get('DB_NAME'),
         # The following settings are not used with sqlite3:
-        'USER': 'eywigllpkckjyf',
-        'PASSWORD': 'bZcWz2ZdXU3vye3tqsCyIRk1Tm',
-        'HOST': 'ec2-54-204-20-164.compute-1.amazonaws.com',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
         'PORT': '5432',                      # Set to empty string for default.
     }
 }
