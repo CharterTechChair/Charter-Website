@@ -162,7 +162,7 @@ a {
 }
 
 body {
-        background:#c33;
+        background:#efefef;
     }
 
 .panel-transparent {
@@ -182,7 +182,7 @@ body {
   font-weight:300;
   //color:#fff;
   //background-color:#efefef;
-  background-color:#fff;
+  //background-color:#fff;
   opacity: 0.9;
 }
 
@@ -325,6 +325,7 @@ a.btn {
 
 .dropdown-menu {
 	min-width: 250px;
+    box-shadow: none;
 }
 
 .dropdown-backdrop {
