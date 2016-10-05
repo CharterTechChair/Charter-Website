@@ -31,14 +31,6 @@
     </ul>
     
     <hr>
-
-    <h4> Signup Form </h4>
-    <p> You can see our full menu <a href="{%url 'weekly_menu' %}">here</a>.</p>
-    <div style="max-width:250px; margin:10px;">
-        {% crispy form %}
-    </div>
-
-
     <!-- Information about recruitment starts here -->
     <hr>
     <h3> Information on Sophmore Meals</h3>
@@ -57,7 +49,16 @@
         <li> Sophomores are limited two meals a month </li>
         <li> Sophomore meals close the night before the day of the meal.  </li>
         <li> Sophomore meals begin in the late fall and end in January.  </li>
+		<li> Lunch runs from 11:30-1:30, Dinner on weekdays from 5:45-7:30, Brunch from 11:45-1:30, and Dinner on weekends from 5:30-7 </li>
     </ul>
+
+
+    <h4> Signup Form </h4>
+    <p> You can see our full menu <a href="{%url 'weekly_menu' %}">here</a>.</p>
+    <div style="max-width:250px; margin:10px;">
+        {% crispy form %}
+    </div>
+
 
      <img src="{{STATIC_URL}}img/food-picture.jpg" style="border: 0" align="middle" width="40%" >
 
