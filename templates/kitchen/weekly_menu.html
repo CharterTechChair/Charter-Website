@@ -1,4 +1,5 @@
 <!-- will be a working Faceboard. eventually. -->
+<!-- ^what -->
 
 {% extends "base.html" %}
 {% load staticfiles %}
@@ -38,7 +39,7 @@
                             <p class="meal-name"> {% if brunch.name %} {{ brunch.name }} {% endif %}</p>
                         </div>
 
-                        <div class="col-xs-12 col-sm-9 menu-text">
+                        <div class="col-xs-12 col-sm-9 menu-text brunch">
                             <strong> Entrees: </strong> 
                             <p> {{ brunch.description |linebreaksbr }} </p>
                             
@@ -62,9 +63,17 @@
                             <p class="meal-name"> {% if lunch.name %} {{ lunch.name }} {% endif %}</p>
                         </div>
 
-                        <div class="col-xs-12 col-sm-9 menu-text">
+                        <div class="col-xs-12 col-sm-9 menu-text lunch">
                             <strong> Entrees: </strong> 
-                            <p> {{ lunch.description |linebreaksbr }} </p>
+                            <div class="lunch-content"> 
+                                <p class='old-holder'>
+                                    {{ lunch.description |linebreaksbr }}
+                                </p>
+
+                                <p class="gs"></p>
+                                <p class="salad"></p>
+                                <p class="main-meal"></p>
+                            </div>
                             
                             {% if lunch.optional_pdf %}
                             <form method="get" action="{{ lunch.optional_pdf.url }}">
@@ -107,5 +116,94 @@
         </div>
         {% endfor %}
     </div>
+        
+    <script>
+        var lunches = document.getElementsByClassName('lunch-content');
+        for (var i = 0; i < lunches.length; i++) {
+            //console.log(lunches[i].innerText);
+            var origText = lunches[i].innerText;
+            var text = origText.toLowerCase();
+            
+            var loc = text.search("grill special:");
+            var maxLoc = 0;
+            var firstLoc = 0;
+            var firstEnd = 0;
+            var maxEnd = 0;
+
+            var gs = '';
+            if (loc != -1) {
+                var end = text.substring(loc, text.length);
+                maxEnd = end.search('\n');
+                if (maxEnd === -1) maxEnd = end.length;
+
+                maxLoc = loc;
+                firstLoc = loc;
+                firstEnd = maxEnd;
+                
+                gs = origText.substring(loc, loc + maxEnd);
+            } else {
+                //deal with crepes?
+            }
+            
+            var salad = '';
+            
+            loc =  text.search("special salad:");
+            if (loc != -1) {
+                var end = text.substring(loc, text.length);
+                var endLine = end.search('\n');
+                if (endLine === -1) endLine = end.length;
+                if (loc < firstLoc) {
+                    firstLoc = loc;
+                    firstEnd = endLine;
+                    console.log('doesnt happen');
+                }
+                if (endLine + loc > maxEnd + maxLoc) {
+                    maxEnd = endLine;  
+                    maxLoc = loc;
+                }
+                
+                salad = origText.substring(loc, loc + endLine);
+            }
+            var beforeContent = origText.substring(0, firstLoc);
+            var midContent = origText.substring(firstLoc + firstEnd, maxLoc);
+            var afterContent = origText.substring(maxEnd + maxLoc, origText.length);
+
+            var reconstructed = beforeContent + midContent + afterContent;
+            
+           // lunches[i].innerText = '';
+            
+            var oldHolder = lunches[i].getElementsByClassName('old-holder')[0];
+            
+            var gsNode = lunches[i].getElementsByClassName('gs')[0];
+            var saladNode = lunches[i].getElementsByClassName('salad')[0];
+            var mainNode = lunches[i].getElementsByClassName('main-meal')[0];
+
+
+            if (gs != "") {
+                var colSpot = gs.search(":");
+                gs = gs.substring(colSpot + 1, gs.length);
+            }
+
+            if (salad != "") {
+                var colSpot = salad.search(":");
+                salad = salad.substring(colSpot + 1, salad.length);
+            }
+            
+            gsNode.style.display = "none";
+            saladNode.style.display = "none";
+            mainNode.style.display = "none";
+            
+            gsNode.innerText = gs;
+            saladNode.innerText = salad;
+            mainNode.innerText = reconstructed;
+            
+            
+
+
+            
+
+        }
+        
+    </script>
 </container>
 {% endblock %}

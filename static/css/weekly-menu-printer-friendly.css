@@ -1,3 +1,5 @@
+
+
 @media print {
 
 .btn {
@@ -13,16 +15,137 @@
 }
 h2 {
     font-size: 3.0em;
+    display: none;
 }
 
 h3 {
+    display: none;
     font-size: 2.0em;
 }
+    
+    h5 {
+        display: none;
+    }
 
-.menu-text {
-    font-size: 9px;
+
+    
+.menu-type {
+    display: none;
 }
+    
+    .menu-meal, .menu-text {
+        min-height: inherit !important;
+        height: inherit !important;
+        overflow: hidden !important;
+   //     height: 100% !important;
+    }
+    
+    p {
+  //      height: 100% !important;
+        padding: 0px;
+        margin: 0px;
+    }
+strong {
+    /* TODO: hacky */
+    display: none;
+}
+    
+ .div-left {
+     width: 3.5in;
+  //  height: 1.625in;
+     overflow: hidden;
+     text-overflow: ellipsis;
+   //  float: left;
+     padding: 0;
+    // margin-left:1.75in;
 
+    }
+    
+
+    .gs {
+        width: 1.25in !important;
+        height: 0.5625in !important;
+        display: block!important;
+        padding-top: 0.25in;
+    }
+    
+    .salad{
+        width:1.25in !important;
+        height: 0.5625in !important;
+        display: block !important;
+        padding-top: 0.25in;
+
+    }
+    
+    .main-meal{
+        width:1.25in !important;
+        height: 1.625in !important;
+        margin-top: -1.625in !important;
+        margin-left: 1.25in !important;
+        display: block !important;
+    }
+    
+    .old-holder{
+        display: none;
+    }
+    
+    
+.div-right {
+    width: 3.5in;
+    overflow: hidden;
+     padding: 0;
+ //   height: 1.625in;
+    //float: right;
+     text-overflow: ellipsis;
+    margin-left:3.5in;
+    margin-top: -1.625in;
+
+ }
+    
+    hr {
+        display: none;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        margin-top: 2.25in;
+        
+    }
+    @page { margin: 0; }
+    
+    
+    .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
+  padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+       // height: 100% !important;
+
+}
+    .row, .panel-body, .container{
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    .menu-day {
+        padding: 0;
+        margin: 0;
+        width: 82.34% !important;
+        margin-left:1.125in !important;
+      //  height: 11.6% !important;
+       // max-height: 11.6%;
+        overflow: hidden;
+        height: 1.625in;
+        font-size: 0.11in;
+    }
+    
+    .footer .credits{
+        display: none;
+    }
+    
+    
+/*
 .meal-special-note {
     font-size: 8px;
 }
@@ -30,10 +153,10 @@ h3 {
     background-color: #fff !important;
 }
 body { zoom: 0.5; -moz-transform: scale(0.5); -moz-transform-origin: 0 0}
+*/
 
-.col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
-  float: left;
-}
+
+    /*
 .col-sm-12 {
   width: 100%;
 }
@@ -124,4 +247,5 @@ body { zoom: 0.5; -moz-transform: scale(0.5); -moz-transform-origin: 0 0}
  .menu-day {
     padding: 0px;
  }
+    */
 }
