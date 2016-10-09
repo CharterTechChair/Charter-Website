@@ -1,0 +1,69 @@
+{
+  "name": "Charter-Website",
+  "scripts": {
+  },
+  "env": {
+    "AWS_ACCESS_KEY_ID": {
+      "required": true
+    },
+    "AWS_SECRET_ACCESS_KEY": {
+      "required": true
+    },
+    "BUILDPACK_URL": {
+      "required": true
+    },
+    "CHARTER_SECRET_KEY": {
+      "required": true
+    },
+    "DB_HOST": {
+      "required": true
+    },
+    "DB_NAME": {
+      "required": true
+    },
+    "DB_PASSWORD": {
+      "required": true
+    },
+    "DB_USER": {
+      "required": true
+    },
+    "EMAIL_PASSWORD": {
+      "required": true
+    },
+    "EMAIL_USER": {
+      "required": true
+    },
+    "HEROKU_APP_ID": {
+      "required": true
+    },
+    "HEROKU_APP_NAME": {
+      "required": true
+    },
+    "HEROKU_RELEASE_VERSION": {
+      "required": true
+    },
+    "HEROKU_SLUG_COMMIT": {
+      "required": true
+    },
+    "HEROKU_SLUG_DESCRIPTION": {
+      "required": true
+    },
+    "S3_BUCKET_NAME": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+    "heroku-postgresql",
+    "heroku-postgresql"
+  ],
+  "buildpacks": [
+    {
+      "url": "https://github.com/damgad/heroku-buildpack-python-ldap.git"
+    }
+  ]
+}
