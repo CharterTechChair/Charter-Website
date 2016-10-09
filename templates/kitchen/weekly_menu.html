@@ -189,6 +189,9 @@
                 salad = salad.substring(colSpot + 1, salad.length);
             }
             
+            
+            reconstructed = reconstructed.split('\n\n').join('\n');
+                        
             gsNode.style.display = "none";
             saladNode.style.display = "none";
             mainNode.style.display = "none";
