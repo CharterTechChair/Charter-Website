@@ -149,7 +149,7 @@ a {
     background-attachment:fixed;
     background-position:center center;
     background-size: cover;
-    opacity:0.5;
+    opacity:0.25;
 }
 
 .affix {
@@ -161,9 +161,7 @@ a {
   /*opacity: 0.6;*/
 }
 
-body {
-        background:#efefef;
-    }
+
 
 .panel-transparent {
         background: rgba(122, 130, 136, 0.2)!important;
@@ -249,19 +247,19 @@ a.btn {
 .navbar {
   //background-color:#400000;
  // background-color:#F6F6F6;
-      background-color:#fff;
+      background-color: #101010;
 
     
    // box-shadow: 0 5px 5px rgba(0,0,0,0.2);
 
     //color:#a30319;
     border-radius:0;
-    border-bottom: 1px solid #c4c4c4;
+    //border-bottom: 1px solid #c4c4c4;
     
     
 }
 .navbar-nav > li > a {
-  	color:#a30319;
+  	color:#880000;
   	padding-left:15px;
   	padding-right:15px;
   	//border-left:1px solid #6a0b1a;
@@ -272,6 +270,7 @@ a.btn {
 
 .navbar-nav li a:hover {
   	//background-color:#a30319;
+    color:#880000;
 }
 
 .navbar-nav > .open > a, .navbar-nav > .open > a:hover, .navbar-nav > .open > a:focus {
@@ -280,7 +279,7 @@ a.btn {
 }
 
 .navbar-default .navbar-brand {
-	color:#880000;
+	color:#fff;
 }
 
 
@@ -290,24 +289,24 @@ a.btn {
 
 
 .navbar-default .navbar-nav>li>a {
-  color: #880000;
+  color: #fff;
 }
 .navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus {
-  color: #a30319;
+  color: #880000;
   //background-color: rgba(180,0,0,1.0)  
 }
 
 .navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
- color: #a30319;
+ color: #880000;
  //background-color: rgba(180,0,0,1.0)   
 }
 .navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>li>a:focus {
-  color: #a30319;
+  color: #880000;
   //background-color: rgba(180,0,0,1.0)
 }
 
 .navbar-default .navbar-toggle .icon-bar {
-  background-color:#880000;
+  background-color:#fff;
 }
 /*
   .navbar-nav{
@@ -333,8 +332,9 @@ a.btn {
 }
 
 .caret {
-	color:#880000;
+	color:#fff;
 }
+
 
 .navbar-toggle {
 	color:#fff;
@@ -382,8 +382,7 @@ a.btn {
 
 footer {
 //  	background-color:rgba(0,0,0,0.5);
-    background-color: #fff;
-    border-top: 1px solid #c4c4c4;
+    background-color: #101010;
   	color:#888;
   position: absolute;
   bottom: 0;
