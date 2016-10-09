@@ -11,7 +11,8 @@
 
 {% block content %}
 
-<container>
+<div class="container">
+
     <h2> Weekly Menu </h2>
     <div class='row'>
         <a href="{% url 'weekly_menu' %}/{{ prev_week.isoformat}}" class="btn btn-info" role="button"> Prev Week </a> <a href="{% url 'weekly_menu' %}/{{ next_week.isoformat}}" class="btn btn-info" role="button"> Next Week </a>
@@ -227,4 +228,5 @@
 
     
 </container>
+
 {% endblock %}

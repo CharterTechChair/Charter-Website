@@ -4,21 +4,66 @@
 {% load staticfiles %}
 
 {% block content %}
-     <div id="outer-background-container" data-default-background-img="{{STATIC_URL}}img/oldcharter.jpg" style="background-image:url({{STATIC_URL}}img/front.jpg); background-attachment: fixed;"></div>
+
+<div class="holder">
+     <div id="outer-background-container" data-default-background-img="{{STATIC_URL}}img/front.jpg" style="background-image:url({{STATIC_URL}}img/front.jpg); background-attachment: fixed;"></div>
 
           <div class="background-image-overlay">
    
 </div>
 
 <div id="background-image">
+    
            <table style="height:100%; width:100%;">
     <tr style="height:100%;">
         <td style="height:100%; vertical-align:center;">
               <img src="{{STATIC_URL}}img/chartername.png" style="border:0;opacity:1;z-index:1;" align="middle" width="60%" >
         </td>
+               </tr>
+    <tr>
+        <td style="text-align:center;">
+
+          <span class="glyphicon glyphicon-chevron-down" 
+                style="font-size:50px;color:white;"
+                onclick="document.getElementById('president-message').scrollIntoView(true);">
+            </span>
+        </td>
     </tr>
                
     </table>
+
+</div>
+    
+<div id="president-message">
+   <table style="height:100vh; width:100%;">
+    <tr style="height:100vh;">
+    <td style="height:100vh; vertical-align:center;">
+
+    <div class="container">
+    <br>
+    <h2>Message From The President</h2>
+    <br>
+    <div class="col-md-4 col-md-offset-1">
+    <img src="{{STATIC_URL}}img/lorena.jpg" height="400px">
+    </div>
+    <div class="col-md-6">
+        <br>
+        On behalf of our undergraduate membership and alumni body, welcome to Charter! Since 1901, undergraduates have joined Charter to be part of one of the friendliest and most dynamic social communities at Princeton. We have a beautiful clubhouse filled with resources like our TV room, where members gather to watch movies and play Super Smash Bros, our computer cluster equipped with several multi-screen desktops (excellent for serious work or serious gaming), our big backyard with a volleyball court and a two-level patio, our historic library, and much more. Add in our delicious and diverse dining selections, as well as our packed social calendar, and it's easy to see why the quality of the Charter experience is unrivaled on the Street. All of this ensures the bonds formed here last lifetimes, which is why alumni come home to Charter in large numbers for football games and Reunions.
+        <br><br>
+        Best Regards,
+        <br><br>
+        Lorena Grundy, Class of 2017 <br>
+        Undergraduate President <br>
+        lgrundy@princeton.edu 
+        <br>
+        <br>
+    </div>
+    </div>
+        </td>
+       </tr>
+    </table>
+    
+</div>
 </div>
 
   {% endblock %}
