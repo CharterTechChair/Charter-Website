@@ -157,6 +157,7 @@ a {
 #president-message{
     z-index:1;
     background-color: white;
+    background-image: url(../img/pcc.png);
     width:100vw;
     min-height:100vh;
     position:relative;
