@@ -131,8 +131,8 @@ a {
     position: fixed;
     z-index:-2;
     background-repeat:no-repeat;
-    //background-attachment:fixed;
-    background-position:center center;
+    background-attachment:fixed;
+    background-position:center;
     background-size: cover;
 }
 
@@ -198,6 +198,7 @@ body {
   //background-color:#efefef;
   //background-color:#fff;
   opacity: 0.9;
+    background-image: url(../img/pcc.png);
 }
 
 h1,h2,h3,h4 {
