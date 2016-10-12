@@ -50,7 +50,8 @@ TEMPLATES = [
 
 ALLOWED_HOSTS = [
     '.princetoncharterclub.org',
-    'localhost'
+    'localhost',
+	'.charterclub.org'
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
