@@ -86,9 +86,22 @@ strong {
 
     }
     
+    .brunch {
+        padding: 0.35in 0.05in 0.05in 0.05in;
+        width: 3.4in !important;
+        height: 1.225in !important;
+        text-overflow: ellipsis;
+        font-size: 0.1in;
+        
+
+
+
+    }
+
+    
     .main-meal{
         padding: 0.05in;
-        width:1.65in !important;
+        width:1.6in !important;
         height: 1.525in !important;
         margin-top: -1.625in !important;
         margin-left: 1.75in !important;
@@ -100,18 +113,26 @@ strong {
         display: none;
     }
     
+    .new-holder {
+        display: block !important;
+    }
     
 .div-right {
-    width: 3.4in;
+    width: 2.8in;
     overflow: hidden;
-     padding: 0.05in;
      text-overflow: ellipsis;
     margin-left:3.5in;
     margin-top: -1.625in;
+    height: 1.525in !important;
+    padding: 0.05in !important;
     
 
  }
-    
+    .dinner {
+        height: 1.525in !important;
+        padding: 0in;
+        margin-top:0.05in;
+    }
     hr {
         display: none;
     }

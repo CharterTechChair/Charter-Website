@@ -39,9 +39,12 @@
                             <p class="meal-name"> {% if brunch.name %} {{ brunch.name }} {% endif %}</p>
                         </div>
 
-                        <div class="col-xs-12 col-sm-9 menu-text brunch">
+                        <div class="col-xs-12 col-sm-9 menu-text">
                             <strong> Entrees: </strong> 
-                            <p> {{ brunch.description |linebreaksbr }} </p>
+                            <div class="other-content brunch">
+                            <p class='old-holder'> {{ brunch.description |linebreaksbr }} </p>
+                            <p class='new-holder'></p>
+                            </div>
                             
                             {% if brunch.optional_pdf %}
                             
@@ -96,9 +99,12 @@
                         <p class="meal-name"> {% if dinner.name %} {{ dinner.name }} {% endif %}</p>
                     </div>
 
-                    <div class="col-xs-12 col-sm-9 menu-text">
+                    <div class="col-xs-12 col-sm-9 menu-text dinner">
                         <strong> Entrees: </strong> 
-                        <p> {{ dinner.description |linebreaksbr}} </p>
+                        <div class="other-content">
+                        <p class='old-holder'> {{ dinner.description |linebreaksbr}} </p>
+                        <p class='new-holder'></p>
+                        </div>
                             
                             {% if dinner.optional_pdf %}
                             
@@ -190,7 +196,10 @@
             }
             
             
-            reconstructed = reconstructed.split('\n\n').join('\n');
+            //reconstructed = reconstructed.split('\n\n').join('\n');
+            
+            reconstructed = reconstructed.replace(/(\r\n|\r|\n){2}/g, '$1').replace(/(\r\n|\r|\n){3,}/g, '$1\n');
+            //console.log(reconstructed);
                         
             gsNode.style.display = "none";
             saladNode.style.display = "none";
@@ -199,13 +208,17 @@
             gsNode.innerText = gs;
             saladNode.innerText = salad;
             mainNode.innerText = reconstructed;
-            
-            
-
-
-            
-
         }
+        var other = document.getElementsByClassName('other-content');
+        for (var i = 0; i < other.length; i++) {
+            var origText = other[i].innerText;
+            origText = origText.replace(/(\r\n|\r|\n){2}/g, '$1').replace(/(\r\n|\r|\n){3,}/g, '$1\n');
+            var mainNode = other[i].getElementsByClassName('new-holder')[0];
+            mainNode.style.display = "none";
+            mainNode.innerText = origText;
+        }
+
+
         
     </script>
 </container>
