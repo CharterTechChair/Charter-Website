@@ -52,6 +52,7 @@ ALLOWED_HOSTS = [
     '.princetoncharterclub.org',
     'localhost',
     '.charterclub.org',
+	'.herokuapp.com'
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
