@@ -7,20 +7,15 @@
 
 
 <div class="container">
-   <h2> Contact Us </h2>
-    <div style="width:100%;
-                height:300px;
-                overflow:hidden;
-                background-image:url('{{STATIC_URL}}img/bear.png');
-                background-position: center;
-                background-size: 100%;
-                ">
+   <h1> Contact Us </h1>
+    <div class="header-photo" style="background-image:url('{{STATIC_URL}}img/bear.jpg');">
     </div>
+
 <br>   
    If you're a sophomore interested in joining Charter, add yourself to our mailing list!
 <br>
 Don't hesitate to email President {{ prez.first_name }} {{ prez.last_name }} at {{ prez.netid }}@princeton.edu or Vice President {{ vp.first_name }} {{ vp.last_name }} at {{ vp.netid }}@princeton.edu with any questions. 
 
-<br> <br>We're always happy to welcome new members to the Charter family.
+<br> <br>We're always happy to welcome new members to the Charter family!
 </div>
 {% endblock %}

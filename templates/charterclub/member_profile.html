@@ -4,9 +4,9 @@
 {% load staticfiles %}
 
 {% block content %}
-
+<div class="container">
 <div class='col-md-12'> 
-  <h2> Welcome, {{ member.first_name }}! </h2>
+  <h1> Welcome, {{ member.first_name }}! </h1>
     <br>
       <div class="col-md-4">
     {% if member.image %}
@@ -17,13 +17,13 @@
     {% endif %}
   </div>
   <div class="col-md-8">
-      <hr>
-      <h4>House account balance:</h4>
+      <br>
+      <h3>House account balance:</h3>
       ${{ member.house_account }}
-      <h4> Number of Guest Meals: </h4>
+      <h3> Number of Guest Meals: </h3>
       {{ member.guest_meals}} meals left for this semester
-      <hr>
-      <h4>Upcoming RSVP's:</h4>
+      <br><br>
+      <h3>Upcoming RSVP's:</h3>
       <ul>
       
       {% for entry in member.get_future_related_entries.all %}
@@ -37,7 +37,7 @@
       </ul>
   </div>
 
-
+    </div>
 </div>
 
 

@@ -4,15 +4,9 @@
 {% load staticfiles %}
 
 {% block content %}
-
+<div class="container">
 <h1> History </h1>
-<div style="width:100%;
-            height:300px;
-            overflow:hidden;
-            background-image:url('{{STATIC_URL}}img/history.jpg');
-            background-position: center;
-            background-size: 100%;
-            ">
+<div class="header-photo" style="background-image:url('{{STATIC_URL}}img/history.jpg');">
 </div>
 <br>
 <p>Not long after the twentieth century was born, there was another birth in the quiet suburban town which is the home of Princeton University. True, there were no huge and splendid celebrations such as had welcomed the year 1900, but it is very likely that some of that same effusive happiness showed on the faces of the men who walked across the campus in the crisp autumn air of 1901 to take their first meals together as members of the University’s ninth and newest eating club — The Princeton Charter Club.</p>
@@ -37,5 +31,5 @@ As such, Club members have since then often referred to Charter fondly as <b sty
     <li><b style="color:#800000">David Duchovny ’82:</b> actor, best known for roles on television as FBI Agent Fox Mulder on The X-Files and writer Hank Moody on Californication</li></ul>
 
 
-
+</div>
 {% endblock %}
