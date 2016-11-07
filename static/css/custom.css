@@ -223,5 +223,6 @@ section.information-block > p{
     overflow:hidden;
     background-position: center;
     background-size: 100%;
+    background-repeat: no-repeat;
 }
             
