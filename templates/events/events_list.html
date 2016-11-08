@@ -34,8 +34,7 @@
                    </p>
 
                   {% if event.image %}
-                    <div class='event-image' style="background-image: url({{event.image.url}});"> 
-                    </div>
+                    <img src="{{event.image.url}}" width="100%">
                   {% endif %}
                   <p> {{ event.snippet}} </p>
                   
