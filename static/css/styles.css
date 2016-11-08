@@ -133,7 +133,7 @@ a {
     position: fixed;
     z-index:-2;
     background-repeat:no-repeat;
-    background-attachment:fixed;
+    background-attachment:scroll;
     background-position:center;
     background-size: cover;
 }
