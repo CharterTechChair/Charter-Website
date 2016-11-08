@@ -57,22 +57,20 @@
   margin-bottom: 20px;
 }
 
+
 .event-listing h1, h2, h3, h4, h5 {
-  margin: 0 0 5px;
+  margin: 0;
 }
 
 .event-listing h3 {
-  margin: 0 0 10px;
-  margin-bottom: 20px;
+  margin-bottom: 0;
 }
 .event-listing p {
   margin: 0 0 5px;
 }
 
 div.event-image {
-  height: 150px;
-  margin: 15px;
-  border: 1px solid #fff;
+  height: 250px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

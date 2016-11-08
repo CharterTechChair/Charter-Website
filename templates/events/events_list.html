@@ -25,7 +25,7 @@
          {% for event, has_person, rsvp_guests in future_events %}
             {% if member or officer or event.display_to_non_members %}
               
-                  <h4>{{event.title}}</h4>
+                  <h3>{{event.title}}</h3>
                   <p> {{event.date}} | {{ event.time|time:"g:iA"}} 
                       {% if event.guest_limit > 0 and student %}
                         | Guest limit: {% if member %} {{rsvp_guests|length}}/{% endif %}{{ event.guest_limit}}
