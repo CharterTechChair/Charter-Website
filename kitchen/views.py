@@ -15,14 +15,12 @@ from django.utils.dateparse import parse_date
 import datetime
 from django.core.urlresolvers  import reverse
 from django.http import HttpRequest
-import django.logging as logging
 
 # Displays the weekly menu for a specific day
 def weekly_menu_day(request, date):
     # Find the relevant days
     target = parse_date(date)
 
-	logging.error(target)
     if not target:
         return render(request, 'standard_message.html', {
             'subject': 'Oops, looks like something went wonky.',
@@ -59,7 +57,6 @@ def weekly_menu_day(request, date):
             lunch = None        
         meals_iter.append((name, day, brunch, lunch, dinner))
 
-	logging.error("made it here")
     return render(request, 'kitchen/weekly_menu.html', {
         'meals_week' : meals_iter,
         'prev_week' : prev_week,
