@@ -1,7 +1,9 @@
 <!-- base template for the site. In all other html templates include -->
 
 {% load staticfiles %}
+<!--
 {% load bootstrap_calendar %}
+-->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +24,9 @@
          <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
          <![endif]-->
          <link href="{% static "css/styles-v1.css" %}" rel="stylesheet">
+    <!--
          {% bootstrap_calendar_css %}
+-->
 
          <link href="{% static "css/custom-v1.css" %}" rel="stylesheet">
 
@@ -194,9 +198,10 @@
     {% block javascript %}
     <script src="{% static "js/jquery-2.1.3.min.js" %}"></script>
     <script src="{% static "js/bootstrap.min.js" %}"></script>
+    <!--
     {% bootstrap_calendar_js language='template' %}
     {% bootstrap_calendar_init language='template' %}
-
+    -->
     {% endblock javascript %}
 
 
