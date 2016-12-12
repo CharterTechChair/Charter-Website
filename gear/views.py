@@ -66,7 +66,7 @@ def cart(request):
         items = items + item.product.name + "|" + str(item.quantity) + "|" + item.product.sizes + "|"
 
 
-    host = "http://charter-staging-pr-31.herokuapp.com"
+    host = "http://www.charterclub.com"
     #why
 
     #pass variables to paypal
