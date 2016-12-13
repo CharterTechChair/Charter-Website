@@ -225,7 +225,10 @@ def check_prospective(request):
     user = Prospective.objects.filter(netid=netid)
 
     if len(user) == 0:
-        return False
+		user = Officer.objects.filter(netid=netid)
+		if (len(user) == 0:
+			return False
+		return True
     else:
         return True
 
