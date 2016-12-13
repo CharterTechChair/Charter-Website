@@ -220,5 +220,5 @@ STATICFILES_FINDERS = ('django.contrib.staticfiles.finders.FileSystemFinder',
                        'dajaxice.finders.DajaxiceFinder')
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
-
+PAYPAL_TEST = False
 

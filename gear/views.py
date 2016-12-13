@@ -66,11 +66,11 @@ def cart(request):
         items = items + item.product.name + "|" + str(item.quantity) + "|" + item.product.sizes + "|"
 
 
-    host = "http://www.charterclub.com"
+    host = "http://www.charterclub.org"
     #why
 
     #pass variables to paypal
-    paypal_dict = {"business": "aw18@princeton.edu", 
+    paypal_dict = {"business": "charterclubgear@gmail.com", 
         "notify_url": host + "/paypal",
         "return_url": host + "/confirm",
         "cancel_return": host + "/cart",
