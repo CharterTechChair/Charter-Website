@@ -57,6 +57,8 @@ ALLOWED_HOSTS = [
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
+CART_PRODUCT_MODEL = 'gear.models.GearItem' 
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -69,12 +71,15 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.staticfiles',
+    'paypal.standard.ipn',
     'jquery',
     'dajaxice',
     'dajax',
     'charterclub',
     'crispy_forms',
+    'carton',
     'events',
+    'gear',
     'recruitment',
     'menus',
     'feedback',
@@ -96,7 +101,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     # required for CAS
     'django_cas.middleware.CASMiddleware',
-    'django.middleware.doc.XViewMiddleware',
+    'django.middleware.doc.XViewMiddleware'
 )
 
 TEMPLATE_LOADERS = (
@@ -215,5 +220,5 @@ STATICFILES_FINDERS = ('django.contrib.staticfiles.finders.FileSystemFinder',
                        'dajaxice.finders.DajaxiceFinder')
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
-
+PAYPAL_TEST = False
 
