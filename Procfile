@@ -1,4 +1,3 @@
-release: python manage.py makemigrations
-release: python manage.py migrate
-release: python manage.py syncdb
+release: python manage.py syncdb --all
+release: python manage.py migrate --fake
 web: gunicorn charterclub.wsgi --log-file -
