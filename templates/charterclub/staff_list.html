@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+    
+<div class="container">
+    <div class="row">
+        <h1> {{ title }} </h1>
+        <br>
+    </div>
+    <div class="row faceboard-row">
+        {% for officer in top6 %}
+        <div class="col-sm-4 col-xs-6 thumb text-centered"> 
+            <div class="faceboard-title">
+                <div class="faceboard-content"> 
+                    {{ officer.position }}
+                 </div>
+            </div>
+
+            <div class="faceboard-image-div">
+             {% if officer.image %}
+                <div class='faceboard-photo' style="background-image: url({{officer.image.url}});"> </div>
+            {% else %}
+                <div class='faceboard-filler' style="background-image: url({{STATIC_URL}}img/charter-logo-black.png);"> </div>
+            {% endif %}
+            </div>
+
+            <div class="image-caption">
+                {{ officer.first_name}} {{ officer.last_name}} <br>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <hr>
+    <div class="row faceboard-row">
+        {% for officer in officer_rest %}
+        <div class="col-sm-4 col-xs-6 thumb text-centered"> 
+            <div class="faceboard-title">
+                <div class="faceboard-content"> 
+                    {{ officer.position }}
+                 </div>
+            </div>
+
+            <div class="faceboard-image-div">
+             {% if officer.image %}
+                <div class='faceboard-photo' style="background-image: url({{officer.image.url}});"> </div>
+            {% else %}
+                <div class='faceboard-filler' style="background-image: url({{STATIC_URL}}img/charter-logo-white.png);"> </div>
+            {% endif %}
+            </div>
+
+            <div class="image-caption">
+                {{ officer.first_name}} {{ officer.last_name}} <br>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock %}
