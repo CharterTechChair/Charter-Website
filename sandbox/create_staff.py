@@ -10,7 +10,7 @@ Staff(first_name="Joy", last_name="Gillette", position="Dining Room Supervisor",
 Staff(first_name="Hugo", last_name="Del Cid", position="Kitchen", order=0),
 Staff(first_name="Lydia", last_name="Santiago", position="Sunday Chef", order=0),
 Staff(first_name="Imelda", last_name="Castillo", position="Breakfast/Lunch", order=0),
-Staff(first_name="Debra", last_name="Hudanish", position="Grill Cool", order=0),]
+Staff(first_name="Debra", last_name="Hudanish", position="Grill Cook", order=0),]
 
 for i, staff in enumerate(staff_list):
     staff.order = i+1
