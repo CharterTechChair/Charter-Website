@@ -25,3 +25,11 @@ class GearItemForm(forms.Form):
         for i in range(1, stock + 1):
         	quantity.append((i, i))
         self.fields['quantity'] = forms.ChoiceField(quantity)
+
+class ShippingForm(forms.Form):
+    street_address_1 = forms.CharField()
+    street_address_2 = forms.CharField(required=False)
+    city = forms.CharField()
+    state = forms.CharField(max_length=2)
+    zip_code = forms.CharField(max_length=5)
+

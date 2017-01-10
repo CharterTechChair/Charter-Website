@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+{% block content %}
+    {% load carton_tags %}
+    {% get_cart as cart %}
+
+
+<div class='container'>
+Your order will cost ${{cart.total}} (plus shipping). Click here to pay: <br><br>
+{{form.render}}
+</div>
+
+{% endblock %}
