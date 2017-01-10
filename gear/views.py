@@ -27,6 +27,62 @@ from paypal.standard.forms import PayPalPaymentsForm
 from django.contrib import messages
 from decimal import Decimal
 
+def badAddress(s1, city, state, zip_code):
+    if (s1 == '' or city == '' or state == '' or zip_code == ''):
+        return True
+    else:
+        return False
+
+def checkout(request):
+    if (request.method == 'POST'):
+        if ("checkout" in request.POST):
+            cart = Cart(request.session)
+            s1 = request.POST['street_address_1']
+            s2 = request.POST['street_address_2']
+            street = s1 + "\n" + s2
+            city = request.POST['city']
+            state = request.POST['state']
+            zip_code = request.POST['zip_code']
+            if (badAddress(s1, city, state, zip_code)):
+                message = "Please enter a valid address"
+                messages.error(request, message)
+                return HttpResponseRedirect("/cart")
+            items = ""
+            for item in cart.items:
+                items = items + item.product.name + "|" + str(item.quantity) + "|" + item.product.sizes + "|"
+
+
+            host = "http://www.charterclub.org"
+            paypal_dict = {"business": "charterclubgear@gmail.com", 
+                "notify_url": host + "/paypal",
+                "return_url": host + "/confirm",
+                "cancel_return": host + "/cart",
+                "shopping_url" : host + "/gear",
+                "amount": cart.total,
+                "item_name": "Gear Order",
+                "custom": items,
+                "on0": "test",
+                "os0": items,
+                "address_street": street,
+                "address_city": city,
+                "address_state": state,
+                "address_zip": zip_code
+                }
+            form = PayPalPaymentsForm(initial=paypal_dict)
+            context = {"form": form}
+            return render(request, 'gear/checkout.html', context)
+
+    return HttpResponseRedirect("/cart")
+
+
+
+    # What you want the button to do.
+
+    # Create the instance.
+    form = PayPalPaymentsForm(initial=paypal_dict)
+    context = {"form": form}
+    return render(request, 'gear/cart.html', context)
+
 def cart(request):
     cart = Cart(request.session)
     items = ""
@@ -85,9 +141,8 @@ def cart(request):
     # What you want the button to do.
 
     # Create the instance.
-    form = PayPalPaymentsForm(initial=paypal_dict)
-    context = {"form": form}
-    return render(request, 'gear/cart.html', context)
+    form = ShippingForm()
+    return render(request, 'gear/cart.html', {'form': form})
 
 def gear(request):
     gear_list = GearItem.objects.all()
