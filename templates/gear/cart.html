@@ -84,7 +84,7 @@
     *plus shipping (you will recieve an additional invoice prior to your order being sent)
     <br>
     <br>
-    <form action="/checkout" method="POST">
+    <form action="/checkout/" method="POST">
     {% csrf_token %}
     <table class="table table-hover ">
     {% for field in form %}

@@ -33,17 +33,21 @@ urlpatterns = patterns('',
     url(r'^feedback',
         include('feedback.urls')),
     url(
-        r'^gear',
+        r'^gear/',
         'gear.views.gear',
         name='gear'),
     url(
-        r'^cart',
+        r'^cart/',
         'gear.views.cart',
         name='cart'),
+    url(
+        r'^checkout/',
+        'gear.views.checkout',
+        name='checkout'),
     
-    url(r'^paypal', include('paypal.standard.ipn.urls')),
+    url(r'^paypal/', include('paypal.standard.ipn.urls')),
 
-    url(r'^confirm',
+    url(r'^confirm/',
         'gear.views.confirm',
         name='confirm'),
 
