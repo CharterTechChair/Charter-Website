@@ -40,6 +40,10 @@ urlpatterns = patterns('',
         r'^cart/',
         'gear.views.cart',
         name='cart'),
+    url(
+        r'^checkout/',
+        'gear.views.checkout',
+        name='checkout'),
     
     url(r'^paypal/', include('paypal.standard.ipn.urls')),
 
