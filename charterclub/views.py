@@ -192,6 +192,7 @@ def profile(request):
         # If there is a login, setup the proper page for him
 
         future_events = Event.objects.filter(date__gte=now).order_by("date")
+        past_events = Event.objects.filter(date__gte=begin_date, date__lte=now).order_by("-date")
         if student:
             future_events_q = [e.has_student(student) for e in future_events]
             future_rsvp_guests = [e.get_guests(student) for e in future_events]
