@@ -18,7 +18,7 @@
     width:100vw;
     min-height:100vh;
     position:relative;
-    
+
     margin-top:100vh;
 }
 
@@ -71,6 +71,7 @@
 
 div.event-image {
   height: 250px;
+  max-width: 400px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -120,7 +121,7 @@ div.event-image {
 }
 
 .faceboard-image-div {
-  
+
 }
 
 .faceboard-photo {
@@ -146,12 +147,12 @@ div.event-image {
   .faceboard-photo {
     height:160px;
   }
-  
+
   .faceboard-filler {
     height: 160px;
   }
   .thumb{
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
     padding-left: 2px;
     padding-right: 2px;
   }
@@ -223,4 +224,4 @@ section.information-block > p{
     background-size: 100%;
     background-repeat: no-repeat;
 }
-            
+
