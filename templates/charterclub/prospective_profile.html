@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<div class='col-md-10'> 
+<div class='col-md-10'>
   <h2> Welcome, {{ prospective.first_name }}! </h2>
   <hr>
 
@@ -15,21 +15,21 @@
     <li> You can sign up for meals <a href="{% url 'meal_signup' %}"> here. </a> </li>
     <li> You can sign up for events <a href="{% url 'events_list' %}"> here. </a> </li>
   </ul>
-  <br> 
+  <br>
 
   <div class="col-md-12">
     <h3> Sophomore Meals </h3>
-    <br> 
+    <br>
     <div class='row'>
       <div class="col-sm-6">
           <h4> Upcoming </h4>
           <hr>
 
           {% for meal in prospective_model_viewer.get_upcoming_meals %}
-            <div> 
+            <div>
                 <h5> {{ meal }}  {{ meal.name }} </h5>
-                <p style="margin-left:8px"> 
-                  {{ meal.description | linebreaksbr |truncatechars:150}} 
+                <p style="margin-left:8px">
+                  {{ meal.description | linebreaksbr |truncatechars:150}}
                 </p>
             </div>
           {% endfor %}
@@ -40,10 +40,10 @@
           <hr>
 
           {% for meal in prospective_model_viewer.get_completed_meals %}
-              <div> 
+              <div>
                 <h5> {{ meal }}  {{ meal.name }} </h5>
-                <p style="margin-left:8px"> 
-                  {{ meal.description | linebreaksbr |truncatechars:150}} 
+                <p style="margin-left:8px">
+                  {{ meal.description | linebreaksbr |truncatechars:150}}
                 </p>
               </div>
           {% endfor %}
@@ -51,41 +51,96 @@
     </div>
 
   </div>
-  
-  <br> 
-  <br> 
-  
+
+  <br>
+  <br>
+
   <div class="col-md-12">
     <h3> Charter Events </h3>
-    <br> 
-    <div class="col-sm-6">
+    <br>
+    {% if future_events %}
+
+       {% for event, has_person, rsvp_guests in future_events %}
+          {% if member or officer or event.display_to_non_members %}
+
+                <h3>{{event.title}}</h3>
+                <p> {{event.date}} | {{ event.time|time:"g:iA"}}
+                    {% if event.guest_limit > 0 and student %}
+                      | Guest limit: {% if member %} {{rsvp_guests|length}}/{% endif %}{{ event.guest_limit}}
+                    {% endif %}
+
+                 </p>
+
+                {% if event.image %}
+                  <img src="{{event.image.url}}" width="100%">
+                {% endif %}
+                <p> {{ event.snippet}} </p>
+
+                  {% if event.downloadable_file %}
+
+                  <p>
+                      <form method="get" action="{{ event.downloadable_file.url }}">
+                          <button class="btn btn-info menu-pdf-btn" type="submit"> {{ event.downloadable_file_label}} </button>
+                      </form>
+                  </p>
+                  {% endif %}
+
+
+                {% if student %}
+                  {% if event.require_rsvp %}
+                    {% if not has_person %}
+                      <a href="/{{ event.get_signup_url }}" class="btn btn-info" role="button"> RSVP </a>
+                    {% else %}
+                      <a href="/{{ event.get_signup_url }}" class="btn btn-info" role="button"> Change RSVP </a>
+                    {% endif %}
+
+                    {% if officer %}
+                      <a href="/{{ event.get_officer_overview_url }}" class="btn btn-info" role="button"> Officer Overview </a>
+                    {% endif %}
+                  {% else %}
+                  {% endif %}
+
+                {% endif %}
+                  <br><br>
+           {% endif %}
+       {% endfor %}
+
+
+
+    {% else %}
+      <p> Looks like there hasn't been any events scheduled yet </p>
+      <p> Check with us in the future </p>
+
+    {% endif %}
+    {# <div class="col-sm-6">
         <h4> Upcoming </h4>
         <hr>
-        
+
         {% for entry in prospective.get_future_related_entries.all %}
-          <div style="margin:10px;"> 
+          <div style="margin:10px;">
             <h4> {{ entry.event }} </h4>
             <p> Time: {{ entry.event.time|time:"g:iA"}} | Is Point Event? {{ entry.event.is_points_event}} </p>
             <p>{{ entry }} </p>
           </div>
         {% endfor %}
-    </div>
+    </div> #}
 
+{#
     <div class="col-sm-6">
         <h4> Completed </h4>
         <hr>
-      
+
         {% for entry in prospective.get_past_related_entries.all %}
-        <div style="margin:10px;"> 
+        <div style="margin:10px;">
             <h4> {{ entry.event }} </h4>
             <p> Time: {{ entry.event.time|time:"g:iA"}} | Is Point Event? {{ entry.event.is_points_event}} </p>
             <p>{{ entry }} </p>
         </div>
         {% endfor %}
     </div>
-
+ #}
   </div>
-<!-- 
+<!--
   <div class="col-md-6">
       <hr>
 
@@ -102,7 +157,7 @@
           </p>
         </li>
 
-      {% endfor %} 
+      {% endfor %}
       </ul>
   </div>
  -->
@@ -114,4 +169,4 @@
 
 
 
-{% endblock %}    
+{% endblock %}
