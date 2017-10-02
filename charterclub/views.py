@@ -189,7 +189,13 @@ def profile(request):
     if student.__class__.__name__== 'Prospective':
         pmv = ProspectiveModelViewer(student.cast())
 
-        # If there is a login, setup the proper page for him
+        # If there is a login, setup the proper page for them
+
+        now = timezone.now()
+
+        # Show upcoming events for the semester
+        year = Student.get_senior_year()
+        begin_date = now - timedelta(weeks=52)
 
         future_events = Event.objects.filter(date__gte=now).order_by("date")
         past_events = Event.objects.filter(date__gte=begin_date, date__lte=now).order_by("-date")
