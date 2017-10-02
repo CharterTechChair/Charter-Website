@@ -25,14 +25,20 @@
           <h4> Upcoming </h4>
           <hr>
 
-          {% for meal in prospective_model_viewer.get_upcoming_meals %}
-            <div>
-                <h5> {{ meal }}  {{ meal.name }} </h5>
-                <p style="margin-left:8px">
-                  {{ meal.description | linebreaksbr |truncatechars:150}}
-                </p>
-            </div>
-          {% endfor %}
+          {% if prospective_model_viewer.get_upcoming_meals %}
+
+            {% for meal in prospective_model_viewer.get_upcoming_meals %}
+              <div>
+                  <h5> {{ meal }}  {{ meal.name }} </h5>
+                  <p style="margin-left:8px">
+                    {{ meal.description | linebreaksbr |truncatechars:150}}
+                  </p>
+              </div>
+            {% endfor %}
+
+          {% else %}
+            <p> Looks like you have no upcoming meals, <a href="{% url 'meal_signup' %}"> sign up for one here. </a> </p>
+          {% endif %}
       </div>
 
       <div class="col-sm-6">
