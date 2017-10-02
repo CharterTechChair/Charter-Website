@@ -30,7 +30,7 @@ from recruitment.forms import AccountCreationForm
 from model_viewer import ProspectiveModelViewer
 ########################################################################
 # Some easy one-age requests
-# 
+#
 # Displays the membership of a target year
 ########################################################################
 def index(request):
@@ -73,7 +73,7 @@ def officer_list(request):
        'title' : 'Our Undergraduate Officers',
        'top6' : top6,
        'officer_rest' : officer_rest
-    }) 
+    })
 
 # allow user to view list of current officer corps.
 def staff_list(request):
@@ -87,7 +87,7 @@ def staff_list(request):
      'title' : 'Our Staff',
      'top6' : top6,
      'officer_rest' : staff_rest
-    }) 
+    })
 
 def contactus(request):
     now = datetime.datetime.now().date()
@@ -95,7 +95,7 @@ def contactus(request):
     prez = Officer.objects.filter(is_active=True).filter(position='President')
     vp = Officer.objects.filter(is_active=True).filter(position='Vice President')
 
-    if not prez: 
+    if not prez:
       prez = ''
     else:
       prez = prez[0]
@@ -112,16 +112,16 @@ def contactus(request):
      'netid': permissions.get_username(request),
      'prez': prez,
      'vp': vp,
-    }) 
+    })
 
 
 ########################################################################
 # Faceboard
-# 
+#
 # Displays the current membership
 ########################################################################
 def faceboard(request):
-  
+
     # rollover = June 3nd
     senior_year = (date.today() - timedelta(days=153)).year + 1
     current_membership = Member.objects.filter(year__range=(senior_year, senior_year+2))
@@ -135,7 +135,7 @@ def faceboard(request):
 
 ########################################################################
 # Faceboard_year
-# 
+#
 # Displays the membership of a target year
 ########################################################################
 def faceboard_year(request, year):
@@ -162,7 +162,7 @@ def profile(request):
     # Reject them if not valid netid
     if not netid_s:
         return render(request,"permission_denied.html",
-                {"required_permission": "a Princeton student with a netid."}) 
+                {"required_permission": "a Princeton student with a netid."})
 
     # For people not in our database
     if not student:
@@ -170,7 +170,7 @@ def profile(request):
           form = AccountCreationForm(request.POST, netid=netid_s)
           if form.is_valid():
               prospective = form.create_account()
-              
+
               return render(request, "recruitment/create_account_success.html", {
                       'prospective' : prospective,
                   })
@@ -180,7 +180,7 @@ def profile(request):
       return render(request,  "charterclub/login_no_account.html", {'form': form})
 
 
-    
+
     future_entries = Entry.get_future_related_entries_for_student(student)
     past_entries = Entry.get_past_related_entries_for_student(student)
 
@@ -188,15 +188,29 @@ def profile(request):
     if student.__class__.__name__== 'Prospective':
         pmv = ProspectiveModelViewer(student.cast())
 
+        # If there is a login, setup the proper page for him
+
+        if student:
+            future_events_q = [e.has_student(student) for e in future_events]
+            future_rsvp_guests = [e.get_guests(student) for e in future_events]
+            past_events_q     = [e.has_student(student) for e in past_events]
+            past_rsvp_guests = [e.get_guests(student) for e in past_events]
+        else:
+            future_events_q = [False for e in future_events]
+            future_rsvp_guests = [[] for e in future_events]
+            past_events_q = [False for e in past_events]
+            past_rsvp_guests = [[] for e in past_events]
+
         return render(request, "charterclub/prospective_profile.html", {
               'prospective': student,
               'future_entries': future_entries,
               'prospective_model_viewer' : pmv,
               # 'events': e,
+              'future_events': zip(future_events, future_events_q, future_rsvp_guests),
               'netid': permissions.get_username(request)
         })
-              
-    # Show members page 
+
+    # Show members page
     # if student.__class__.__name__ in ['Member', 'Officer']:
     return render(request, "charterclub/member_profile.html", {
         'member': student,
