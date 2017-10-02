@@ -6,27 +6,27 @@
    <h1> Charter Events </h1>
    <br>
    <p> We pride ourselves with not only providing our membership with great food, but also entertaining them with the best and most exciting events. Every year, we set a large portion of our budget for reserved events for members and guests!  </p>
-  
+
   {% if not student %}
     <p> To sign-up for an event, please: <br> <a href="{% url 'login' %}" class="btn btn-info" role="button"> login </a></p>
   {% endif %}
 
    <p> Have an event idea? Tell us via <a href="{% url 'feedback' %}"> anonymous feedback </a> or tell one of the <a href="{% url 'officer_list' %}"> officers</a>. </p>
-  
+
    <br>
-   
+
 
    <div class="col-md-12  col-centered event-listing">
       <h3 style="text-align:center;"> Upcoming Events </h3>
-      
-      
+
+
       {% if future_events %}
-        
+
          {% for event, has_person, rsvp_guests in future_events %}
             {% if member or officer or event.display_to_non_members %}
-              
+
                   <h3>{{event.title}}</h3>
-                  <p> {{event.date}} | {{ event.time|time:"g:iA"}} 
+                  <p> {{event.date}} | {{ event.time|time:"g:iA"}}
                       {% if event.guest_limit > 0 and student %}
                         | Guest limit: {% if member %} {{rsvp_guests|length}}/{% endif %}{{ event.guest_limit}}
                       {% endif %}
@@ -34,19 +34,19 @@
                    </p>
 
                   {% if event.image %}
-                    <img src="{{event.image.url}}" width="100%">
+                    <img src="{{event.image.url}}">
                   {% endif %}
                   <p> {{ event.snippet}} </p>
-                  
+
                     {% if event.downloadable_file %}
 
-                    <p> 
+                    <p>
                         <form method="get" action="{{ event.downloadable_file.url }}">
                             <button class="btn btn-info menu-pdf-btn" type="submit"> {{ event.downloadable_file_label}} </button>
                         </form>
                     </p>
                     {% endif %}
-                  
+
 
                   {% if student %}
                     {% if event.require_rsvp %}
@@ -63,12 +63,12 @@
                     {% endif %}
 
                   {% endif %}
-                    <br><br>               
+                    <br><br>
              {% endif %}
          {% endfor %}
 
 
-        
+
       {% else %}
         <p> Looks like there hasn't been any events scheduled yet </p>
         <p> Check with us in the future </p>
