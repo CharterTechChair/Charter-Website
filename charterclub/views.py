@@ -26,6 +26,7 @@ from permissions import render
 from ldap_student_lookup import get_student_info
 from recruitment.forms import AccountCreationForm
 
+from events.models import Event, Entry
 
 from model_viewer import ProspectiveModelViewer
 ########################################################################
@@ -190,6 +191,7 @@ def profile(request):
 
         # If there is a login, setup the proper page for him
 
+        future_events = Event.objects.filter(date__gte=now).order_by("date")
         if student:
             future_events_q = [e.has_student(student) for e in future_events]
             future_rsvp_guests = [e.get_guests(student) for e in future_events]
