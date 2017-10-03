@@ -6,7 +6,6 @@ Home-page: http://code.google.com/p/django-cas/
 Author: CPCC
 Author-email: webapps@cpcc.edu
 License: MIT
-
 Description: 
         ``django_cas`` is a `CAS`_ 1.0 and CAS 2.0 authentication backend for
         `Django`_. It allows you to use Django's built-in authentication mechanisms
