@@ -95,7 +95,7 @@ def prospective_meal_list(request):
     return prospective_meal_list_day(request, False, timezone.now().date().isoformat())
 
 def meal_mailing_list(request):
-    return meal_mailing_list_day(request, True, timezone.now().date().isoformat())
+    return prospective_meal_list_day(request, True, timezone.now().date().isoformat())
 
 def lookup_meal_entries(meal_class, target):
     meal = meal_class.objects.filter(day=target)
