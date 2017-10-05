@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block content %}
-    
+
 <div class="container">
     <div class="row">
         <h1> {{ title }} </h1>
@@ -10,9 +10,9 @@
     </div>
     <div class="row faceboard-row">
         {% for officer in top6 %}
-        <div class="col-sm-4 col-xs-6 thumb text-centered"> 
+        <div class="col-sm-4 col-xs-6 thumb text-centered">
             <div class="faceboard-title">
-                <div class="faceboard-content"> 
+                <div class="faceboard-content">
                     {{ officer.position }}
                  </div>
             </div>
@@ -34,10 +34,10 @@
 
     <hr>
     <div class="row faceboard-row">
-        {% for officer in officer_rest %}
-        <div class="col-sm-4 col-xs-6 thumb text-centered"> 
+        {% for officer in staff_rest %}
+        <div class="col-sm-4 col-xs-6 thumb text-centered">
             <div class="faceboard-title">
-                <div class="faceboard-content"> 
+                <div class="faceboard-content">
                     {{ officer.position }}
                  </div>
             </div>

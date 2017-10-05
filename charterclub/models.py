@@ -49,10 +49,21 @@ class InheritanceCastModel(models.Model):
 # a Person model
 # Basically an Abstract class containing a person's name
 ############################################################################
+
+# Make sure that the image is not too big
+def validate_image(fieldfile_obj):
+    # Note: this function is put up here so that validators=[func] can
+    #       be called on it
+    filesize = fieldfile_obj.file.size
+    kilobyte_limit = 50
+    if filesize > kilobyte_limit*1024:
+        raise ValidationError("Max file size is %sKB. Sorry! This is to ensure that\
+         the site doesn't freeze when faceboard photos are loaded." % str(kilobyte_limit))
+
 class Person(InheritanceCastModel):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    
+
     class meta:
         ordering = ('last_name', 'first_name')
 
@@ -61,16 +72,22 @@ class Person(InheritanceCastModel):
 #     picture_path = models.CharField(
 #         'Relative path from /static/img/faceboard/',
 #         max_length=200, blank=True)
-  
+
 ###########################################################################
 # Staff model
 # Inherits from person
-############################################################################  
+############################################################################
 class Staff(Person):
     position = models.CharField('Staff\'s position/title', max_length=100)
     order = models.IntegerField('Order of Appearance on Staff Page', blank=True)
 
-    
+    image = models.ImageField(upload_to = 'member_images/',
+                              help_text='(optional)',
+                              null=True,
+                              blank=True,
+                              validators=[validate_image])
+
+
 ###########################################################################
 # Student model
 # A Student of Princeton
@@ -108,7 +125,7 @@ class Student(Person):
 ###########################################################################
 # Prospective model
 # A person who is thinking about joining Charter
-############################################################################  
+############################################################################
 
 def limit_meals_attended_choices():
     #June 3rd is the turnover date
@@ -137,11 +154,11 @@ def limit_meals_signed_up():
 class Prospective(Student):
     # events_attended = models.IntegerField(
     #     'Number of events attended', default=0)
-    
-    # meals_attended = models.ManyToManyField(Meal, 
+
+    # meals_attended = models.ManyToManyField(Meal,
     #                 limit_choices_to=limit_meals_attended_choices,
     #                 blank=True, related_name="meals_attended")
-    # meals_signed_up = models.ManyToManyField(Meal, 
+    # meals_signed_up = models.ManyToManyField(Meal,
     #                 limit_choices_to=limit_meals_signed_up,
     #                 blank=True, related_name="meals_signed_up")
 
@@ -164,7 +181,7 @@ class Prospective(Student):
         # Create the parameters for an officer
         member_param = {f:getattr(self, f) for f in white_lst}
         member_param['house_account'] = house_account
-        
+
         # self.delete() #Delete the old prospective
         self.delete()
         Member.objects.create(**member_param)
@@ -175,15 +192,6 @@ class Prospective(Student):
 # Member
 # A Student of Princeton
 ############################################################################
-# Make sure that the image is not too big
-def validate_image(fieldfile_obj):
-    # Note: this function is put up here so that validators=[func] can 
-    #       be called on it
-    filesize = fieldfile_obj.file.size
-    kilobyte_limit = 50
-    if filesize > kilobyte_limit*1024:
-        raise ValidationError("Max file size is %sKB. Sorry! This is to ensure that\
-         the site doesn't freeze when faceboard photos are loaded." % str(kilobyte_limit))
 
 def get_default_house_account():
     return DynamicSettingsServices.get('default_house_account_for_new_member')
@@ -194,15 +202,15 @@ def get_default_guest_meals():
 # Member object begins here
 class Member(Student):
     # ----- Fields associated with this Model ---
-    house_account = models.DecimalField(max_digits=10, 
-                                        decimal_places=2, 
+    house_account = models.DecimalField(max_digits=10,
+                                        decimal_places=2,
                                         default=get_default_house_account)
-    guest_meals = models.IntegerField("number of guest meals this member has", 
+    guest_meals = models.IntegerField("number of guest meals this member has",
                                         default=get_default_guest_meals)
-    image = models.ImageField(upload_to = 'member_images/', 
+    image = models.ImageField(upload_to = 'member_images/',
                               help_text='(optional)',
-                              null=True, 
-                              blank=True, 
+                              null=True,
+                              blank=True,
                               validators=[validate_image])
     allow_rsvp = models.BooleanField(
         'Whether or not this member may attend events', default=True)
@@ -215,7 +223,7 @@ class Member(Student):
         for e in events.models.Event.objects.all():
             for r in e.rooms.all():
                 for member, guest_s in r.get_people_as_objects():
-                    
+
                     if member == self:
                         ans.append((e, r, guest_s))
         return ans
@@ -244,16 +252,16 @@ class Member(Student):
         self.delete()
         # Now re-insert as an officer
         Officer.objects.create(**officer_param)
-        
+
 
     # Get the years in which membership spans over
     @staticmethod
     def get_membership_years():
         years = []
-        
+
         minn = Member.objects.exclude(netid='charter').order_by('year')[0].year
         maxx = Member.objects.exclude(netid='charter').order_by('-year')[1].year
-               
+
         return range(minn, maxx)
 
 
