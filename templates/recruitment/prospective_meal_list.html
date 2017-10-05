@@ -10,7 +10,7 @@
     display:none;
 }
 @media print
-{   
+{
     .print-hide{
         display:none;
     }
@@ -48,13 +48,13 @@
             {% if not meal_entries %}
                 There are no students signed up for {{meal_name}}.
             {% else %}
-                <tr> 
+                <tr>
                     <td> Name </td>
                     <td> Signature </td>
-                </tr> 
+                </tr>
                 {% for e in meal_entries %}
-                    <tr> 
-                        <td> {{ e.prospective}} </td>
+                    <tr>
+                        <td> {{ e.prospective} {e.prospective.netid}} </td>
                         <td> </td>
                     <tr>
                 {% endfor %}
