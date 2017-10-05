@@ -87,7 +87,7 @@ def staff_list(request):
     return render(request, 'charterclub/staff_list.html', {
      'title' : 'Our Staff',
      'top6' : top6,
-     'officer_rest' : staff_rest
+     'staff_rest' : staff_rest
     })
 
 def contactus(request):
