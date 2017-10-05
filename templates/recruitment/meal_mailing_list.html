@@ -45,13 +45,10 @@
             {% if not meal_entries %}
                 There are no students signed up for {{meal_name}}.
             {% else %}
-                <tr>
-                    <td> netID </td>
-                </tr>
                 {% for e in meal_entries %}
                     <tr>
                         <td> {{ e.prospective.netid}} </td>
-                    <tr>
+                    </tr>
                 {% endfor %}
             {% endif %}
         </table>
