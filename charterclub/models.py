@@ -55,7 +55,7 @@ def validate_image(fieldfile_obj):
     # Note: this function is put up here so that validators=[func] can
     #       be called on it
     filesize = fieldfile_obj.file.size
-    kilobyte_limit = 50
+    kilobyte_limit = 100
     if filesize > kilobyte_limit*1024:
         raise ValidationError("Max file size is %sKB. Sorry! This is to ensure that\
          the site doesn't freeze when faceboard photos are loaded." % str(kilobyte_limit))
