@@ -56,7 +56,7 @@ def mailing_list_view(request):
     })
 
 @permissions.officer
-def prospective_meal_list_day(request, is_mailing_list, date):
+def prospective_meal_list_day(request, date, is_mailing_list=False):
     officer = permissions.get_student(request).cast()
     target = parse_date(date)
 
@@ -92,10 +92,10 @@ def prospective_meal_list_day(request, is_mailing_list, date):
     })
 
 def prospective_meal_list(request):
-    return prospective_meal_list_day(request, False, timezone.now().date().isoformat())
+    return prospective_meal_list_day(request, timezone.now().date().isoformat())
 
 def meal_mailing_list(request):
-    return prospective_meal_list_day(request, True, timezone.now().date().isoformat())
+    return prospective_meal_list_day(request, timezone.now().date().isoformat(), True)
 
 def lookup_meal_entries(meal_class, target):
     meal = meal_class.objects.filter(day=target)
