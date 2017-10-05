@@ -83,7 +83,7 @@ def prospective_meal_list_day(request, date, is_mailing_list=False):
         html_string = 'recruitment/meal_mailing_list.html'
     else:
         html_string = 'recruitment/prospective_meal_list.html'
-    return render(request, 'recruitment/prospective_meal_list.html', {
+    return render(request, html_string, {
         'entries' : entries,
         'officer' : officer,
         'next_day' : next_day,
