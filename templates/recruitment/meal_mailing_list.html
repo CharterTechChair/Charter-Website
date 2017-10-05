@@ -40,21 +40,21 @@
 {% for meal_name, meal_entries in entries.items %}
     <h3>  {{ meal_name }} </h3>
     <div class="table-responsive">
-        <table class="table">
+        <ul>
 
             {% if not meal_entries %}
                 There are no students signed up for {{meal_name}}.
             {% else %}
-                <tr>
-                    <td> Name </td>
-                </tr>
+                <li>
+                    netID
+                </li>
                 {% for e in meal_entries %}
-                    <tr>
-                        <td> {{ e.prospective.netid}} </td>
-                    <tr>
+                    <li>
+                        {{ e.prospective.netid}}
+                    <li>
                 {% endfor %}
             {% endif %}
-        </table>
+        </ul>
     </div>
 {% endfor %}
 
