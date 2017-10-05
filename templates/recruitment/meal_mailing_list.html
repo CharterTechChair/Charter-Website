@@ -25,7 +25,7 @@
 
 {% block content %}
 <div class="container">
-<h1> Prospective Meal List</h1>
+<h1> Mailing List</h1>
 <p> {{ time.date|date:"l, F j"}} </p>
 <a href="{% url 'prospective_meal_list' %}/{{ prev_day.isoformat}}" class="btn btn-info print-hide" role="button"> Prev Day </a>
 <a href="{% url 'prospective_meal_list' %}/{{ next_day.isoformat}}" class="btn btn-info print-hide" role="button"> Next Day </a>
@@ -33,11 +33,8 @@
 
 <div class="print-hide">
     <h3> Instructions For Officers</h3>
-    <p> Print this page out and leave it at the check-in desk  </p>
+    <p> Copy the netids to send reminder emails to the sophomores.  </p>
     <hr>
-</div>
-<div class="print-only-show">
-    <p> Sign next to your name; we'll use it to credit you for this meal. </p>
 </div>
 
 {% for meal_name, meal_entries in entries.items %}
@@ -50,12 +47,10 @@
             {% else %}
                 <tr>
                     <td> Name </td>
-                    <td> Signature </td>
                 </tr>
                 {% for e in meal_entries %}
                     <tr>
-                        <td> {{ e.prospective}} </td>
-                        <td> </td>
+                        <td> {{ e.prospective.netid}} </td>
                     <tr>
                 {% endfor %}
             {% endif %}

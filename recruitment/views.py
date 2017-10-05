@@ -7,19 +7,19 @@ from kitchen.models import Brunch, Lunch, Dinner
 from django.utils import timezone
 from django.utils.dateparse import parse_date
 
-import datetime 
+import datetime
 
 # # Flatpages stuff
 # def recruitment_benefits(request):
 #     return render(request, "flatpages_default/recruitment_benefits.html")
 
 # def recruitment_information(request):
-#     return render(request, "flatpages_default/recruitment_information.html")    
+#     return render(request, "flatpages_default/recruitment_information.html")
 
 
 
 # def create_account(request):
-#     ''' 
+#     '''
 #         Display Recruitment information
 #     '''
 
@@ -32,7 +32,7 @@ import datetime
 #         form.add_soph()
 
 #         return HttpResponseRedirect('contactus')
-          
+
 #     else:
 #       form = MailingListForm()
 
@@ -40,7 +40,7 @@ import datetime
 #     return render(request, 'recruitment/mailinglist.html', {
 #        'form': form,
 #        'netid': permissions.get_username(request),
-#      })  
+#      })
 
 # view the list of people who have signed up for our mailing list.
 # should probably implement an actual listserv of some description
@@ -56,7 +56,7 @@ def mailing_list_view(request):
     })
 
 @permissions.officer
-def prospective_meal_list_day(request, date):
+def prospective_meal_list_day(request, is_mailing_list, date):
     officer = permissions.get_student(request).cast()
     target = parse_date(date)
 
@@ -79,9 +79,12 @@ def prospective_meal_list_day(request, date):
 
     entries = {c.__name__:m for c,m in zip(meal_classes, meal_entries)}
 
-
+    if is_mailing_list:
+        html_string = 'recruitment/meal_mailing_list.html'
+    else:
+        html_string = 'recruitment/prospective_meal_list.html'
     return render(request, 'recruitment/prospective_meal_list.html', {
-        'entries' : entries, 
+        'entries' : entries,
         'officer' : officer,
         'next_day' : next_day,
         'prev_day' : prev_day,
@@ -89,7 +92,10 @@ def prospective_meal_list_day(request, date):
     })
 
 def prospective_meal_list(request):
-    return prospective_meal_list_day(request, timezone.now().date().isoformat())
+    return prospective_meal_list_day(request, false, timezone.now().date().isoformat())
+
+def meal_mailing_list(request):
+    return meal_mailing_list_day(request, true, timezone.now().date().isoformat())
 
 def lookup_meal_entries(meal_class, target):
     meal = meal_class.objects.filter(day=target)
@@ -101,19 +107,19 @@ def lookup_meal_entries(meal_class, target):
         return ans
     else:
         return []
-        
 
 
-        
 
 
-    
+
+
+
 
 
 
 # @permissions.officer
 # def print_meals(request):
-    
+
 #     return render(request, "prospective_meal_view.html", {
 
 #         })

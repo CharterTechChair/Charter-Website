@@ -53,11 +53,11 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-                
+
               <a class="navbar-brand" href="{%url 'index' %}" style="margin-top:-10px;">
                  <img src="{{STATIC_URL}}img/simpleLogo.svg" height=40px style="fill:#fff;">
             </a>
-                    
+
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -105,25 +105,25 @@
             <li><a href="{%url 'cart' %}"> Checkout </a></li>
            </ul>
           </li>
-                    
+
 
                   {% if prospective %}
                   <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Prospective <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                      
+
                       <li><a href="{%url 'profile' %}"> Profile </a></li>
                       <li><a href="{%url 'meal_signup' %}">Signup for Meals</a></li>
                       <li><a href="{%url 'events_list' %}"> Signup for Events </a></li>
-                      
-                    
+
+
                     </ul>
                   </li>
                   {% endif %}
 
                 <li><a href="http://alumni.charterclub.org">Alumni</a></li>
 
-                  
+
                   {% if officer %}
                   <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Officer <span class="caret"></span></a>
@@ -132,6 +132,7 @@
                       <li><a href="{%url 'menu_input' %}">Change Menu</a></li> -->
                       <li><a href="{%url 'mailing_list_view' %}">Sophomore Mailing List</a></li>
                       <li><a href="{% url 'prospective_meal_list' %}">Print Sophomore Meals</a></li>
+                      <li><a href="{% url 'meal_mailing_list' %}">Sophomore Meal NetIds</a></li>
                       <li><a href="{%url 'admin:index' %}">Admin Control Panel</a></li>
                     </ul>
                   </li>
@@ -140,7 +141,7 @@
 				<li><a href="{%url 'admin:index' %}">Admin</a></li>
 				{% endif %}
                 {% endif %}
-                  
+
               </ul> <!-- nav navbar-nav -->
 
 
@@ -148,7 +149,7 @@
 
 
               <ul class="nav navbar-right navbar-nav">
-                  
+
                 {% if not netid %}
                 <li><a href="{%url 'login' %}?next_page={%url 'profile' %}">Login</a></li>
                 {% else %}
@@ -163,7 +164,7 @@
                       {% if member or prospective %}
                       <li><a href="{%url 'profile' %}">Profile</a></li>
                       {% endif %}
-                      {% if member %} 
+                      {% if member %}
                       <li><a href="{%url 'feedback' %}">Anonymous Feedback</a></li>
 					  {% endif %}
                       <li><a href="{%url 'logout' %}">Logout</a></li>
@@ -178,9 +179,9 @@
           </div><!-- /.container-fluid -->
           </container>
         </nav>
-    
+
     <div style="height:65px" class="header-buffer"></div>
-    
+
 
         <!-- Begin Body -->
 <!--<div class="container">-->
@@ -196,8 +197,8 @@
           </div>
       </div>
     </footer>
-    
-    
+
+
     <!-- script references -->
     {% block javascript %}
     <script src="{% static "js/jquery-2.1.3.min.js" %}"></script>
@@ -208,7 +209,7 @@
     {% endblock javascript %}
 
 
-    {% block js-bottom %} {% endblock js-bottom %}  
+    {% block js-bottom %} {% endblock js-bottom %}
 
 
   </body>
