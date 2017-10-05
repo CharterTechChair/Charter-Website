@@ -6,16 +6,16 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # url(
-    #     r'^benefits$', 
-    #     'recruitment.views.recruitment_benefits', 
+    #     r'^benefits$',
+    #     'recruitment.views.recruitment_benefits',
     #     name='recruitment_benefits'),
     # url(
-    #     r'^information$', 
-    #     'recruitment.views.recruitment_information', 
+    #     r'^information$',
+    #     'recruitment.views.recruitment_information',
     #     name='recruitment_information'),
     # url(
-    #     r'^recruitment/create_account$', 
-    #     'recruitment.views.create_account', 
+    #     r'^recruitment/create_account$',
+    #     'recruitment.views.create_account',
     #     name='create_account'),
     # url(
     #     r'^mailing_list$',
@@ -33,4 +33,8 @@ urlpatterns = patterns('',
         r'^prospective_meal_list$',
         'recruitment.views.prospective_meal_list',
         name='prospective_meal_list'),
+    url(
+        r'^meal_mailing_list$',
+        'recruitment.views.meal_mailing_list',
+        name='meal_mailing_list'),
 )
