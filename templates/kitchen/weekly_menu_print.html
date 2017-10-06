@@ -1,0 +1,233 @@
+<!-- will be a working Faceboard. eventually. -->
+<!-- ^what -->
+
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet" media="print" href="{% static "css/weekly-menu-printer-friendly-v1.css" %}" />
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+    <h1> Weekly Menu </h1>
+    <div class='row'>
+        <a href="{% url 'weekly_menu' %}/{{ prev_week.isoformat}}{{add_print}}" class="btn btn-info" role="button"> Prev Week </a> <a href="{% url 'weekly_menu' %}/{{ next_week.isoformat}}{{add_print}}" class="btn btn-info" role="button"> Next Week </a>
+    <div class='row'>
+
+
+    <div class="col-xs-12 col-sm-11">
+
+        <!-- Day here -->
+
+        {% for name, day, brunch, lunch, dinner in meals_week %}
+        <div class='col-sm-12 menu-day'>
+            <h3> {{ name }} </h3>
+
+             <div class="col-md-6 menu-meal div-left">
+
+                    {% if brunch %}
+                        <div class="col-xs-12 col-sm-3 menu-type">
+                            <p> <strong> Brunch </strong> {% if officer or prospective or privileged %}
+                            <span class="meal-descript">{{brunch.num_of_sophomores}}/{{brunch.sophomore_limit}} </span>{% endif %}
+                            </p>
+
+
+                            <p class="meal-name"> {% if brunch.name %} {{ brunch.name }} {% endif %}</p>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-9 menu-text">
+                            <strong> Entrees: </strong>
+                            <div class="other-content brunch">
+                            <p class='old-holder'> {{ brunch.description |linebreaksbr }} </p>
+                            <p class='new-holder'></p>
+                            </div>
+
+                            {% if brunch.optional_pdf %}
+
+                            <form method="get" action="{{ brunch.optional_pdf.url }}">
+                                <button class="btn btn-info menu-pdf-btn" type="submit">Click Here for the PDF Menu</button>
+                            </form>
+                            {% endif %}
+
+                            {% if brunch.special_note %}
+                            <p> <strong class='meal-special-note'> *{{ brunch.special_note }} </strong> </p>
+                            {% endif %}
+                        </div>
+
+                    {% else %}
+                        <div class="col-xs-12 col-sm-3 menu-type">
+                            <p> <strong> Lunch  {% if officer or prospective or privileged %} <span class="meal-descript"> {{lunch.num_of_sophomores}}/{{lunch.sophomore_limit}} </span> {% endif %}  </strong></p>
+
+
+                            <p class="meal-name"> {% if lunch.name %} {{ lunch.name }} {% endif %}</p>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-9 menu-text lunch">
+                            <strong> Entrees: </strong>
+                            <div class="lunch-content">
+                                <p class='old-holder'>
+                                    {{ lunch.description |linebreaksbr }}
+                                </p>
+
+                                <p class="gs"></p>
+                                <p class="salad"></p>
+                                <p class="main-meal"></p>
+                            </div>
+
+                            {% if lunch.optional_pdf %}
+                            <form method="get" action="{{ lunch.optional_pdf.url }}">
+                                <button class="btn btn-info menu-pdf-btn" type="submit">PDF of the Menu</button>
+                            </form>
+                            {% endif %}
+
+                            {% if lunch.special_note %}
+                            <p> <strong class='meal-special-note'> *{{ lunch.special_note }} </strong> </p>
+                            {% endif %}
+                        </div>
+
+                    {% endif %}
+             </div>
+
+             <div class="col-md-6 menu-meal div-right">
+                    <div class="col-xs-12 col-sm-3 menu-type">
+                        <p> <strong> Dinner </strong>  {% if officer or prospective or privileged %} <span class="meal-descript"> {{dinner.num_of_sophomores}}/{{dinner.sophomore_limit}} </span>{% endif %}</p>
+
+                        <p class="meal-name"> {% if dinner.name %} {{ dinner.name }} {% endif %}</p>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-9 menu-text dinner">
+                        <strong> Entrees: </strong>
+                        <div class="other-content">
+                        <p class='old-holder'> {{ dinner.description |linebreaksbr}} </p>
+                        <p class='new-holder'></p>
+                        </div>
+
+                            {% if dinner.optional_pdf %}
+
+                            <form method="get" action="{{ dinner.optional_pdf.url }}">
+                                <button class="btn btn-info menu-pdf-btn" type="submit">Click Here for the PDF Menu</button>
+                            </form>
+                            {% endif %}
+
+                        {% if dinner.special_note %}
+                        <p> <strong class='meal-special-note'> *{{ dinner.special_note }} </strong> </p>
+                        {% endif %}
+                    </div>
+             </div>
+
+        </div>
+        {% endfor %}
+    </div>
+
+    </div>
+    </div>
+
+    <script>
+        var lunches = document.getElementsByClassName('lunch-content');
+        for (var i = 0; i < lunches.length; i++) {
+            //console.log(lunches[i].innerText);
+            var origText = lunches[i].innerText;
+            var text = origText.toLowerCase();
+
+            var loc = text.search("grill special:");
+            var maxLoc = 0;
+            var firstLoc = 0;
+            var firstEnd = 0;
+            var maxEnd = 0;
+
+            var gs = '';
+            if (loc != -1) {
+                var end = text.substring(loc, text.length);
+                maxEnd = end.search('\n');
+                if (maxEnd === -1) maxEnd = end.length;
+
+                maxLoc = loc;
+                firstLoc = loc;
+                firstEnd = maxEnd;
+
+                gs = origText.substring(loc, loc + maxEnd);
+            } else {
+                //deal with crepes?
+            }
+
+            var salad = '';
+
+            loc =  text.search("special salad:");
+            if (loc != -1) {
+                var end = text.substring(loc, text.length);
+                var endLine = end.search('\n');
+                if (endLine === -1) endLine = end.length;
+                if (loc < firstLoc) {
+                    firstLoc = loc;
+                    firstEnd = endLine;
+                    console.log('doesnt happen');
+                }
+                if (endLine + loc > maxEnd + maxLoc) {
+                    maxEnd = endLine;
+                    maxLoc = loc;
+                }
+
+                salad = origText.substring(loc, loc + endLine);
+            }
+            var beforeContent = origText.substring(0, firstLoc);
+            var midContent = origText.substring(firstLoc + firstEnd, maxLoc);
+            var afterContent = origText.substring(maxEnd + maxLoc, origText.length);
+
+            var reconstructed = beforeContent + midContent + afterContent;
+
+           // lunches[i].innerText = '';
+
+            var oldHolder = lunches[i].getElementsByClassName('old-holder')[0];
+
+            var gsNode = lunches[i].getElementsByClassName('gs')[0];
+            var saladNode = lunches[i].getElementsByClassName('salad')[0];
+            var mainNode = lunches[i].getElementsByClassName('main-meal')[0];
+
+
+            if (gs != "") {
+                var colSpot = gs.search(":");
+                gs = gs.substring(colSpot + 1, gs.length);
+            }
+
+            if (salad != "") {
+                var colSpot = salad.search(":");
+                salad = salad.substring(colSpot + 1, salad.length);
+            }
+
+
+            //reconstructed = reconstructed.split('\n\n').join('\n');
+
+            reconstructed = reconstructed.replace(/(\r\n|\r|\n){2}/g, '$1').replace(/(\r\n|\r|\n){3,}/g, '$1\n');
+            //console.log(reconstructed);
+
+            gsNode.style.display = "none";
+            saladNode.style.display = "none";
+            mainNode.style.display = "none";
+
+            gsNode.innerText = gs;
+            saladNode.innerText = salad;
+            mainNode.innerText = reconstructed;
+        }
+        var other = document.getElementsByClassName('other-content');
+        for (var i = 0; i < other.length; i++) {
+            var origText = other[i].innerText;
+            origText = origText.replace(/(\r\n|\r|\n){2}/g, '$1').replace(/(\r\n|\r|\n){3,}/g, '$1\n');
+            var mainNode = other[i].getElementsByClassName('new-holder')[0];
+            mainNode.style.display = "none";
+            mainNode.innerText = origText;
+        }
+
+
+
+    </script>
+
+
+</container>
+
+</div>
+<br>
+{% endblock %}
