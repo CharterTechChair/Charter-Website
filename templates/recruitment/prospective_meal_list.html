@@ -43,14 +43,14 @@
 {% for meal_name, meal_entries in entries %}
     <h3 style="margin-bottom: 10px">  {{ meal_name }} </h3>
     <div class="table-responsive">
-        <table class="table">
+        <table class="table prospective-meal-list">
 
             {% if not meal_entries %}
                 There are no students signed up for {{meal_name}}.
             {% else %}
                 <tr>
-                    <td> Name </td>
-                    <td> Signature </td>
+                    <td > <h4>Name</h4> </td>
+                    <td> <h4>Signature<h4> </td>
                 </tr>
                 {% for e in meal_entries %}
                     <tr>
