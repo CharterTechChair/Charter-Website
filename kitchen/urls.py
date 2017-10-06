@@ -7,24 +7,32 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(
-        r'^weekly_menu$', 
-        'kitchen.views.weekly_menu', 
+        r'^weekly_menu$',
+        'kitchen.views.weekly_menu',
         name='weekly_menu'),
-        url(
-    r'^weekly_menu/([0-9]{4}-[0-9]{1,2}-[0-9]{1,2})$', 
-        'kitchen.views.weekly_menu_day', 
+    url(
+        r'^weekly_menu/print$',
+        'kitchen.views.weekly_menu_print',
+        name='weekly_menu_print'),
+    url(
+        r'^weekly_menu/([0-9]{4}-[0-9]{1,2}-[0-9]{1,2})$',
+        'kitchen.views.weekly_menu_day',
         name='weekly_menu_day'),
     url(
-        r'^meal_signup$', 
-        'kitchen.views.meal_signup', 
+        r'^weekly_menu/([0-9]{4}-[0-9]{1,2}-[0-9]{1,2})/print$',
+        'kitchen.views.weekly_menu_day_print',
+        name='weekly_menu_day_print'),
+    url(
+        r'^meal_signup$',
+        'kitchen.views.meal_signup',
         name='meal_signup'),
     url(
-        r'^meal_info/([0-9]{1,2})/([0-9]{1,2})/([0-9]{4})$', 
-        'kitchen.views.meal_info', 
+        r'^meal_info/([0-9]{1,2})/([0-9]{1,2})/([0-9]{4})$',
+        'kitchen.views.meal_info',
         name='meal_info'),
     url(
-        r'^meal_cancellation/(\d+)/(\d+)/(\w+)/(.+)', 
-        'kitchen.views.meal_cancellation', 
+        r'^meal_cancellation/(\d+)/(\d+)/(\w+)/(.+)',
+        'kitchen.views.meal_cancellation',
         name='meal_cancellation'),
 )
 

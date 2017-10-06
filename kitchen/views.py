@@ -17,7 +17,7 @@ from django.core.urlresolvers  import reverse
 from django.http import HttpRequest
 
 # Displays the weekly menu for a specific day
-def weekly_menu_day(request, date):
+def weekly_menu_base(request, date, is_print_page=False):
     # Find the relevant days
     target = parse_date(date)
 
@@ -33,12 +33,12 @@ def weekly_menu_day(request, date):
 
     monday = (target + datetime.timedelta(days=-target.weekday(), weeks=0))
     week = [monday + datetime.timedelta(days=i) for i in range(0,7)]
-    
+
     meals_iter = []
 
     # Find the proper meals
     for day in week:
-        brunch = Brunch.objects.filter(day=day) 
+        brunch = Brunch.objects.filter(day=day)
         lunch = Lunch.objects.filter(day=day)
         dinner = Dinner.objects.filter(day=day)
 
@@ -51,20 +51,37 @@ def weekly_menu_day(request, date):
             brunch = brunch[0]
 
         name = day.strftime("%a %m/%d")
-        
+
         # Prevent both brunch and lunch from showing up, which screws up formatting
         if brunch:
-            lunch = None        
+            lunch = None
         meals_iter.append((name, day, brunch, lunch, dinner))
 
-    return render(request, 'kitchen/weekly_menu.html', {
+    if is_print_page:
+        path = 'kitchen/weekly_menu_print.html'
+        add_print = '/print'
+    else:
+        path = 'kitchen/weekly_menu.html'
+        add_print = ''
+
+    return render(request, path, {
         'meals_week' : meals_iter,
         'prev_week' : prev_week,
         'next_week' : next_week,
+        'add_print' : add_print,
     })
 
 def weekly_menu(request):
-    return weekly_menu_day(request, timezone.now().date().isoformat())
+    return weekly_menu_base(request, timezone.now().date().isoformat())
+
+def weekly_menu_print(request):
+    return weekly_menu_base(request, timezone.now().date().isoformat(), is_print_page=True)
+
+def weekly_menu_day(request, date):
+    return weekly_menu_base(request, date)
+
+def weekly_menu_day_print(request, date):
+    return weekly_menu_base(request, date, is_print_page=True)
 
 
 # Uses a calender widget to sign up for meals
@@ -84,7 +101,7 @@ def meal_signup(request):
     # Look at the meals in the future
     future_meals =  Meal.objects.filter(day__gt=timezone.now())
     future_dates = sorted(set([m.day for m in future_meals]))
- 
+
     # Figure out which ones are available
     available_dates = []
     calendar_date_to_text = {}
@@ -96,12 +113,12 @@ def meal_signup(request):
 
         for m in m_a:
             hover_text.append("%s: %s" % ( m.__class__.__name__, m.sophomore_limit_text()))
-            
+
             if m.num_of_sophomores() < m.sophomore_limit:
                 available_dates.append(d)
 
         calendar_date_to_text[d.strftime("%Y-%m-%d")] = ",".join(hover_text)
-        
+
     # Which days can the choose on the calender picker?
     dates_allowed = sorted(set([d.strftime("%Y-%m-%d") for d in available_dates]))
 
@@ -111,14 +128,14 @@ def meal_signup(request):
 
 
     now = timezone.now()
-    return render(request, 'kitchen/meal_signup.html', 
+    return render(request, 'kitchen/meal_signup.html',
         {
             "prospective" : prospective,
             'form': form,
             'dates_allowed' : dates_allowed,
             'hover_text' : calendar_date_to_text,
             'now': now,
-            'prospective_this_month_meals' : prospective_this_month_meals, 
+            'prospective_this_month_meals' : prospective_this_month_meals,
         })
 
 from django.core.exceptions import FieldError
@@ -135,8 +152,8 @@ def meal_info(request, month, day, year):
         d = date(int(year), int(month), int(day))
     except:
         raise FieldError('Invalid Fields for /year/month/date in GET URL')
-    
-    brunch = Brunch.objects.filter(day=d) 
+
+    brunch = Brunch.objects.filter(day=d)
     lunch = Lunch.objects.filter(day=d)
     dinner = Dinner.objects.filter(day=d)
 
@@ -172,7 +189,7 @@ def meal_cancellation(request, entry_id, student_id, meal_type, entry_date):
             'subject': "This meal doesn't belong to you...",
             'body' : 'This entry belongs to %s but you are logged on as %s.' % (meal_entry.prospective, prospective)
         })
-    
+
     if not meal_entry.can_be_cancelled_by_user():
         return render(request, 'standard_message.html', {
             'subject': "Sorry! I can't cancel %s. :(" % meal_entry.meal,
@@ -189,5 +206,5 @@ def meal_cancellation(request, entry_id, student_id, meal_type, entry_date):
 
     return render(request, 'kitchen/meal_entry_cancellation.html', {
             'meal_entry' : meal_entry,
-            'form' : form, 
+            'form' : form,
     })
