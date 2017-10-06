@@ -55,9 +55,9 @@ def mailing_list_view(request):
        'netid': permissions.get_username(request)
     })
 
-@permissions.officer
+#@permissions.officer
 def prospective_meal_list_day(request, date, is_mailing_list=False):
-    officer = permissions.get_student(request).cast()
+    #officer = permissions.get_student(request).cast()
     target = parse_date(date)
 
     if not target:
@@ -69,15 +69,18 @@ def prospective_meal_list_day(request, date, is_mailing_list=False):
 
     prev_day = target + datetime.timedelta(days=-1)
     next_day = target + datetime.timedelta(days=1)
+    current_day = target
 
     if target.weekday () in range(0,5):
         meal_classes = [Lunch, Dinner]
+        meal_entries = [lookup_meal_entries(m, target) for m in meal_classes]
+        entries = [(c.__name__,m) for c,m in zip(meal_classes, meal_entries)]
     else:
         meal_classes = [Brunch, Dinner]
+        meal_entries = [lookup_meal_entries(m, target) for m in meal_classes]
+        entries = [(c.__name__,m) for c,m in zip(meal_classes, meal_entries)]
 
-    meal_entries = [lookup_meal_entries(m, target) for m in meal_classes]
-
-    entries = {c.__name__:m for c,m in zip(meal_classes, meal_entries)}
+    print entries
 
     if is_mailing_list:
         html_string = 'recruitment/meal_mailing_list.html'
@@ -85,9 +88,10 @@ def prospective_meal_list_day(request, date, is_mailing_list=False):
         html_string = 'recruitment/prospective_meal_list.html'
     return render(request, html_string, {
         'entries' : entries,
-        'officer' : officer,
+        #'officer' : officer,
         'next_day' : next_day,
         'prev_day' : prev_day,
+        'current_day' : current_day,
         'time' : timezone.now(),
     })
 
