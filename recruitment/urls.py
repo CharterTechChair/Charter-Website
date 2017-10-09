@@ -27,12 +27,16 @@ urlpatterns = patterns('',
         name='mailing_list_view'),
     url(
         r'^prospective_meal_list/([0-9]{4}-[0-9]{1,2}-[0-9]{1,2})/$',
-        'recruitment.views.prospective_meal_list_day',
+        'recruitment.views.prospective_meal_list',
         name='prospective_meal_list_day'),
     url(
         r'^prospective_meal_list$',
         'recruitment.views.prospective_meal_list',
         name='prospective_meal_list'),
+    url(
+        r'^meal_mailing_list/([0-9]{4}-[0-9]{1,2}-[0-9]{1,2})/$',
+        'recruitment.views.meal_mailing_list',
+        name='meal_mailing_list_day'),
     url(
         r'^meal_mailing_list$',
         'recruitment.views.meal_mailing_list',

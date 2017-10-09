@@ -15,8 +15,9 @@
 
     <h1> Weekly Menu </h1>
     <div class='row'>
-        <a href="{% url 'weekly_menu' %}/{{ prev_week.isoformat}}{{add_print}}" class="btn btn-info" role="button"> Prev Week </a> <a href="{% url 'weekly_menu' %}/{{ next_week.isoformat}}{{add_print}}" class="btn btn-info" role="button"> Next Week </a>
+        <a href="{% url 'weekly_menu' %}/{{ prev_week.isoformat}}" class="btn btn-info" role="button"> Prev Week </a> <a href="{% url 'weekly_menu' %}/{{ next_week.isoformat}}" class="btn btn-info" role="button"> Next Week </a>
     <div class='row'>
+
 
 
     <div class="col-xs-12 col-sm-11">
@@ -138,13 +139,11 @@
             var firstLoc = 0;
             var firstEnd = 0;
             var maxEnd = 0;
-
             var gs = '';
             if (loc != -1) {
                 var end = text.substring(loc, text.length);
                 maxEnd = end.search('\n');
                 if (maxEnd === -1) maxEnd = end.length;
-
                 maxLoc = loc;
                 firstLoc = loc;
                 firstEnd = maxEnd;
@@ -176,7 +175,6 @@
             var beforeContent = origText.substring(0, firstLoc);
             var midContent = origText.substring(firstLoc + firstEnd, maxLoc);
             var afterContent = origText.substring(maxEnd + maxLoc, origText.length);
-
             var reconstructed = beforeContent + midContent + afterContent;
 
            // lunches[i].innerText = '';
@@ -186,13 +184,10 @@
             var gsNode = lunches[i].getElementsByClassName('gs')[0];
             var saladNode = lunches[i].getElementsByClassName('salad')[0];
             var mainNode = lunches[i].getElementsByClassName('main-meal')[0];
-
-
             if (gs != "") {
                 var colSpot = gs.search(":");
                 gs = gs.substring(colSpot + 1, gs.length);
             }
-
             if (salad != "") {
                 var colSpot = salad.search(":");
                 salad = salad.substring(colSpot + 1, salad.length);
@@ -220,8 +215,6 @@
             mainNode.style.display = "none";
             mainNode.innerText = origText;
         }
-
-
 
     </script>
 
