@@ -56,8 +56,8 @@ def mailing_list_view(request):
     })
 
 #@permissions.officer
-def prospective_meal_list_day(request, date, is_mailing_list=False):
-    #officer = permissions.get_student(request).cast()
+def meal_list_base(request, date, is_mailing_list=False):
+    officer = permissions.get_student(request).cast()
     target = parse_date(date)
 
     if not target:
@@ -80,26 +80,24 @@ def prospective_meal_list_day(request, date, is_mailing_list=False):
         meal_entries = [lookup_meal_entries(m, target) for m in meal_classes]
         entries = [(c.__name__,m) for c,m in zip(meal_classes, meal_entries)]
 
-    print entries
-
     if is_mailing_list:
-        html_string = 'recruitment/meal_mailing_list.html'
+        path = 'recruitment/meal_mailing_list.html'
     else:
-        html_string = 'recruitment/prospective_meal_list.html'
-    return render(request, html_string, {
+        path = 'recruitment/prospective_meal_list.html'
+    return render(request, path, {
         'entries' : entries,
-        #'officer' : officer,
+        'officer' : officer,
         'next_day' : next_day,
         'prev_day' : prev_day,
         'current_day' : current_day,
         'time' : timezone.now(),
     })
 
-def prospective_meal_list(request):
-    return prospective_meal_list_day(request, timezone.now().date().isoformat())
+def prospective_meal_list(request, date=timezone.now().date().isoformat()):
+    return meal_list_base(request, date)
 
-def meal_mailing_list(request):
-    return prospective_meal_list_day(request, timezone.now().date().isoformat(), True)
+def meal_mailing_list(request, date=timezone.now().date().isoformat()):
+    return meal_list_base(request, date, True)
 
 def lookup_meal_entries(meal_class, target):
     meal = meal_class.objects.filter(day=target)

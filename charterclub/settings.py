@@ -20,11 +20,11 @@ SECRET_KEY = os.environ.get('CHARTER_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
- 
+
 
 # if this is true, get_username(request) will return testuser. use for
 # testing when CAS is not available
-CAS_DISABLED = False
+CAS_DISABLED = True
 
 TEMPLATE_DEBUG = False
 
@@ -57,7 +57,7 @@ ALLOWED_HOSTS = [
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-CART_PRODUCT_MODEL = 'gear.models.GearItem' 
+CART_PRODUCT_MODEL = 'gear.models.GearItem'
 
 # Application definition
 
@@ -87,7 +87,7 @@ INSTALLED_APPS = (
     'settings_charter',
     'django_bootstrap_calendar',
     'storages', # For AWS
-    
+
 )
 
 MIDDLEWARE_CLASSES = (
@@ -136,7 +136,7 @@ CAS_LOGOUT_COMPLETELY = False
 CAS_REDIRECT_URL = 'templates/hello.html'
 
 # email backend
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -202,9 +202,9 @@ USE_TZ = True
 AWS_STORAGE_BUCKET_NAME = os.environ['S3_BUCKET_NAME']
 AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
 AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
-# STATIC_URL='http://your_s3_bucket.s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME    
+# STATIC_URL='http://your_s3_bucket.s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
 STATIC_URL = '/static/'
-MEDIA_URL='http://your_s3_bucket.s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME    
+MEDIA_URL='http://your_s3_bucket.s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
 
 # From: https://devcenter.heroku.com/articles/django-assets
 # STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
