@@ -24,7 +24,7 @@ DEBUG = True
 
 # if this is true, get_username(request) will return testuser. use for
 # testing when CAS is not available
-CAS_DISABLED = True
+CAS_DISABLED = False
 
 TEMPLATE_DEBUG = False
 
