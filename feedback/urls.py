@@ -14,6 +14,10 @@ urlpatterns = patterns('',
         r'/feedback_thanks', 
         'feedback.views.thanks', 
         name='feedback_thanks'),
+    url(
+        r'/feedback_responses', 
+        'feedback.views.responses', 
+        name='feedback_responses'),
 )
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

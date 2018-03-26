@@ -1,0 +1,32 @@
+<!-- Display responses to anonymous feedback. -->
+
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="container">
+<h1> Anonymous Feedback Responses </h1>
+
+<br>
+
+<div class="row">
+  <p> Responses to anonymous feedback, as requested by the sender, are shown
+    below. </p>
+</div>
+
+<h3>Responses</h3>
+
+{% for resp in responses %}
+<div class="row">
+  <br/>
+  <p><b>Feedback Description</b>: {{resp.feedback_description}}</p>
+  <p><b>Response</b>: {{resp.response}}</p>
+  <p><b>Posted by</b>: {{resp.responded_by.username}} ({{resp.response_time | naturaltime}})</p>
+</div>
+{% endfor %}
+
+</div>
+
+{% endblock %}
