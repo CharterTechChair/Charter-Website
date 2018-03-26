@@ -11,6 +11,12 @@ class FeedbackForm(forms.Form):
       widget=forms.Textarea, 
       label="Anonymous Feedback",
       required=True)
+   response = forms.BooleanField(
+      label="Get a response",
+      help_text="Check this box if you want a response on the response page.",
+      initial=False,
+      required=False,
+    )
    cc_myself = forms.BooleanField(
         label="CC Myself",
         help_text="Check this box if you want to include yourself in the thread. Otherwise, your submission will be anonymous.",
@@ -18,6 +24,3 @@ class FeedbackForm(forms.Form):
         required=False,
     )
    helper.add_input(Submit('submit', 'submit', css_class='btn-primary'))
-
-
-

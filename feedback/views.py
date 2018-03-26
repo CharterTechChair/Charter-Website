@@ -18,11 +18,15 @@ def feedback(request):
         message = form.cleaned_data['anonymous_feedback']
         sender = 'charter.techchair@gmail.com'
         cc_myself = form.cleaned_data['cc_myself']
+        response = form.cleaned_data['response']
         recipients = ['charter-officers@princeton.edu']
 
         if cc_myself:
             my_email = permissions.get_username(request) + "@princeton.edu"
             recipients.append(my_email)
+
+        if response:
+            message += '\n --- Requests a response. --- \n'
 
         send_mail(subject, message, sender, recipients, fail_silently=False)
         return redirect('/feedback/feedback_thanks/')
