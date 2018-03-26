@@ -29,17 +29,7 @@ If you don't run this command, you will likely be missing a bunch of software. S
 
 - Install the required packages:
 
-        pip install django-toolbelt
-
-Make sure you install django 1.7.4 (otherwise this won't work):
-
-        pip install django==1.7.4
-
-- Install the CAS authentication:
-
-        cd django-cas
-        python setup.py install
-        cd ..
+        pip install -r requirements.txt
 
 This installs the authentication package needed for Django onto your system.
 
@@ -58,6 +48,10 @@ use this below. See the [video](https://docs.google.com/a/princeton.edu/file/d/0
 - Set your environment variables by obtaining a `localEnv.sh` file from the tech chair, and run it by using the command:
 
 		source localEnv.sh
+
+- Alternatively, you can use the staging environment is `stagingEnv.sh` is present in the directory:
+
+        source stagingEnv.sh
 
 - Install pillow:
 
