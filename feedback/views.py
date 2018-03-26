@@ -1,11 +1,14 @@
 import datetime
 
+from django.utils import timezone
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 from feedback.forms import FeedbackForm
 import charterclub.permissions as permissions
 from charterclub.permissions import render
 from django.core.mail import send_mail
+
+from feedback.models import FeedbackResponse
 
 @permissions.member
 def feedback(request):
@@ -38,7 +41,7 @@ def feedback(request):
      'form': form,
      'error': '',
      'netid': permissions.get_username(request),
-   })  
+   })
 
 @permissions.member
 def thanks(request):
@@ -48,4 +51,18 @@ def thanks(request):
      'current_date': now,
      'error': '',
      'netid': permissions.get_username(request),
+    })
+
+@permissions.member
+def responses(request):
+    today = datetime.datetime.today()
+    # get the start of the week
+    week_start = today - datetime.timedelta(days=today.isoweekday() % 7)
+
+    responses_available = FeedbackResponse.objects.filter(
+      response_time__gte=week_start).order_by('-response_time')
+
+    return render(request, 'feedback/responses.html', {
+       'responses': responses_available,
+       'netid': permissions.get_username(request),
     })
