@@ -23,7 +23,11 @@
   <br/>
   <p><b>Feedback Description</b>: {{resp.feedback_description}}</p>
   <p><b>Response</b>: {{resp.response}}</p>
-  <p><b>Posted by</b>: {{resp.responded_by.username}} ({{resp.response_time | naturaltime}})</p>
+  <p><b>Posted by</b>:
+    {% if resp.display_user %} {{resp.responded_by.username}}
+    {% else %} Charter Officers
+    {% endif %}
+    ({{resp.response_time | naturaltime}})</p>
 </div>
 {% endfor %}
 

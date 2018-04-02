@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 class FeedbackResponse(models.Model):
   feedback_description = models.TextField()
   response = models.TextField()
+  display_user = models.BooleanField(default=True)
 
   responded_by = models.ForeignKey(User)
   response_time = models.DateTimeField(auto_now_add=True)
