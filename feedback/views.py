@@ -55,12 +55,12 @@ def thanks(request):
 
 @permissions.member
 def responses(request):
+    # Display responses in the past two weeks.
     today = datetime.datetime.today()
-    # get the start of the week
-    week_start = today - datetime.timedelta(days=today.isoweekday() % 7)
+    start_time = today - datetime.timedelta(days=14)
 
     responses_available = FeedbackResponse.objects.filter(
-      response_time__gte=week_start).order_by('-response_time')
+      response_time__gte=start_time).order_by('-response_time')
 
     return render(request, 'feedback/responses.html', {
        'responses': responses_available,
