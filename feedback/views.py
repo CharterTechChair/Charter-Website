@@ -59,8 +59,9 @@ def responses(request):
     today = datetime.datetime.today()
     start_time = today - datetime.timedelta(days=14)
 
-    responses_available = FeedbackResponse.objects.filter(
-      response_time__gte=start_time).order_by('-response_time')
+    responses_available = (FeedbackResponse.objects
+      .filter(response_time__gte=start_time, visible=True)
+      .order_by('-response_time'))
 
     return render(request, 'feedback/responses.html', {
        'responses': responses_available,
