@@ -5,7 +5,7 @@ from django.contrib import admin
 from feedback.models import FeedbackResponse
 
 class FeedbackResponseAdmin(admin.ModelAdmin):
-  exclude = ("responded_by",)
+  readonly_fields = ("responded_by", "response_time")
 
   def save_model(self, request, obj, form, change):
     obj.responded_by = request.user
