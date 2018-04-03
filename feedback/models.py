@@ -13,8 +13,8 @@ class FeedbackResponse(models.Model):
   responded_by = models.ForeignKey(User)
   response_time = models.DateTimeField(auto_now_add=True)
 
-  def __str__(self):
-    return '{desc} (by {poster} at {t})'.format(
+  def __unicode__(self):
+    return u'{desc} (by {poster} at {t})'.format(
       desc=self.feedback_description,
       poster=self.responded_by.username,
       t=self.response_time.isoformat())
