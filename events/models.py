@@ -11,7 +11,6 @@ from django import forms
 from charterclub.models import Member, Student
 
 from datetime import time
-now = timezone.now()
 
 def JSON_validator(arg):
     try:
@@ -87,6 +86,7 @@ class Entry(models.Model):
 
     @staticmethod
     def get_future_related_entries(fname, lname):
+        now = timezone.now()
         entry_q = Entry.objects.filter(event__date__gte=now, 
                                        student__first_name__icontains=fname, 
                                        student__last_name__icontains=lname)
@@ -97,6 +97,7 @@ class Entry(models.Model):
 
     @staticmethod
     def get_past_related_entries(fname, lname):
+        now = timezone.now()
         entry_q = Entry.objects.filter(event__date__lte=now, 
                                        student__first_name__icontains=fname, 
                                        student__last_name__icontains=lname)
@@ -233,7 +234,7 @@ class Event(models.Model):
                                       help_text="0 = No guests allowed. -1 = As many guests as they can.",
                                       default=1)
     # Event time Some times
-    date   = models.DateField("Date of Event", default=now)
+    date   = models.DateField("Date of Event", auto_now_add=True)
     time = models.TimeField("Time of Event", help_text="IMPORTANT. THIS IS IN MILITARY TIME.", 
                             default=DEFAULT_TIME)
 
@@ -242,13 +243,13 @@ class Event(models.Model):
     # Times for Junior Seniors and Sophomores
     require_rsvp = models.BooleanField("Does this event require an RSVP?", default=False)
 
-    prospective_signup_start = models.DateField(default=now, blank=True)
-    sophomore_signup_start = models.DateField(default=now, blank=True)
-    junior_signup_start    = models.DateField(default=now, blank=True)
-    senior_signup_start    = models.DateField(default=now, blank=True)
+    prospective_signup_start = models.DateField(auto_now_add=True, blank=True)
+    sophomore_signup_start = models.DateField(auto_now_add=True, blank=True)
+    junior_signup_start    = models.DateField(auto_now_add=True, blank=True)
+    senior_signup_start    = models.DateField(auto_now_add=True, blank=True)
     signup_time            = models.TimeField("Start/End  Time for signups", help_text="IMPORTANT. THIS IS IN MILITARY TIME.", 
                             default=DEFAULT_TIME)    
-    signup_end_time = models.DateField(default=now)
+    signup_end_time = models.DateField(auto_now_add=True)
     
 
     class Meta:

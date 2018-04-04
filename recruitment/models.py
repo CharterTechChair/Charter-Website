@@ -13,7 +13,7 @@ class ProspectiveMealEntry(models.Model):
     prospective = models.ForeignKey("charterclub.Prospective")
     meal = models.ForeignKey("kitchen.Meal", limit_choices_to=limit_meals_attended_choices)
     completed = models.BooleanField("Has this person completed the meal?", default=False)
-    signup_date = models.DateField(blank=True, default=timezone.now().date())
+    signup_date = models.DateField(blank=True, auto_now_add=True)
     points = models.DecimalField("Number of points this meal is worth", default=1, max_digits=5, decimal_places=2)
 
     def __unicode__(self):
@@ -32,5 +32,5 @@ class ProspectiveEventEntry(Entry):
         (Not used yet)
     '''
     completed = models.BooleanField("Has this person attended this event?", default=False)
-    signup_date = models.DateField(blank=True, default=timezone.now().date())
+    signup_date = models.DateField(blank=True, auto_now_add=True)
     points = models.DecimalField("Number of points this event is worth", default=1, max_digits=5, decimal_places=2)
