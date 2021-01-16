@@ -2,7 +2,7 @@
   "name": "Charter-Website",
   "scripts": {
   },
-  "stack": "heroku-18",
+  "stack": "container",
   "env": {
     "AWS_ACCESS_KEY_ID": {
       "required": true

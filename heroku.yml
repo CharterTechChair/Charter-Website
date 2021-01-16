@@ -1,0 +1,9 @@
+setup:
+  addons:
+    - plan: heroku-postgresql
+      as: DATABASE_URL
+build:
+  docker:
+    web: Dockerfile
+# no release config
+# run is taken from Dockerfile
