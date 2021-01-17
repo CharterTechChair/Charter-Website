@@ -21,3 +21,4 @@ boto==2.38.0
 django-storages==1.1.8
 django-paypal==0.3.3
 django-carton==1.2.1
+whitenoise==4.1.4
