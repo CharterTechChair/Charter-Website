@@ -19,8 +19,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = os.environ.get('CHARTER_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
+DEBUG = (os.environ.get('DJANGO_DEBUG', False) == '1')
 
 # if this is true, get_username(request) will return testuser. use for
 # testing when CAS is not available
