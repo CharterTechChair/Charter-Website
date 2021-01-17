@@ -14,4 +14,4 @@ COPY . /app
 WORKDIR /app
 RUN pip install -r requirements.txt
 
-CMD gunicorn charterclub.wsgi --log-file -
+CMD scripts/run.sh

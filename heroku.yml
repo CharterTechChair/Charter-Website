@@ -5,9 +5,5 @@ setup:
 build:
   docker:
     web: Dockerfile
-release:
-  image: web
-  command:
-    - /app/scripts/init.sh
 # no release config
 # run is taken from Dockerfile
